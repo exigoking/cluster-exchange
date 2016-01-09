@@ -1,0 +1,2167 @@
+
+-----===[PEGASUS: A Peta-Scale Graph Mining System]===-----
+
+[PEGASUS] Computing PageRank. Max iteration = 3, threshold = 2.0E-7, cur_iteration=1
+
+Creating initial pagerank vectors............
+16/01/09 15:34:09 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/01/09 15:34:10 INFO Configuration.deprecation: session.id is deprecated. Instead, use dfs.metrics.session-id
+16/01/09 15:34:10 INFO jvm.JvmMetrics: Initializing JVM Metrics with processName=JobTracker, sessionId=
+16/01/09 15:34:10 INFO jvm.JvmMetrics: Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+16/01/09 15:34:10 INFO mapred.FileInputFormat: Total input paths to process : 13
+16/01/09 15:34:10 INFO mapreduce.JobSubmitter: number of splits:13
+16/01/09 15:34:10 INFO Configuration.deprecation: user.name is deprecated. Instead, use mapreduce.job.user.name
+16/01/09 15:34:10 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/01/09 15:34:10 INFO Configuration.deprecation: mapred.reduce.tasks is deprecated. Instead, use mapreduce.job.reduces
+16/01/09 15:34:10 INFO Configuration.deprecation: mapred.output.value.class is deprecated. Instead, use mapreduce.job.output.value.class
+16/01/09 15:34:10 INFO Configuration.deprecation: mapred.job.name is deprecated. Instead, use mapreduce.job.name
+16/01/09 15:34:10 INFO Configuration.deprecation: mapred.input.dir is deprecated. Instead, use mapreduce.input.fileinputformat.inputdir
+16/01/09 15:34:10 INFO Configuration.deprecation: mapred.output.dir is deprecated. Instead, use mapreduce.output.fileoutputformat.outputdir
+16/01/09 15:34:10 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/01/09 15:34:10 INFO Configuration.deprecation: mapred.output.key.class is deprecated. Instead, use mapreduce.job.output.key.class
+16/01/09 15:34:10 INFO Configuration.deprecation: mapred.working.dir is deprecated. Instead, use mapreduce.job.working.dir
+16/01/09 15:34:11 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_local1520074719_0001
+16/01/09 15:34:11 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/staging/hduser1520074719/.staging/job_local1520074719_0001/job.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.retry.interval;  Ignoring.
+16/01/09 15:34:11 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/staging/hduser1520074719/.staging/job_local1520074719_0001/job.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.attempts;  Ignoring.
+16/01/09 15:34:11 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/local/localRunner/hduser/job_local1520074719_0001/job_local1520074719_0001.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.retry.interval;  Ignoring.
+16/01/09 15:34:11 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/local/localRunner/hduser/job_local1520074719_0001/job_local1520074719_0001.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.attempts;  Ignoring.
+16/01/09 15:34:11 INFO mapreduce.Job: The url to track the job: http://localhost:8080/
+16/01/09 15:34:11 INFO mapred.LocalJobRunner: OutputCommitter set in config null
+16/01/09 15:34:11 INFO mapreduce.Job: Running job: job_local1520074719_0001
+16/01/09 15:34:11 INFO mapred.LocalJobRunner: OutputCommitter is org.apache.hadoop.mapred.FileOutputCommitter
+16/01/09 15:34:11 INFO mapred.LocalJobRunner: Waiting for map tasks
+16/01/09 15:34:11 INFO mapred.LocalJobRunner: Starting task: attempt_local1520074719_0001_m_000000_0
+16/01/09 15:34:11 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:34:11 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00009:0+20944746
+16/01/09 15:34:11 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:34:11 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:34:11 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:34:11 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:34:11 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:34:11 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:34:11 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:34:12 INFO mapreduce.Job: Job job_local1520074719_0001 running in uber mode : false
+16/01/09 15:34:12 INFO mapreduce.Job:  map 0% reduce 0%
+16/01/09 15:34:14 INFO mapred.LocalJobRunner:
+16/01/09 15:34:14 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:34:14 INFO mapred.MapTask: Spilling map output
+16/01/09 15:34:14 INFO mapred.MapTask: bufstart = 0; bufend = 16001304; bufvoid = 104857600
+16/01/09 15:34:14 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19623144(78492576); length = 6591253/6553600
+16/01/09 15:34:16 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:34:16 INFO mapred.Task: Task:attempt_local1520074719_0001_m_000000_0 is done. And is in the process of committing
+16/01/09 15:34:16 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00009:0+20944746
+16/01/09 15:34:16 INFO mapred.Task: Task 'attempt_local1520074719_0001_m_000000_0' done.
+16/01/09 15:34:16 INFO mapred.LocalJobRunner: Finishing task: attempt_local1520074719_0001_m_000000_0
+16/01/09 15:34:16 INFO mapred.LocalJobRunner: Starting task: attempt_local1520074719_0001_m_000001_0
+16/01/09 15:34:16 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:34:16 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00007:0+20943016
+16/01/09 15:34:16 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:34:16 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:34:16 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:34:16 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:34:16 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:34:16 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:34:16 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:34:16 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:34:17 INFO mapred.LocalJobRunner:
+16/01/09 15:34:17 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:34:17 INFO mapred.MapTask: Spilling map output
+16/01/09 15:34:17 INFO mapred.MapTask: bufstart = 0; bufend = 16000648; bufvoid = 104857600
+16/01/09 15:34:17 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19624576(78498304); length = 6589821/6553600
+16/01/09 15:34:18 INFO mapreduce.Job:  map 8% reduce 0%
+16/01/09 15:34:19 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:34:19 INFO mapred.Task: Task:attempt_local1520074719_0001_m_000001_0 is done. And is in the process of committing
+16/01/09 15:34:20 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00007:0+20943016
+16/01/09 15:34:20 INFO mapred.Task: Task 'attempt_local1520074719_0001_m_000001_0' done.
+16/01/09 15:34:20 INFO mapred.LocalJobRunner: Finishing task: attempt_local1520074719_0001_m_000001_0
+16/01/09 15:34:20 INFO mapred.LocalJobRunner: Starting task: attempt_local1520074719_0001_m_000002_0
+16/01/09 15:34:20 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:34:20 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00008:0+20939808
+16/01/09 15:34:20 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:34:20 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:34:20 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:34:20 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:34:20 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:34:20 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:34:20 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:34:20 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:34:21 INFO mapred.LocalJobRunner:
+16/01/09 15:34:21 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:34:21 INFO mapred.MapTask: Spilling map output
+16/01/09 15:34:21 INFO mapred.MapTask: bufstart = 0; bufend = 15997380; bufvoid = 104857600
+16/01/09 15:34:21 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19624496(78497984); length = 6589901/6553600
+16/01/09 15:34:22 INFO mapreduce.Job:  map 15% reduce 0%
+16/01/09 15:34:23 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:34:23 INFO mapred.Task: Task:attempt_local1520074719_0001_m_000002_0 is done. And is in the process of committing
+16/01/09 15:34:23 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00008:0+20939808
+16/01/09 15:34:23 INFO mapred.Task: Task 'attempt_local1520074719_0001_m_000002_0' done.
+16/01/09 15:34:23 INFO mapred.LocalJobRunner: Finishing task: attempt_local1520074719_0001_m_000002_0
+16/01/09 15:34:23 INFO mapred.LocalJobRunner: Starting task: attempt_local1520074719_0001_m_000003_0
+16/01/09 15:34:23 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:34:23 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00002:0+20939412
+16/01/09 15:34:23 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:34:23 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:34:23 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:34:23 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:34:23 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:34:23 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:34:23 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:34:24 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:34:25 INFO mapred.LocalJobRunner:
+16/01/09 15:34:25 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:34:25 INFO mapred.MapTask: Spilling map output
+16/01/09 15:34:25 INFO mapred.MapTask: bufstart = 0; bufend = 15997221; bufvoid = 104857600
+16/01/09 15:34:25 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19624812(78499248); length = 6589585/6553600
+16/01/09 15:34:25 INFO mapreduce.Job:  map 23% reduce 0%
+16/01/09 15:34:27 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:34:27 INFO mapred.Task: Task:attempt_local1520074719_0001_m_000003_0 is done. And is in the process of committing
+16/01/09 15:34:27 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00002:0+20939412
+16/01/09 15:34:27 INFO mapred.Task: Task 'attempt_local1520074719_0001_m_000003_0' done.
+16/01/09 15:34:27 INFO mapred.LocalJobRunner: Finishing task: attempt_local1520074719_0001_m_000003_0
+16/01/09 15:34:27 INFO mapred.LocalJobRunner: Starting task: attempt_local1520074719_0001_m_000004_0
+16/01/09 15:34:27 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:34:27 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00005:0+20930302
+16/01/09 15:34:27 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:34:27 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:34:27 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:34:27 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:34:27 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:34:27 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:34:27 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:34:27 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:34:28 INFO mapred.LocalJobRunner:
+16/01/09 15:34:28 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:34:28 INFO mapred.MapTask: Spilling map output
+16/01/09 15:34:28 INFO mapred.MapTask: bufstart = 0; bufend = 15990835; bufvoid = 104857600
+16/01/09 15:34:28 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19628444(78513776); length = 6585953/6553600
+16/01/09 15:34:29 INFO mapreduce.Job:  map 31% reduce 0%
+16/01/09 15:34:30 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:34:30 INFO mapred.Task: Task:attempt_local1520074719_0001_m_000004_0 is done. And is in the process of committing
+16/01/09 15:34:30 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00005:0+20930302
+16/01/09 15:34:30 INFO mapred.Task: Task 'attempt_local1520074719_0001_m_000004_0' done.
+16/01/09 15:34:30 INFO mapred.LocalJobRunner: Finishing task: attempt_local1520074719_0001_m_000004_0
+16/01/09 15:34:30 INFO mapred.LocalJobRunner: Starting task: attempt_local1520074719_0001_m_000005_0
+16/01/09 15:34:30 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:34:30 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00000:0+20929489
+16/01/09 15:34:30 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:34:30 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:34:30 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:34:30 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:34:30 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:34:30 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:34:30 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:34:31 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:34:32 INFO mapred.LocalJobRunner:
+16/01/09 15:34:32 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:34:32 INFO mapred.MapTask: Spilling map output
+16/01/09 15:34:32 INFO mapred.MapTask: bufstart = 0; bufend = 15989809; bufvoid = 104857600
+16/01/09 15:34:32 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19628160(78512640); length = 6586237/6553600
+16/01/09 15:34:33 INFO mapreduce.Job:  map 38% reduce 0%
+16/01/09 15:34:34 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:34:34 INFO mapred.Task: Task:attempt_local1520074719_0001_m_000005_0 is done. And is in the process of committing
+16/01/09 15:34:34 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00000:0+20929489
+16/01/09 15:34:34 INFO mapred.Task: Task 'attempt_local1520074719_0001_m_000005_0' done.
+16/01/09 15:34:34 INFO mapred.LocalJobRunner: Finishing task: attempt_local1520074719_0001_m_000005_0
+16/01/09 15:34:34 INFO mapred.LocalJobRunner: Starting task: attempt_local1520074719_0001_m_000006_0
+16/01/09 15:34:34 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:34:34 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00010:0+20928955
+16/01/09 15:34:34 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:34:34 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:34:34 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:34:34 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:34:34 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:34:34 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:34:34 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:34:34 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:34:36 INFO mapred.LocalJobRunner:
+16/01/09 15:34:36 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:34:36 INFO mapred.MapTask: Spilling map output
+16/01/09 15:34:36 INFO mapred.MapTask: bufstart = 0; bufend = 15989086; bufvoid = 104857600
+16/01/09 15:34:36 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19627908(78511632); length = 6586489/6553600
+16/01/09 15:34:36 INFO mapreduce.Job:  map 46% reduce 0%
+16/01/09 15:34:37 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:34:37 INFO mapred.Task: Task:attempt_local1520074719_0001_m_000006_0 is done. And is in the process of committing
+16/01/09 15:34:37 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00010:0+20928955
+16/01/09 15:34:37 INFO mapred.Task: Task 'attempt_local1520074719_0001_m_000006_0' done.
+16/01/09 15:34:37 INFO mapred.LocalJobRunner: Finishing task: attempt_local1520074719_0001_m_000006_0
+16/01/09 15:34:37 INFO mapred.LocalJobRunner: Starting task: attempt_local1520074719_0001_m_000007_0
+16/01/09 15:34:37 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:34:38 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00006:0+20914784
+16/01/09 15:34:38 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:34:38 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:34:38 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:34:38 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:34:38 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:34:38 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:34:38 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:34:38 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:34:39 INFO mapred.LocalJobRunner:
+16/01/09 15:34:39 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:34:39 INFO mapred.MapTask: Spilling map output
+16/01/09 15:34:39 INFO mapred.MapTask: bufstart = 0; bufend = 15978338; bufvoid = 104857600
+16/01/09 15:34:39 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19632472(78529888); length = 6581925/6553600
+16/01/09 15:34:40 INFO mapreduce.Job:  map 54% reduce 0%
+16/01/09 15:34:41 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:34:41 INFO mapred.Task: Task:attempt_local1520074719_0001_m_000007_0 is done. And is in the process of committing
+16/01/09 15:34:41 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00006:0+20914784
+16/01/09 15:34:41 INFO mapred.Task: Task 'attempt_local1520074719_0001_m_000007_0' done.
+16/01/09 15:34:41 INFO mapred.LocalJobRunner: Finishing task: attempt_local1520074719_0001_m_000007_0
+16/01/09 15:34:41 INFO mapred.LocalJobRunner: Starting task: attempt_local1520074719_0001_m_000008_0
+16/01/09 15:34:41 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:34:41 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00001:0+20905180
+16/01/09 15:34:41 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:34:41 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:34:41 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:34:41 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:34:41 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:34:41 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:34:41 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:34:42 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:34:42 INFO mapred.LocalJobRunner:
+16/01/09 15:34:42 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:34:42 INFO mapred.MapTask: Spilling map output
+16/01/09 15:34:42 INFO mapred.MapTask: bufstart = 0; bufend = 15971179; bufvoid = 104857600
+16/01/09 15:34:42 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19635732(78542928); length = 6578665/6553600
+16/01/09 15:34:43 INFO mapreduce.Job:  map 62% reduce 0%
+16/01/09 15:34:44 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:34:44 INFO mapred.Task: Task:attempt_local1520074719_0001_m_000008_0 is done. And is in the process of committing
+16/01/09 15:34:44 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00001:0+20905180
+16/01/09 15:34:44 INFO mapred.Task: Task 'attempt_local1520074719_0001_m_000008_0' done.
+16/01/09 15:34:44 INFO mapred.LocalJobRunner: Finishing task: attempt_local1520074719_0001_m_000008_0
+16/01/09 15:34:44 INFO mapred.LocalJobRunner: Starting task: attempt_local1520074719_0001_m_000009_0
+16/01/09 15:34:44 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:34:44 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00004:0+20265683
+16/01/09 15:34:44 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:34:44 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:34:44 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:34:44 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:34:44 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:34:44 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:34:44 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:34:44 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:34:46 INFO mapred.LocalJobRunner:
+16/01/09 15:34:46 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:34:46 INFO mapred.MapTask: Spilling map output
+16/01/09 15:34:46 INFO mapred.MapTask: bufstart = 0; bufend = 15986015; bufvoid = 104857600
+16/01/09 15:34:46 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19629416(78517664); length = 6584981/6553600
+16/01/09 15:34:46 INFO mapreduce.Job:  map 69% reduce 0%
+16/01/09 15:34:47 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:34:47 INFO mapred.Task: Task:attempt_local1520074719_0001_m_000009_0 is done. And is in the process of committing
+16/01/09 15:34:47 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00004:0+20265683
+16/01/09 15:34:47 INFO mapred.Task: Task 'attempt_local1520074719_0001_m_000009_0' done.
+16/01/09 15:34:47 INFO mapred.LocalJobRunner: Finishing task: attempt_local1520074719_0001_m_000009_0
+16/01/09 15:34:47 INFO mapred.LocalJobRunner: Starting task: attempt_local1520074719_0001_m_000010_0
+16/01/09 15:34:47 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:34:47 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00003:0+19280483
+16/01/09 15:34:47 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:34:47 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:34:47 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:34:47 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:34:47 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:34:47 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:34:47 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:34:48 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:34:49 INFO mapred.LocalJobRunner:
+16/01/09 15:34:49 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:34:49 INFO mapred.MapTask: Spilling map output
+16/01/09 15:34:49 INFO mapred.MapTask: bufstart = 0; bufend = 15987703; bufvoid = 104857600
+16/01/09 15:34:49 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19628840(78515360); length = 6585557/6553600
+16/01/09 15:34:50 INFO mapreduce.Job:  map 77% reduce 0%
+16/01/09 15:34:51 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:34:51 INFO mapred.Task: Task:attempt_local1520074719_0001_m_000010_0 is done. And is in the process of committing
+16/01/09 15:34:51 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00003:0+19280483
+16/01/09 15:34:51 INFO mapred.Task: Task 'attempt_local1520074719_0001_m_000010_0' done.
+16/01/09 15:34:51 INFO mapred.LocalJobRunner: Finishing task: attempt_local1520074719_0001_m_000010_0
+16/01/09 15:34:51 INFO mapred.LocalJobRunner: Starting task: attempt_local1520074719_0001_m_000011_0
+16/01/09 15:34:51 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:34:51 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00011:0+18842518
+16/01/09 15:34:51 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:34:51 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:34:51 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:34:51 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:34:51 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:34:51 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:34:51 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:34:51 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:34:53 INFO mapred.LocalJobRunner:
+16/01/09 15:34:53 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:34:53 INFO mapred.MapTask: Spilling map output
+16/01/09 15:34:53 INFO mapred.MapTask: bufstart = 0; bufend = 15988472; bufvoid = 104857600
+16/01/09 15:34:53 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19628924(78515696); length = 6585473/6553600
+16/01/09 15:34:53 INFO mapreduce.Job:  map 85% reduce 0%
+16/01/09 15:34:54 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:34:54 INFO mapred.Task: Task:attempt_local1520074719_0001_m_000011_0 is done. And is in the process of committing
+16/01/09 15:34:54 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00011:0+18842518
+16/01/09 15:34:54 INFO mapred.Task: Task 'attempt_local1520074719_0001_m_000011_0' done.
+16/01/09 15:34:54 INFO mapred.LocalJobRunner: Finishing task: attempt_local1520074719_0001_m_000011_0
+16/01/09 15:34:54 INFO mapred.LocalJobRunner: Starting task: attempt_local1520074719_0001_m_000012_0
+16/01/09 15:34:54 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:34:54 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Output/pr_vector/pagerank_init_vector.temp:0+7388890
+16/01/09 15:34:54 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:34:54 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:34:54 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:34:54 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:34:54 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:34:54 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:34:54 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:34:55 INFO mapred.LocalJobRunner:
+16/01/09 15:34:55 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:34:55 INFO mapred.MapTask: Spilling map output
+16/01/09 15:34:55 INFO mapred.MapTask: bufstart = 0; bufend = 6000000; bufvoid = 104857600
+16/01/09 15:34:55 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 24214400(96857600); length = 1999997/6553600
+16/01/09 15:34:55 INFO mapreduce.Job:  map 92% reduce 0%
+16/01/09 15:34:55 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:34:55 INFO mapred.Task: Task:attempt_local1520074719_0001_m_000012_0 is done. And is in the process of committing
+16/01/09 15:34:55 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_vector/pagerank_init_vector.temp:0+7388890
+16/01/09 15:34:55 INFO mapred.Task: Task 'attempt_local1520074719_0001_m_000012_0' done.
+16/01/09 15:34:55 INFO mapred.LocalJobRunner: Finishing task: attempt_local1520074719_0001_m_000012_0
+16/01/09 15:34:55 INFO mapred.LocalJobRunner: Map task executor complete.
+16/01/09 15:34:55 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:34:55 INFO mapred.Merger: Merging 13 sorted segments
+16/01/09 15:34:55 INFO mapred.Merger: Merging 4 intermediate segments out of a total of 13
+16/01/09 15:34:56 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:34:59 INFO mapred.Merger: Down to the last merge-pass, with 10 segments left of total size: 238395888 bytes
+16/01/09 15:34:59 INFO mapred.LocalJobRunner:
+RedStage1: number_nodes = 500000, mixing_c = 0.8500000238418579, random_coeff = 2.999999523162842E-7
+16/01/09 15:35:01 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:35:02 INFO mapreduce.Job:  map 100% reduce 67%
+16/01/09 15:35:04 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:35:05 INFO mapreduce.Job:  map 100% reduce 68%
+16/01/09 15:35:07 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:35:08 INFO mapreduce.Job:  map 100% reduce 70%
+16/01/09 15:35:10 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:35:11 INFO mapreduce.Job:  map 100% reduce 71%
+16/01/09 15:35:13 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:35:14 INFO mapreduce.Job:  map 100% reduce 72%
+16/01/09 15:35:16 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:35:17 INFO mapreduce.Job:  map 100% reduce 73%
+16/01/09 15:35:19 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:35:20 INFO mapreduce.Job:  map 100% reduce 74%
+16/01/09 15:35:22 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:35:23 INFO mapreduce.Job:  map 100% reduce 75%
+16/01/09 15:35:25 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:35:26 INFO mapreduce.Job:  map 100% reduce 76%
+16/01/09 15:35:28 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:35:29 INFO mapreduce.Job:  map 100% reduce 77%
+16/01/09 15:35:31 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:35:32 INFO mapreduce.Job:  map 100% reduce 78%
+16/01/09 15:35:34 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:35:35 INFO mapreduce.Job:  map 100% reduce 80%
+16/01/09 15:35:37 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:35:38 INFO mapreduce.Job:  map 100% reduce 81%
+16/01/09 15:35:40 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:35:41 INFO mapreduce.Job:  map 100% reduce 82%
+16/01/09 15:35:43 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:35:44 INFO mapreduce.Job:  map 100% reduce 83%
+16/01/09 15:35:46 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:35:47 INFO mapreduce.Job:  map 100% reduce 84%
+16/01/09 15:35:49 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:35:50 INFO mapreduce.Job:  map 100% reduce 85%
+16/01/09 15:35:52 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:35:53 INFO mapreduce.Job:  map 100% reduce 86%
+16/01/09 15:35:55 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:35:56 INFO mapreduce.Job:  map 100% reduce 87%
+16/01/09 15:35:58 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:35:59 INFO mapreduce.Job:  map 100% reduce 88%
+16/01/09 15:36:01 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:36:02 INFO mapreduce.Job:  map 100% reduce 90%
+16/01/09 15:36:04 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:36:05 INFO mapreduce.Job:  map 100% reduce 91%
+16/01/09 15:36:07 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:36:08 INFO mapreduce.Job:  map 100% reduce 92%
+16/01/09 15:36:10 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:36:11 INFO mapreduce.Job:  map 100% reduce 93%
+16/01/09 15:36:13 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:36:14 INFO mapreduce.Job:  map 100% reduce 94%
+16/01/09 15:36:16 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:36:17 INFO mapreduce.Job:  map 100% reduce 95%
+16/01/09 15:36:19 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:36:20 INFO mapreduce.Job:  map 100% reduce 96%
+16/01/09 15:36:22 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:36:23 INFO mapreduce.Job:  map 100% reduce 97%
+16/01/09 15:36:25 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:36:26 INFO mapreduce.Job:  map 100% reduce 98%
+16/01/09 15:36:28 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:36:29 INFO mapreduce.Job:  map 100% reduce 100%
+16/01/09 15:36:29 INFO mapred.Task: Task:attempt_local1520074719_0001_r_000000_0 is done. And is in the process of committing
+16/01/09 15:36:29 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:36:29 INFO mapred.Task: Task attempt_local1520074719_0001_r_000000_0 is allowed to commit now
+16/01/09 15:36:29 INFO output.FileOutputCommitter: Saved output of task 'attempt_local1520074719_0001_r_000000_0' to hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/_temporary/0/task_local1520074719_0001_r_000000
+16/01/09 15:36:29 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:36:29 INFO mapred.Task: Task 'attempt_local1520074719_0001_r_000000_0' done.
+16/01/09 15:36:30 INFO mapreduce.Job: Job job_local1520074719_0001 completed successfully
+16/01/09 15:36:30 INFO mapreduce.Job: Counters: 32
+	File System Counters
+		FILE: Number of bytes read=410393210
+		FILE: Number of bytes written=2052254439
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=2133787190
+		HDFS: Number of bytes written=629261423
+		HDFS: Number of read operations=323
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=30
+	Map-Reduce Framework
+		Map input records=20258969
+		Map output records=20258969
+		Map output bytes=197877990
+		Map output materialized bytes=238396006
+		Input split bytes=1463
+		Combine input records=0
+		Combine output records=0
+		Reduce input groups=500000
+		Reduce shuffle bytes=0
+		Reduce input records=20258969
+		Reduce output records=20258969
+		Spilled Records=45954333
+		Shuffled Maps =0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=4163
+		CPU time spent (ms)=0
+		Physical memory (bytes) snapshot=0
+		Virtual memory (bytes) snapshot=0
+		Total committed heap usage (bytes)=6972506112
+	File Input Format Counters
+		Bytes Read=254153266
+	File Output Format Counters
+		Bytes Written=525816963
+16/01/09 15:36:30 INFO jvm.JvmMetrics: Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+16/01/09 15:36:30 INFO jvm.JvmMetrics: Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+16/01/09 15:36:30 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/01/09 15:36:30 INFO mapreduce.JobSubmitter: number of splits:4
+16/01/09 15:36:30 INFO Configuration.deprecation: user.name is deprecated. Instead, use mapreduce.job.user.name
+16/01/09 15:36:30 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/01/09 15:36:30 INFO Configuration.deprecation: mapred.reduce.tasks is deprecated. Instead, use mapreduce.job.reduces
+16/01/09 15:36:30 INFO Configuration.deprecation: mapred.output.value.class is deprecated. Instead, use mapreduce.job.output.value.class
+16/01/09 15:36:30 INFO Configuration.deprecation: mapred.job.name is deprecated. Instead, use mapreduce.job.name
+16/01/09 15:36:30 INFO Configuration.deprecation: mapred.input.dir is deprecated. Instead, use mapreduce.input.fileinputformat.inputdir
+16/01/09 15:36:30 INFO Configuration.deprecation: mapred.output.dir is deprecated. Instead, use mapreduce.output.fileoutputformat.outputdir
+16/01/09 15:36:30 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/01/09 15:36:30 INFO Configuration.deprecation: mapred.output.key.class is deprecated. Instead, use mapreduce.job.output.key.class
+16/01/09 15:36:30 INFO Configuration.deprecation: mapred.working.dir is deprecated. Instead, use mapreduce.job.working.dir
+16/01/09 15:36:30 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_local1273858919_0002
+16/01/09 15:36:30 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/staging/hduser1273858919/.staging/job_local1273858919_0002/job.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.retry.interval;  Ignoring.
+16/01/09 15:36:30 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/staging/hduser1273858919/.staging/job_local1273858919_0002/job.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.attempts;  Ignoring.
+16/01/09 15:36:30 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/local/localRunner/hduser/job_local1273858919_0002/job_local1273858919_0002.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.retry.interval;  Ignoring.
+16/01/09 15:36:30 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/local/localRunner/hduser/job_local1273858919_0002/job_local1273858919_0002.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.attempts;  Ignoring.
+16/01/09 15:36:30 INFO mapreduce.Job: The url to track the job: http://localhost:8080/
+16/01/09 15:36:30 INFO mapreduce.Job: Running job: job_local1273858919_0002
+16/01/09 15:36:30 INFO mapred.LocalJobRunner: OutputCommitter set in config null
+16/01/09 15:36:30 INFO mapred.LocalJobRunner: OutputCommitter is org.apache.hadoop.mapred.FileOutputCommitter
+16/01/09 15:36:30 INFO mapred.LocalJobRunner: Waiting for map tasks
+16/01/09 15:36:30 INFO mapred.LocalJobRunner: Starting task: attempt_local1273858919_0002_m_000000_0
+16/01/09 15:36:30 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:36:30 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:0+134217728
+16/01/09 15:36:30 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:36:30 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:36:30 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:36:30 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:36:30 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:36:30 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:36:30 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+16/01/09 15:36:31 INFO mapreduce.Job: Job job_local1273858919_0002 running in uber mode : false
+16/01/09 15:36:31 INFO mapreduce.Job:  map 0% reduce 0%
+16/01/09 15:36:33 INFO mapred.MapTask: Spilling map output
+16/01/09 15:36:33 INFO mapred.MapTask: bufstart = 0; bufend = 50498520; bufvoid = 104857600
+16/01/09 15:36:33 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 17867512(71470048); length = 8346885/6553600
+16/01/09 15:36:33 INFO mapred.MapTask: (EQUATOR) 58887112 kvi 14721772(58887088)
+16/01/09 15:36:36 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:0+134217728 > map
+16/01/09 15:36:37 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:36:37 INFO mapred.MapTask: (RESET) equator 58887112 kv 14721772(58887088) kvi 12635108(50540432)
+16/01/09 15:36:37 INFO mapreduce.Job:  map 8% reduce 0%
+16/01/09 15:36:39 INFO mapred.MapTask: Spilling map output
+16/01/09 15:36:39 INFO mapred.MapTask: bufstart = 58887112; bufend = 4514582; bufvoid = 104857600
+16/01/09 15:36:39 INFO mapred.MapTask: kvstart = 14721772(58887088); kvend = 6371524(25486096); length = 8350249/6553600
+16/01/09 15:36:39 INFO mapred.MapTask: (EQUATOR) 12903174 kvi 3225788(12903152)
+16/01/09 15:36:39 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:0+134217728 > map
+16/01/09 15:36:40 INFO mapreduce.Job:  map 14% reduce 0%
+16/01/09 15:36:42 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:0+134217728 > map
+16/01/09 15:36:43 INFO mapreduce.Job:  map 15% reduce 0%
+16/01/09 15:36:44 INFO mapred.MapTask: Finished spill 1
+16/01/09 15:36:44 INFO mapred.MapTask: (RESET) equator 12903174 kv 3225788(12903152) kvi 1149884(4599536)
+16/01/09 15:36:44 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:0+134217728 > map
+16/01/09 15:36:44 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:36:44 INFO mapred.MapTask: Spilling map output
+16/01/09 15:36:44 INFO mapred.MapTask: bufstart = 12903174; bufend = 37226588; bufvoid = 104857600
+16/01/09 15:36:44 INFO mapred.MapTask: kvstart = 3225788(12903152); kvend = 25429828(101719312); length = 4010361/6553600
+16/01/09 15:36:45 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:0+134217728 > sort
+16/01/09 15:36:46 INFO mapred.MapTask: Finished spill 2
+16/01/09 15:36:46 INFO mapred.Merger: Merging 3 sorted segments
+16/01/09 15:36:46 INFO mapred.Merger: Down to the last merge-pass, with 3 segments left of total size: 135660756 bytes
+16/01/09 15:36:46 INFO mapreduce.Job:  map 17% reduce 0%
+16/01/09 15:36:48 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:0+134217728 > sort >
+16/01/09 15:36:49 INFO mapreduce.Job:  map 22% reduce 0%
+16/01/09 15:36:49 INFO mapred.Task: Task:attempt_local1273858919_0002_m_000000_0 is done. And is in the process of committing
+16/01/09 15:36:49 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:0+134217728 > sort
+16/01/09 15:36:49 INFO mapred.Task: Task 'attempt_local1273858919_0002_m_000000_0' done.
+16/01/09 15:36:49 INFO mapred.LocalJobRunner: Finishing task: attempt_local1273858919_0002_m_000000_0
+16/01/09 15:36:49 INFO mapred.LocalJobRunner: Starting task: attempt_local1273858919_0002_m_000001_0
+16/01/09 15:36:49 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:36:49 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:134217728+134217728
+16/01/09 15:36:49 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:36:49 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:36:49 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:36:49 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:36:49 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:36:49 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:36:49 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+16/01/09 15:36:50 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:36:52 INFO mapred.MapTask: Spilling map output
+16/01/09 15:36:52 INFO mapred.MapTask: bufstart = 0; bufend = 50522530; bufvoid = 104857600
+16/01/09 15:36:52 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 17873508(71494032); length = 8340889/6553600
+16/01/09 15:36:52 INFO mapred.MapTask: (EQUATOR) 58911122 kvi 14727776(58911104)
+16/01/09 15:36:55 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:134217728+134217728 > map
+16/01/09 15:36:56 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:36:56 INFO mapred.MapTask: (RESET) equator 58911122 kv 14727776(58911104) kvi 12648204(50592816)
+16/01/09 15:36:56 INFO mapreduce.Job:  map 33% reduce 0%
+16/01/09 15:36:58 INFO mapred.MapTask: Spilling map output
+16/01/09 15:36:58 INFO mapred.MapTask: bufstart = 58911122; bufend = 4558056; bufvoid = 104857597
+16/01/09 15:36:58 INFO mapred.MapTask: kvstart = 14727776(58911104); kvend = 6382396(25529584); length = 8345381/6553600
+16/01/09 15:36:58 INFO mapred.MapTask: (EQUATOR) 12946648 kvi 3236656(12946624)
+16/01/09 15:36:58 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:134217728+134217728 > map
+16/01/09 15:36:59 INFO mapreduce.Job:  map 39% reduce 0%
+16/01/09 15:37:01 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:134217728+134217728 > map
+16/01/09 15:37:02 INFO mapreduce.Job:  map 40% reduce 0%
+16/01/09 15:37:02 INFO mapred.MapTask: Finished spill 1
+16/01/09 15:37:02 INFO mapred.MapTask: (RESET) equator 12946648 kv 3236656(12946624) kvi 1160108(4640432)
+16/01/09 15:37:03 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:134217728+134217728 > map
+16/01/09 15:37:03 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:37:03 INFO mapred.MapTask: Spilling map output
+16/01/09 15:37:03 INFO mapred.MapTask: bufstart = 12946648; bufend = 37123533; bufvoid = 104857600
+16/01/09 15:37:03 INFO mapred.MapTask: kvstart = 3236656(12946624); kvend = 25456408(101825632); length = 3994649/6553600
+16/01/09 15:37:04 INFO mapred.MapTask: Finished spill 2
+16/01/09 15:37:04 INFO mapred.Merger: Merging 3 sorted segments
+16/01/09 15:37:04 INFO mapred.Merger: Down to the last merge-pass, with 3 segments left of total size: 135544410 bytes
+16/01/09 15:37:04 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:134217728+134217728 > sort >
+16/01/09 15:37:05 INFO mapreduce.Job:  map 42% reduce 0%
+16/01/09 15:37:07 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:134217728+134217728 > sort >
+16/01/09 15:37:08 INFO mapred.Task: Task:attempt_local1273858919_0002_m_000001_0 is done. And is in the process of committing
+16/01/09 15:37:08 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:134217728+134217728 > sort
+16/01/09 15:37:08 INFO mapred.Task: Task 'attempt_local1273858919_0002_m_000001_0' done.
+16/01/09 15:37:08 INFO mapred.LocalJobRunner: Finishing task: attempt_local1273858919_0002_m_000001_0
+16/01/09 15:37:08 INFO mapred.LocalJobRunner: Starting task: attempt_local1273858919_0002_m_000002_0
+16/01/09 15:37:08 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:37:08 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:268435456+134217728
+16/01/09 15:37:08 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:37:08 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:37:08 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:37:08 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:37:08 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:37:08 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:37:08 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:37:08 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+16/01/09 15:37:11 INFO mapred.MapTask: Spilling map output
+16/01/09 15:37:11 INFO mapred.MapTask: bufstart = 0; bufend = 50507698; bufvoid = 104857600
+16/01/09 15:37:11 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 17869808(71479232); length = 8344589/6553600
+16/01/09 15:37:11 INFO mapred.MapTask: (EQUATOR) 58896290 kvi 14724068(58896272)
+16/01/09 15:37:14 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:268435456+134217728 > map
+16/01/09 15:37:14 INFO mapreduce.Job:  map 58% reduce 0%
+16/01/09 15:37:15 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:37:15 INFO mapred.MapTask: (RESET) equator 58896290 kv 14724068(58896272) kvi 12647592(50590368)
+16/01/09 15:37:17 INFO mapred.MapTask: Spilling map output
+16/01/09 15:37:17 INFO mapred.MapTask: bufstart = 58896290; bufend = 4561661; bufvoid = 104857598
+16/01/09 15:37:17 INFO mapred.MapTask: kvstart = 14724068(58896272); kvend = 6383292(25533168); length = 8340777/6553600
+16/01/09 15:37:17 INFO mapred.MapTask: (EQUATOR) 12950253 kvi 3237556(12950224)
+16/01/09 15:37:17 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:268435456+134217728 > map
+16/01/09 15:37:17 INFO mapreduce.Job:  map 64% reduce 0%
+16/01/09 15:37:20 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:268435456+134217728 > map
+16/01/09 15:37:20 INFO mapreduce.Job:  map 65% reduce 0%
+16/01/09 15:37:21 INFO mapred.MapTask: Finished spill 1
+16/01/09 15:37:21 INFO mapred.MapTask: (RESET) equator 12950253 kv 3237556(12950224) kvi 1164656(4658624)
+16/01/09 15:37:22 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:268435456+134217728 > map
+16/01/09 15:37:22 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:37:22 INFO mapred.MapTask: Spilling map output
+16/01/09 15:37:22 INFO mapred.MapTask: bufstart = 12950253; bufend = 37131872; bufvoid = 104857600
+16/01/09 15:37:22 INFO mapred.MapTask: kvstart = 3237556(12950224); kvend = 25461868(101847472); length = 3990089/6553600
+16/01/09 15:37:23 INFO mapred.MapTask: Finished spill 2
+16/01/09 15:37:23 INFO mapred.Merger: Merging 3 sorted segments
+16/01/09 15:37:23 INFO mapred.Merger: Down to the last merge-pass, with 3 segments left of total size: 135550018 bytes
+16/01/09 15:37:23 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:268435456+134217728 > sort >
+16/01/09 15:37:23 INFO mapreduce.Job:  map 67% reduce 0%
+16/01/09 15:37:26 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:268435456+134217728 > sort >
+16/01/09 15:37:26 INFO mapreduce.Job:  map 74% reduce 0%
+16/01/09 15:37:27 INFO mapred.Task: Task:attempt_local1273858919_0002_m_000002_0 is done. And is in the process of committing
+16/01/09 15:37:27 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:268435456+134217728 > sort
+16/01/09 15:37:27 INFO mapred.Task: Task 'attempt_local1273858919_0002_m_000002_0' done.
+16/01/09 15:37:27 INFO mapred.LocalJobRunner: Finishing task: attempt_local1273858919_0002_m_000002_0
+16/01/09 15:37:27 INFO mapred.LocalJobRunner: Starting task: attempt_local1273858919_0002_m_000003_0
+16/01/09 15:37:27 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:37:27 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:402653184+123163779
+16/01/09 15:37:27 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:37:27 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:37:27 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:37:27 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:37:27 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:37:27 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:37:27 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+16/01/09 15:37:27 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:37:29 INFO mapred.MapTask: Spilling map output
+16/01/09 15:37:29 INFO mapred.MapTask: bufstart = 0; bufend = 50519300; bufvoid = 104857600
+16/01/09 15:37:29 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 17872700(71490800); length = 8341697/6553600
+16/01/09 15:37:29 INFO mapred.MapTask: (EQUATOR) 58907892 kvi 14726968(58907872)
+16/01/09 15:37:33 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:402653184+123163779 > map
+16/01/09 15:37:33 INFO mapreduce.Job:  map 84% reduce 0%
+16/01/09 15:37:34 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:37:34 INFO mapred.MapTask: (RESET) equator 58907892 kv 14726968(58907872) kvi 12648632(50594528)
+16/01/09 15:37:36 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:402653184+123163779 > map
+16/01/09 15:37:36 INFO mapred.MapTask: Spilling map output
+16/01/09 15:37:36 INFO mapred.MapTask: bufstart = 58907892; bufend = 4590386; bufvoid = 104857600
+16/01/09 15:37:36 INFO mapred.MapTask: kvstart = 14726968(58907872); kvend = 6390480(25561920); length = 8336489/6553600
+16/01/09 15:37:36 INFO mapred.MapTask: (EQUATOR) 12978978 kvi 3244740(12978960)
+16/01/09 15:37:36 INFO mapreduce.Job:  map 89% reduce 0%
+16/01/09 15:37:39 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:402653184+123163779 > map
+16/01/09 15:37:39 INFO mapreduce.Job:  map 91% reduce 0%
+16/01/09 15:37:41 INFO mapred.MapTask: Finished spill 1
+16/01/09 15:37:41 INFO mapred.MapTask: (RESET) equator 12978978 kv 3244740(12978960) kvi 1160052(4640208)
+16/01/09 15:37:41 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:402653184+123163779 > map
+16/01/09 15:37:41 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:37:41 INFO mapred.MapTask: Spilling map output
+16/01/09 15:37:41 INFO mapred.MapTask: bufstart = 12978978; bufend = 26818183; bufvoid = 104857600
+16/01/09 15:37:41 INFO mapred.MapTask: kvstart = 3244740(12978960); kvend = 950956(3803824); length = 2293785/6553600
+16/01/09 15:37:42 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:402653184+123163779 > sort
+16/01/09 15:37:42 INFO mapred.MapTask: Finished spill 2
+16/01/09 15:37:42 INFO mapred.Merger: Merging 3 sorted segments
+16/01/09 15:37:42 INFO mapred.Merger: Down to the last merge-pass, with 3 segments left of total size: 124384589 bytes
+16/01/09 15:37:42 INFO mapreduce.Job:  map 92% reduce 0%
+16/01/09 15:37:45 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:402653184+123163779 > sort
+16/01/09 15:37:45 INFO mapred.Task: Task:attempt_local1273858919_0002_m_000003_0 is done. And is in the process of committing
+16/01/09 15:37:45 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:402653184+123163779 > sort
+16/01/09 15:37:45 INFO mapred.Task: Task 'attempt_local1273858919_0002_m_000003_0' done.
+16/01/09 15:37:45 INFO mapred.LocalJobRunner: Finishing task: attempt_local1273858919_0002_m_000003_0
+16/01/09 15:37:45 INFO mapred.LocalJobRunner: Map task executor complete.
+16/01/09 15:37:45 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:37:45 INFO mapred.Merger: Merging 4 sorted segments
+16/01/09 15:37:45 INFO mapred.Merger: Down to the last merge-pass, with 4 segments left of total size: 531139773 bytes
+16/01/09 15:37:45 INFO mapred.LocalJobRunner:
+RedStage2: number_nodes = 500000, mixing_c = 0.8500000238418579, random_coeff = 2.999999523162842E-7, converge_threshold = 2.0E-7
+16/01/09 15:37:45 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:37:51 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:37:51 INFO mapreduce.Job:  map 100% reduce 73%
+16/01/09 15:37:54 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:37:54 INFO mapreduce.Job:  map 100% reduce 76%
+16/01/09 15:37:57 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:37:57 INFO mapreduce.Job:  map 100% reduce 79%
+16/01/09 15:38:00 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:38:00 INFO mapreduce.Job:  map 100% reduce 83%
+16/01/09 15:38:03 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:38:03 INFO mapreduce.Job:  map 100% reduce 86%
+16/01/09 15:38:06 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:38:06 INFO mapreduce.Job:  map 100% reduce 90%
+16/01/09 15:38:09 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:38:09 INFO mapreduce.Job:  map 100% reduce 94%
+16/01/09 15:38:12 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:38:12 INFO mapreduce.Job:  map 100% reduce 98%
+16/01/09 15:38:15 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:38:15 INFO mapred.Task: Task:attempt_local1273858919_0002_r_000000_0 is done. And is in the process of committing
+16/01/09 15:38:15 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:38:15 INFO mapred.Task: Task attempt_local1273858919_0002_r_000000_0 is allowed to commit now
+16/01/09 15:38:15 INFO output.FileOutputCommitter: Saved output of task 'attempt_local1273858919_0002_r_000000_0' to hdfs://master:54310/HiBench/Pagerank/Output/pr_output/_temporary/0/task_local1273858919_0002_r_000000
+16/01/09 15:38:15 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:38:15 INFO mapred.Task: Task 'attempt_local1273858919_0002_r_000000_0' done.
+16/01/09 15:38:15 INFO mapreduce.Job:  map 100% reduce 100%
+16/01/09 15:38:15 INFO mapreduce.Job: Job job_local1273858919_0002 completed successfully
+16/01/09 15:38:15 INFO mapreduce.Job: Counters: 33
+	File System Counters
+		FILE: Number of bytes read=3962664040
+		FILE: Number of bytes written=5272299618
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=3127755776
+		HDFS: Number of bytes written=2680432065
+		HDFS: Number of read operations=261
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=42
+	Map-Reduce Framework
+		Map input records=20258969
+		Map output records=20258969
+		Map output bytes=490621835
+		Map output materialized bytes=531139797
+		Input split bytes=452
+		Combine input records=0
+		Combine output records=0
+		Reduce input groups=500000
+		Reduce shuffle bytes=0
+		Reduce input records=20258969
+		Reduce output records=500000
+		Spilled Records=60776907
+		Shuffled Maps =0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=2050
+		CPU time spent (ms)=0
+		Physical memory (bytes) snapshot=0
+		Virtual memory (bytes) snapshot=0
+		Total committed heap usage (bytes)=2666528768
+	File Input Format Counters
+		Bytes Read=525829251
+	File Output Format Counters
+		Bytes Written=14402800
+	pegasus.PagerankNaive$PrCounters
+		CONVERGE_CHECK=1
+Iteration = 1, changed reducer = 1
+16/01/09 15:38:15 INFO jvm.JvmMetrics: Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+16/01/09 15:38:15 INFO jvm.JvmMetrics: Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+16/01/09 15:38:16 INFO mapred.FileInputFormat: Total input paths to process : 13
+16/01/09 15:38:16 INFO mapreduce.JobSubmitter: number of splits:13
+16/01/09 15:38:16 INFO Configuration.deprecation: user.name is deprecated. Instead, use mapreduce.job.user.name
+16/01/09 15:38:16 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/01/09 15:38:16 INFO Configuration.deprecation: mapred.reduce.tasks is deprecated. Instead, use mapreduce.job.reduces
+16/01/09 15:38:16 INFO Configuration.deprecation: mapred.output.value.class is deprecated. Instead, use mapreduce.job.output.value.class
+16/01/09 15:38:16 INFO Configuration.deprecation: mapred.job.name is deprecated. Instead, use mapreduce.job.name
+16/01/09 15:38:16 INFO Configuration.deprecation: mapred.input.dir is deprecated. Instead, use mapreduce.input.fileinputformat.inputdir
+16/01/09 15:38:16 INFO Configuration.deprecation: mapred.output.dir is deprecated. Instead, use mapreduce.output.fileoutputformat.outputdir
+16/01/09 15:38:16 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/01/09 15:38:16 INFO Configuration.deprecation: mapred.output.key.class is deprecated. Instead, use mapreduce.job.output.key.class
+16/01/09 15:38:16 INFO Configuration.deprecation: mapred.working.dir is deprecated. Instead, use mapreduce.job.working.dir
+16/01/09 15:38:16 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_local1371693404_0003
+16/01/09 15:38:16 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/staging/hduser1371693404/.staging/job_local1371693404_0003/job.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.retry.interval;  Ignoring.
+16/01/09 15:38:16 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/staging/hduser1371693404/.staging/job_local1371693404_0003/job.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.attempts;  Ignoring.
+16/01/09 15:38:16 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/local/localRunner/hduser/job_local1371693404_0003/job_local1371693404_0003.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.retry.interval;  Ignoring.
+16/01/09 15:38:16 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/local/localRunner/hduser/job_local1371693404_0003/job_local1371693404_0003.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.attempts;  Ignoring.
+16/01/09 15:38:16 INFO mapreduce.Job: The url to track the job: http://localhost:8080/
+16/01/09 15:38:16 INFO mapreduce.Job: Running job: job_local1371693404_0003
+16/01/09 15:38:16 INFO mapred.LocalJobRunner: OutputCommitter set in config null
+16/01/09 15:38:16 INFO mapred.LocalJobRunner: OutputCommitter is org.apache.hadoop.mapred.FileOutputCommitter
+16/01/09 15:38:16 INFO mapred.LocalJobRunner: Waiting for map tasks
+16/01/09 15:38:16 INFO mapred.LocalJobRunner: Starting task: attempt_local1371693404_0003_m_000000_0
+16/01/09 15:38:16 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:38:16 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00009:0+20944746
+16/01/09 15:38:16 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:38:16 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:38:16 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:38:16 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:38:16 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:38:16 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:38:16 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:38:17 INFO mapreduce.Job: Job job_local1371693404_0003 running in uber mode : false
+16/01/09 15:38:17 INFO mapreduce.Job:  map 0% reduce 0%
+16/01/09 15:38:18 INFO mapred.LocalJobRunner:
+16/01/09 15:38:18 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:38:18 INFO mapred.MapTask: Spilling map output
+16/01/09 15:38:18 INFO mapred.MapTask: bufstart = 0; bufend = 16001304; bufvoid = 104857600
+16/01/09 15:38:18 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19623144(78492576); length = 6591253/6553600
+16/01/09 15:38:19 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:38:19 INFO mapred.Task: Task:attempt_local1371693404_0003_m_000000_0 is done. And is in the process of committing
+16/01/09 15:38:19 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00009:0+20944746
+16/01/09 15:38:19 INFO mapred.Task: Task 'attempt_local1371693404_0003_m_000000_0' done.
+16/01/09 15:38:19 INFO mapred.LocalJobRunner: Finishing task: attempt_local1371693404_0003_m_000000_0
+16/01/09 15:38:19 INFO mapred.LocalJobRunner: Starting task: attempt_local1371693404_0003_m_000001_0
+16/01/09 15:38:19 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:38:20 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00007:0+20943016
+16/01/09 15:38:20 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:38:20 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:38:20 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:38:20 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:38:20 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:38:20 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:38:20 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:38:20 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:38:21 INFO mapred.LocalJobRunner:
+16/01/09 15:38:21 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:38:21 INFO mapred.MapTask: Spilling map output
+16/01/09 15:38:21 INFO mapred.MapTask: bufstart = 0; bufend = 16000648; bufvoid = 104857600
+16/01/09 15:38:21 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19624576(78498304); length = 6589821/6553600
+16/01/09 15:38:22 INFO mapreduce.Job:  map 8% reduce 0%
+16/01/09 15:38:23 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:38:23 INFO mapred.Task: Task:attempt_local1371693404_0003_m_000001_0 is done. And is in the process of committing
+16/01/09 15:38:23 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00007:0+20943016
+16/01/09 15:38:23 INFO mapred.Task: Task 'attempt_local1371693404_0003_m_000001_0' done.
+16/01/09 15:38:23 INFO mapred.LocalJobRunner: Finishing task: attempt_local1371693404_0003_m_000001_0
+16/01/09 15:38:23 INFO mapred.LocalJobRunner: Starting task: attempt_local1371693404_0003_m_000002_0
+16/01/09 15:38:23 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:38:23 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00008:0+20939808
+16/01/09 15:38:23 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:38:23 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:38:23 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:38:23 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:38:23 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:38:23 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:38:23 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:38:24 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:38:25 INFO mapred.LocalJobRunner:
+16/01/09 15:38:25 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:38:25 INFO mapred.MapTask: Spilling map output
+16/01/09 15:38:25 INFO mapred.MapTask: bufstart = 0; bufend = 15997380; bufvoid = 104857600
+16/01/09 15:38:25 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19624496(78497984); length = 6589901/6553600
+16/01/09 15:38:25 INFO mapreduce.Job:  map 15% reduce 0%
+16/01/09 15:38:26 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:38:26 INFO mapred.Task: Task:attempt_local1371693404_0003_m_000002_0 is done. And is in the process of committing
+16/01/09 15:38:26 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00008:0+20939808
+16/01/09 15:38:26 INFO mapred.Task: Task 'attempt_local1371693404_0003_m_000002_0' done.
+16/01/09 15:38:26 INFO mapred.LocalJobRunner: Finishing task: attempt_local1371693404_0003_m_000002_0
+16/01/09 15:38:26 INFO mapred.LocalJobRunner: Starting task: attempt_local1371693404_0003_m_000003_0
+16/01/09 15:38:26 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:38:26 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00002:0+20939412
+16/01/09 15:38:26 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:38:26 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:38:26 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:38:26 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:38:26 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:38:26 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:38:26 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:38:27 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:38:28 INFO mapred.LocalJobRunner:
+16/01/09 15:38:28 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:38:28 INFO mapred.MapTask: Spilling map output
+16/01/09 15:38:28 INFO mapred.MapTask: bufstart = 0; bufend = 15997221; bufvoid = 104857600
+16/01/09 15:38:28 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19624812(78499248); length = 6589585/6553600
+16/01/09 15:38:29 INFO mapreduce.Job:  map 23% reduce 0%
+16/01/09 15:38:30 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:38:30 INFO mapred.Task: Task:attempt_local1371693404_0003_m_000003_0 is done. And is in the process of committing
+16/01/09 15:38:30 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00002:0+20939412
+16/01/09 15:38:30 INFO mapred.Task: Task 'attempt_local1371693404_0003_m_000003_0' done.
+16/01/09 15:38:30 INFO mapred.LocalJobRunner: Finishing task: attempt_local1371693404_0003_m_000003_0
+16/01/09 15:38:30 INFO mapred.LocalJobRunner: Starting task: attempt_local1371693404_0003_m_000004_0
+16/01/09 15:38:30 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:38:30 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00005:0+20930302
+16/01/09 15:38:30 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:38:30 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:38:30 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:38:30 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:38:30 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:38:30 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:38:30 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:38:31 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:38:32 INFO mapred.LocalJobRunner:
+16/01/09 15:38:32 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:38:32 INFO mapred.MapTask: Spilling map output
+16/01/09 15:38:32 INFO mapred.MapTask: bufstart = 0; bufend = 15990835; bufvoid = 104857600
+16/01/09 15:38:32 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19628444(78513776); length = 6585953/6553600
+16/01/09 15:38:33 INFO mapreduce.Job:  map 31% reduce 0%
+16/01/09 15:38:34 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:38:34 INFO mapred.Task: Task:attempt_local1371693404_0003_m_000004_0 is done. And is in the process of committing
+16/01/09 15:38:34 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00005:0+20930302
+16/01/09 15:38:34 INFO mapred.Task: Task 'attempt_local1371693404_0003_m_000004_0' done.
+16/01/09 15:38:34 INFO mapred.LocalJobRunner: Finishing task: attempt_local1371693404_0003_m_000004_0
+16/01/09 15:38:34 INFO mapred.LocalJobRunner: Starting task: attempt_local1371693404_0003_m_000005_0
+16/01/09 15:38:34 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:38:34 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00000:0+20929489
+16/01/09 15:38:34 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:38:34 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:38:34 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:38:34 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:38:34 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:38:34 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:38:34 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:38:35 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:38:36 INFO mapred.LocalJobRunner:
+16/01/09 15:38:36 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:38:36 INFO mapred.MapTask: Spilling map output
+16/01/09 15:38:36 INFO mapred.MapTask: bufstart = 0; bufend = 15989809; bufvoid = 104857600
+16/01/09 15:38:36 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19628160(78512640); length = 6586237/6553600
+16/01/09 15:38:36 INFO mapreduce.Job:  map 38% reduce 0%
+16/01/09 15:38:37 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:38:37 INFO mapred.Task: Task:attempt_local1371693404_0003_m_000005_0 is done. And is in the process of committing
+16/01/09 15:38:37 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00000:0+20929489
+16/01/09 15:38:37 INFO mapred.Task: Task 'attempt_local1371693404_0003_m_000005_0' done.
+16/01/09 15:38:37 INFO mapred.LocalJobRunner: Finishing task: attempt_local1371693404_0003_m_000005_0
+16/01/09 15:38:37 INFO mapred.LocalJobRunner: Starting task: attempt_local1371693404_0003_m_000006_0
+16/01/09 15:38:37 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:38:37 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00010:0+20928955
+16/01/09 15:38:37 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:38:37 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:38:37 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:38:37 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:38:37 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:38:37 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:38:37 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:38:38 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:38:39 INFO mapred.LocalJobRunner:
+16/01/09 15:38:39 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:38:39 INFO mapred.MapTask: Spilling map output
+16/01/09 15:38:39 INFO mapred.MapTask: bufstart = 0; bufend = 15989086; bufvoid = 104857600
+16/01/09 15:38:39 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19627908(78511632); length = 6586489/6553600
+16/01/09 15:38:40 INFO mapreduce.Job:  map 46% reduce 0%
+16/01/09 15:38:41 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:38:41 INFO mapred.Task: Task:attempt_local1371693404_0003_m_000006_0 is done. And is in the process of committing
+16/01/09 15:38:41 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00010:0+20928955
+16/01/09 15:38:41 INFO mapred.Task: Task 'attempt_local1371693404_0003_m_000006_0' done.
+16/01/09 15:38:41 INFO mapred.LocalJobRunner: Finishing task: attempt_local1371693404_0003_m_000006_0
+16/01/09 15:38:41 INFO mapred.LocalJobRunner: Starting task: attempt_local1371693404_0003_m_000007_0
+16/01/09 15:38:41 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:38:41 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00006:0+20914784
+16/01/09 15:38:41 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:38:41 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:38:41 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:38:41 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:38:41 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:38:41 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:38:41 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:38:42 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:38:43 INFO mapred.LocalJobRunner:
+16/01/09 15:38:43 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:38:43 INFO mapred.MapTask: Spilling map output
+16/01/09 15:38:43 INFO mapred.MapTask: bufstart = 0; bufend = 15978338; bufvoid = 104857600
+16/01/09 15:38:43 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19632472(78529888); length = 6581925/6553600
+16/01/09 15:38:44 INFO mapreduce.Job:  map 54% reduce 0%
+16/01/09 15:38:45 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:38:45 INFO mapred.Task: Task:attempt_local1371693404_0003_m_000007_0 is done. And is in the process of committing
+16/01/09 15:38:45 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00006:0+20914784
+16/01/09 15:38:45 INFO mapred.Task: Task 'attempt_local1371693404_0003_m_000007_0' done.
+16/01/09 15:38:45 INFO mapred.LocalJobRunner: Finishing task: attempt_local1371693404_0003_m_000007_0
+16/01/09 15:38:45 INFO mapred.LocalJobRunner: Starting task: attempt_local1371693404_0003_m_000008_0
+16/01/09 15:38:45 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:38:45 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00001:0+20905180
+16/01/09 15:38:45 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:38:45 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:38:45 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:38:45 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:38:45 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:38:45 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:38:45 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:38:45 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:38:46 INFO mapred.LocalJobRunner:
+16/01/09 15:38:46 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:38:46 INFO mapred.MapTask: Spilling map output
+16/01/09 15:38:46 INFO mapred.MapTask: bufstart = 0; bufend = 15971179; bufvoid = 104857600
+16/01/09 15:38:46 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19635732(78542928); length = 6578665/6553600
+16/01/09 15:38:47 INFO mapreduce.Job:  map 62% reduce 0%
+16/01/09 15:38:48 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:38:48 INFO mapred.Task: Task:attempt_local1371693404_0003_m_000008_0 is done. And is in the process of committing
+16/01/09 15:38:48 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00001:0+20905180
+16/01/09 15:38:48 INFO mapred.Task: Task 'attempt_local1371693404_0003_m_000008_0' done.
+16/01/09 15:38:48 INFO mapred.LocalJobRunner: Finishing task: attempt_local1371693404_0003_m_000008_0
+16/01/09 15:38:48 INFO mapred.LocalJobRunner: Starting task: attempt_local1371693404_0003_m_000009_0
+16/01/09 15:38:48 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:38:48 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00004:0+20265683
+16/01/09 15:38:48 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:38:48 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:38:48 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:38:48 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:38:48 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:38:48 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:38:48 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:38:49 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:38:50 INFO mapred.LocalJobRunner:
+16/01/09 15:38:50 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:38:50 INFO mapred.MapTask: Spilling map output
+16/01/09 15:38:50 INFO mapred.MapTask: bufstart = 0; bufend = 15986015; bufvoid = 104857600
+16/01/09 15:38:50 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19629416(78517664); length = 6584981/6553600
+16/01/09 15:38:51 INFO mapreduce.Job:  map 69% reduce 0%
+16/01/09 15:38:52 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:38:52 INFO mapred.Task: Task:attempt_local1371693404_0003_m_000009_0 is done. And is in the process of committing
+16/01/09 15:38:52 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00004:0+20265683
+16/01/09 15:38:52 INFO mapred.Task: Task 'attempt_local1371693404_0003_m_000009_0' done.
+16/01/09 15:38:52 INFO mapred.LocalJobRunner: Finishing task: attempt_local1371693404_0003_m_000009_0
+16/01/09 15:38:52 INFO mapred.LocalJobRunner: Starting task: attempt_local1371693404_0003_m_000010_0
+16/01/09 15:38:52 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:38:52 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00003:0+19280483
+16/01/09 15:38:52 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:38:52 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:38:52 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:38:52 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:38:52 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:38:52 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:38:52 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:38:53 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:38:54 INFO mapred.LocalJobRunner:
+16/01/09 15:38:54 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:38:54 INFO mapred.MapTask: Spilling map output
+16/01/09 15:38:54 INFO mapred.MapTask: bufstart = 0; bufend = 15987703; bufvoid = 104857600
+16/01/09 15:38:54 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19628840(78515360); length = 6585557/6553600
+16/01/09 15:38:54 INFO mapreduce.Job:  map 77% reduce 0%
+16/01/09 15:38:56 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:38:56 INFO mapred.Task: Task:attempt_local1371693404_0003_m_000010_0 is done. And is in the process of committing
+16/01/09 15:38:56 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00003:0+19280483
+16/01/09 15:38:56 INFO mapred.Task: Task 'attempt_local1371693404_0003_m_000010_0' done.
+16/01/09 15:38:56 INFO mapred.LocalJobRunner: Finishing task: attempt_local1371693404_0003_m_000010_0
+16/01/09 15:38:56 INFO mapred.LocalJobRunner: Starting task: attempt_local1371693404_0003_m_000011_0
+16/01/09 15:38:56 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:38:56 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00011:0+18842518
+16/01/09 15:38:56 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:38:56 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:38:56 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:38:56 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:38:56 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:38:56 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:38:56 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:38:56 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:38:57 INFO mapred.LocalJobRunner:
+16/01/09 15:38:57 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:38:57 INFO mapred.MapTask: Spilling map output
+16/01/09 15:38:57 INFO mapred.MapTask: bufstart = 0; bufend = 15988472; bufvoid = 104857600
+16/01/09 15:38:57 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19628924(78515696); length = 6585473/6553600
+16/01/09 15:38:58 INFO mapreduce.Job:  map 85% reduce 0%
+16/01/09 15:38:59 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:38:59 INFO mapred.Task: Task:attempt_local1371693404_0003_m_000011_0 is done. And is in the process of committing
+16/01/09 15:38:59 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00011:0+18842518
+16/01/09 15:38:59 INFO mapred.Task: Task 'attempt_local1371693404_0003_m_000011_0' done.
+16/01/09 15:38:59 INFO mapred.LocalJobRunner: Finishing task: attempt_local1371693404_0003_m_000011_0
+16/01/09 15:38:59 INFO mapred.LocalJobRunner: Starting task: attempt_local1371693404_0003_m_000012_0
+16/01/09 15:38:59 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:38:59 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Output/pr_vector/part-00000:0+14402800
+16/01/09 15:38:59 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:38:59 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:38:59 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:38:59 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:38:59 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:38:59 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:38:59 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:39:00 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:39:00 INFO mapred.LocalJobRunner:
+16/01/09 15:39:00 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:39:00 INFO mapred.MapTask: Spilling map output
+16/01/09 15:39:00 INFO mapred.MapTask: bufstart = 0; bufend = 13013910; bufvoid = 104857600
+16/01/09 15:39:00 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 24214400(96857600); length = 1999997/6553600
+16/01/09 15:39:01 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:39:01 INFO mapred.Task: Task:attempt_local1371693404_0003_m_000012_0 is done. And is in the process of committing
+16/01/09 15:39:01 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_vector/part-00000:0+14402800
+16/01/09 15:39:01 INFO mapred.Task: Task 'attempt_local1371693404_0003_m_000012_0' done.
+16/01/09 15:39:01 INFO mapred.LocalJobRunner: Finishing task: attempt_local1371693404_0003_m_000012_0
+16/01/09 15:39:01 INFO mapred.LocalJobRunner: Map task executor complete.
+16/01/09 15:39:01 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:39:01 INFO mapred.Merger: Merging 13 sorted segments
+16/01/09 15:39:01 INFO mapred.Merger: Merging 4 intermediate segments out of a total of 13
+16/01/09 15:39:04 INFO mapred.Merger: Down to the last merge-pass, with 10 segments left of total size: 245409870 bytes
+16/01/09 15:39:04 INFO mapred.LocalJobRunner:
+RedStage1: number_nodes = 500000, mixing_c = 0.8500000238418579, random_coeff = 2.999999523162842E-7
+16/01/09 15:39:07 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:39:07 INFO mapreduce.Job:  map 100% reduce 75%
+16/01/09 15:39:10 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:39:10 INFO mapreduce.Job:  map 100% reduce 76%
+16/01/09 15:39:13 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:39:16 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:39:16 INFO mapreduce.Job:  map 100% reduce 77%
+16/01/09 15:39:19 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:39:19 INFO mapreduce.Job:  map 100% reduce 78%
+16/01/09 15:39:22 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:39:22 INFO mapreduce.Job:  map 100% reduce 79%
+16/01/09 15:39:25 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:39:25 INFO mapreduce.Job:  map 100% reduce 80%
+16/01/09 15:39:28 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:39:31 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:39:31 INFO mapreduce.Job:  map 100% reduce 81%
+16/01/09 15:39:34 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:39:34 INFO mapreduce.Job:  map 100% reduce 82%
+16/01/09 15:39:37 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:39:37 INFO mapreduce.Job:  map 100% reduce 83%
+16/01/09 15:39:40 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:39:40 INFO mapreduce.Job:  map 100% reduce 84%
+16/01/09 15:39:43 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:39:46 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:39:46 INFO mapreduce.Job:  map 100% reduce 85%
+16/01/09 15:39:49 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:39:49 INFO mapreduce.Job:  map 100% reduce 86%
+16/01/09 15:39:52 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:39:52 INFO mapreduce.Job:  map 100% reduce 87%
+16/01/09 15:39:55 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:39:55 INFO mapreduce.Job:  map 100% reduce 88%
+16/01/09 15:39:58 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:40:01 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:40:01 INFO mapreduce.Job:  map 100% reduce 89%
+16/01/09 15:40:04 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:40:04 INFO mapreduce.Job:  map 100% reduce 90%
+16/01/09 15:40:07 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:40:07 INFO mapreduce.Job:  map 100% reduce 91%
+16/01/09 15:40:10 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:40:10 INFO mapreduce.Job:  map 100% reduce 92%
+16/01/09 15:40:13 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:40:16 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:40:16 INFO mapreduce.Job:  map 100% reduce 93%
+16/01/09 15:40:19 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:40:19 INFO mapreduce.Job:  map 100% reduce 94%
+16/01/09 15:40:22 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:40:22 INFO mapreduce.Job:  map 100% reduce 95%
+16/01/09 15:40:25 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:40:25 INFO mapreduce.Job:  map 100% reduce 96%
+16/01/09 15:40:28 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:40:31 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:40:31 INFO mapreduce.Job:  map 100% reduce 97%
+16/01/09 15:40:34 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:40:34 INFO mapreduce.Job:  map 100% reduce 98%
+16/01/09 15:40:37 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:40:37 INFO mapreduce.Job:  map 100% reduce 99%
+16/01/09 15:40:40 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:40:40 INFO mapreduce.Job:  map 100% reduce 100%
+16/01/09 15:40:41 INFO mapred.Task: Task:attempt_local1371693404_0003_r_000000_0 is done. And is in the process of committing
+16/01/09 15:40:41 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:40:41 INFO mapred.Task: Task attempt_local1371693404_0003_r_000000_0 is allowed to commit now
+16/01/09 15:40:41 INFO output.FileOutputCommitter: Saved output of task 'attempt_local1371693404_0003_r_000000_0' to hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/_temporary/0/task_local1371693404_0003_r_000000
+16/01/09 15:40:41 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:40:41 INFO mapred.Task: Task 'attempt_local1371693404_0003_r_000000_0' done.
+16/01/09 15:40:42 INFO mapreduce.Job: Job job_local1371693404_0003 completed successfully
+16/01/09 15:40:42 INFO mapreduce.Job: Counters: 32
+	File System Counters
+		FILE: Number of bytes read=19548643260
+		FILE: Number of bytes written=21202605823
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=13067570248
+		HDFS: Number of bytes written=8232962914
+		HDFS: Number of read operations=1177
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=240
+	Map-Reduce Framework
+		Map input records=20258969
+		Map output records=20258969
+		Map output bytes=204891900
+		Map output materialized bytes=245409916
+		Input split bytes=1448
+		Combine input records=0
+		Combine output records=0
+		Reduce input groups=500000
+		Reduce shuffle bytes=0
+		Reduce input records=20258969
+		Reduce output records=20258969
+		Spilled Records=45954333
+		Shuffled Maps =0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=4576
+		CPU time spent (ms)=0
+		Physical memory (bytes) snapshot=0
+		Virtual memory (bytes) snapshot=0
+		Total committed heap usage (bytes)=7349993472
+	File Input Format Counters
+		Bytes Read=261167176
+	File Output Format Counters
+		Bytes Written=566441772
+16/01/09 15:40:42 INFO jvm.JvmMetrics: Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+16/01/09 15:40:42 INFO jvm.JvmMetrics: Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+16/01/09 15:40:42 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/01/09 15:40:42 INFO mapreduce.JobSubmitter: number of splits:5
+16/01/09 15:40:42 INFO Configuration.deprecation: user.name is deprecated. Instead, use mapreduce.job.user.name
+16/01/09 15:40:42 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/01/09 15:40:42 INFO Configuration.deprecation: mapred.reduce.tasks is deprecated. Instead, use mapreduce.job.reduces
+16/01/09 15:40:42 INFO Configuration.deprecation: mapred.output.value.class is deprecated. Instead, use mapreduce.job.output.value.class
+16/01/09 15:40:42 INFO Configuration.deprecation: mapred.job.name is deprecated. Instead, use mapreduce.job.name
+16/01/09 15:40:42 INFO Configuration.deprecation: mapred.input.dir is deprecated. Instead, use mapreduce.input.fileinputformat.inputdir
+16/01/09 15:40:42 INFO Configuration.deprecation: mapred.output.dir is deprecated. Instead, use mapreduce.output.fileoutputformat.outputdir
+16/01/09 15:40:42 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/01/09 15:40:42 INFO Configuration.deprecation: mapred.output.key.class is deprecated. Instead, use mapreduce.job.output.key.class
+16/01/09 15:40:42 INFO Configuration.deprecation: mapred.working.dir is deprecated. Instead, use mapreduce.job.working.dir
+16/01/09 15:40:42 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_local1308469918_0004
+16/01/09 15:40:42 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/staging/hduser1308469918/.staging/job_local1308469918_0004/job.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.retry.interval;  Ignoring.
+16/01/09 15:40:42 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/staging/hduser1308469918/.staging/job_local1308469918_0004/job.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.attempts;  Ignoring.
+16/01/09 15:40:42 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/local/localRunner/hduser/job_local1308469918_0004/job_local1308469918_0004.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.retry.interval;  Ignoring.
+16/01/09 15:40:42 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/local/localRunner/hduser/job_local1308469918_0004/job_local1308469918_0004.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.attempts;  Ignoring.
+16/01/09 15:40:42 INFO mapreduce.Job: The url to track the job: http://localhost:8080/
+16/01/09 15:40:42 INFO mapreduce.Job: Running job: job_local1308469918_0004
+16/01/09 15:40:42 INFO mapred.LocalJobRunner: OutputCommitter set in config null
+16/01/09 15:40:42 INFO mapred.LocalJobRunner: OutputCommitter is org.apache.hadoop.mapred.FileOutputCommitter
+16/01/09 15:40:42 INFO mapred.LocalJobRunner: Waiting for map tasks
+16/01/09 15:40:42 INFO mapred.LocalJobRunner: Starting task: attempt_local1308469918_0004_m_000000_0
+16/01/09 15:40:42 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:40:42 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:0+134217728
+16/01/09 15:40:42 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:40:42 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:40:42 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:40:42 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:40:42 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:40:42 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:40:42 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+16/01/09 15:40:43 INFO mapreduce.Job: Job job_local1308469918_0004 running in uber mode : false
+16/01/09 15:40:43 INFO mapreduce.Job:  map 0% reduce 0%
+16/01/09 15:40:44 INFO mapred.MapTask: Spilling map output
+16/01/09 15:40:44 INFO mapred.MapTask: bufstart = 0; bufend = 52350377; bufvoid = 104857600
+16/01/09 15:40:44 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 18330472(73321888); length = 7883925/6553600
+16/01/09 15:40:44 INFO mapred.MapTask: (EQUATOR) 60339513 kvi 15084872(60339488)
+16/01/09 15:40:48 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:0+134217728 > map
+16/01/09 15:40:49 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:40:49 INFO mapred.MapTask: (RESET) equator 60339513 kv 15084872(60339488) kvi 13138636(52554544)
+16/01/09 15:40:49 INFO mapreduce.Job:  map 7% reduce 0%
+16/01/09 15:40:50 INFO mapred.MapTask: Spilling map output
+16/01/09 15:40:50 INFO mapred.MapTask: bufstart = 60339513; bufend = 7924129; bufvoid = 104857600
+16/01/09 15:40:50 INFO mapred.MapTask: kvstart = 15084872(60339488); kvend = 7223916(28895664); length = 7860957/6553600
+16/01/09 15:40:50 INFO mapred.MapTask: (EQUATOR) 15913265 kvi 3978312(15913248)
+16/01/09 15:40:51 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:0+134217728 > map
+16/01/09 15:40:52 INFO mapreduce.Job:  map 12% reduce 0%
+16/01/09 15:40:54 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:0+134217728 > map
+16/01/09 15:40:55 INFO mapred.MapTask: Finished spill 1
+16/01/09 15:40:55 INFO mapred.MapTask: (RESET) equator 15913265 kv 3978312(15913248) kvi 2032544(8130176)
+16/01/09 15:40:55 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:0+134217728 > map
+16/01/09 15:40:55 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:40:55 INFO mapred.MapTask: Spilling map output
+16/01/09 15:40:55 INFO mapred.MapTask: bufstart = 15913265; bufend = 37199880; bufvoid = 104857600
+16/01/09 15:40:55 INFO mapred.MapTask: kvstart = 3978312(15913248); kvend = 787416(3149664); length = 3190897/6553600
+16/01/09 15:40:56 INFO mapred.MapTask: Finished spill 2
+16/01/09 15:40:56 INFO mapred.Merger: Merging 3 sorted segments
+16/01/09 15:40:56 INFO mapred.Merger: Down to the last merge-pass, with 3 segments left of total size: 135547102 bytes
+16/01/09 15:40:57 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:0+134217728 > sort >
+16/01/09 15:40:58 INFO mapreduce.Job:  map 15% reduce 0%
+16/01/09 15:40:59 INFO mapred.Task: Task:attempt_local1308469918_0004_m_000000_0 is done. And is in the process of committing
+16/01/09 15:40:59 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:0+134217728 > sort
+16/01/09 15:40:59 INFO mapred.Task: Task 'attempt_local1308469918_0004_m_000000_0' done.
+16/01/09 15:40:59 INFO mapred.LocalJobRunner: Finishing task: attempt_local1308469918_0004_m_000000_0
+16/01/09 15:40:59 INFO mapred.LocalJobRunner: Starting task: attempt_local1308469918_0004_m_000001_0
+16/01/09 15:40:59 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:40:59 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:134217728+134217728
+16/01/09 15:40:59 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:40:59 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:40:59 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:40:59 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:40:59 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:40:59 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:40:59 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+16/01/09 15:41:00 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:41:02 INFO mapred.MapTask: Spilling map output
+16/01/09 15:41:02 INFO mapred.MapTask: bufstart = 0; bufend = 52031125; bufvoid = 104857600
+16/01/09 15:41:02 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 18250656(73002624); length = 7963741/6553600
+16/01/09 15:41:02 INFO mapred.MapTask: (EQUATOR) 60020261 kvi 15005060(60020240)
+16/01/09 15:41:05 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:134217728+134217728 > map
+16/01/09 15:41:06 INFO mapreduce.Job:  map 27% reduce 0%
+16/01/09 15:41:06 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:41:06 INFO mapred.MapTask: (RESET) equator 60020261 kv 15005060(60020240) kvi 13014724(52058896)
+16/01/09 15:41:08 INFO mapred.MapTask: Spilling map output
+16/01/09 15:41:08 INFO mapred.MapTask: bufstart = 60020261; bufend = 7161554; bufvoid = 104857600
+16/01/09 15:41:08 INFO mapred.MapTask: kvstart = 15005060(60020240); kvend = 7033264(28133056); length = 7971797/6553600
+16/01/09 15:41:08 INFO mapred.MapTask: (EQUATOR) 15150690 kvi 3787668(15150672)
+16/01/09 15:41:08 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:134217728+134217728 > map
+16/01/09 15:41:09 INFO mapreduce.Job:  map 32% reduce 0%
+16/01/09 15:41:11 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:134217728+134217728 > map
+16/01/09 15:41:12 INFO mapred.MapTask: Finished spill 1
+16/01/09 15:41:12 INFO mapred.MapTask: (RESET) equator 15150690 kv 3787668(15150672) kvi 1797652(7190608)
+16/01/09 15:41:12 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:134217728+134217728 > map
+16/01/09 15:41:12 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:41:12 INFO mapred.MapTask: Spilling map output
+16/01/09 15:41:12 INFO mapred.MapTask: bufstart = 15150690; bufend = 36937355; bufvoid = 104857600
+16/01/09 15:41:12 INFO mapred.MapTask: kvstart = 3787668(15150672); kvend = 448020(1792080); length = 3339649/6553600
+16/01/09 15:41:14 INFO mapred.MapTask: Finished spill 2
+16/01/09 15:41:14 INFO mapred.Merger: Merging 3 sorted segments
+16/01/09 15:41:14 INFO mapred.Merger: Down to the last merge-pass, with 3 segments left of total size: 135454281 bytes
+16/01/09 15:41:14 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:134217728+134217728 > sort >
+16/01/09 15:41:15 INFO mapreduce.Job:  map 34% reduce 0%
+16/01/09 15:41:17 INFO mapred.Task: Task:attempt_local1308469918_0004_m_000001_0 is done. And is in the process of committing
+16/01/09 15:41:17 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:134217728+134217728 > sort
+16/01/09 15:41:17 INFO mapred.Task: Task 'attempt_local1308469918_0004_m_000001_0' done.
+16/01/09 15:41:17 INFO mapred.LocalJobRunner: Finishing task: attempt_local1308469918_0004_m_000001_0
+16/01/09 15:41:17 INFO mapred.LocalJobRunner: Starting task: attempt_local1308469918_0004_m_000002_0
+16/01/09 15:41:17 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:41:17 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:268435456+134217728
+16/01/09 15:41:17 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:41:17 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:41:17 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:41:17 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:41:17 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:41:17 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:41:17 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+16/01/09 15:41:17 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:41:19 INFO mapred.MapTask: Spilling map output
+16/01/09 15:41:19 INFO mapred.MapTask: bufstart = 0; bufend = 51997974; bufvoid = 104857600
+16/01/09 15:41:19 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 18242372(72969488); length = 7972025/6553600
+16/01/09 15:41:19 INFO mapred.MapTask: (EQUATOR) 59987110 kvi 14996772(59987088)
+16/01/09 15:41:23 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:268435456+134217728 > map
+16/01/09 15:41:23 INFO mapreduce.Job:  map 47% reduce 0%
+16/01/09 15:41:24 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:41:24 INFO mapred.MapTask: (RESET) equator 59987110 kv 14996772(59987088) kvi 13006400(52025600)
+16/01/09 15:41:26 INFO mapred.MapTask: Spilling map output
+16/01/09 15:41:26 INFO mapred.MapTask: bufstart = 59987110; bufend = 7130719; bufvoid = 104857597
+16/01/09 15:41:26 INFO mapred.MapTask: kvstart = 14996772(59987088); kvend = 7025560(28102240); length = 7971213/6553600
+16/01/09 15:41:26 INFO mapred.MapTask: (EQUATOR) 15119855 kvi 3779956(15119824)
+16/01/09 15:41:26 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:268435456+134217728 > map
+16/01/09 15:41:26 INFO mapreduce.Job:  map 52% reduce 0%
+16/01/09 15:41:29 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:268435456+134217728 > map
+16/01/09 15:41:30 INFO mapred.MapTask: Finished spill 1
+16/01/09 15:41:30 INFO mapred.MapTask: (RESET) equator 15119855 kv 3779956(15119824) kvi 1789396(7157584)
+16/01/09 15:41:30 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:268435456+134217728 > map
+16/01/09 15:41:30 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:41:30 INFO mapred.MapTask: Spilling map output
+16/01/09 15:41:30 INFO mapred.MapTask: bufstart = 15119855; bufend = 36935971; bufvoid = 104857600
+16/01/09 15:41:30 INFO mapred.MapTask: kvstart = 3779956(15119824); kvend = 435136(1740544); length = 3344821/6553600
+16/01/09 15:41:31 INFO mapred.MapTask: Finished spill 2
+16/01/09 15:41:31 INFO mapred.Merger: Merging 3 sorted segments
+16/01/09 15:41:31 INFO mapred.Merger: Down to the last merge-pass, with 3 segments left of total size: 135459330 bytes
+16/01/09 15:41:32 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:268435456+134217728 > sort >
+16/01/09 15:41:32 INFO mapreduce.Job:  map 55% reduce 0%
+16/01/09 15:41:34 INFO mapred.Task: Task:attempt_local1308469918_0004_m_000002_0 is done. And is in the process of committing
+16/01/09 15:41:34 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:268435456+134217728 > sort
+16/01/09 15:41:34 INFO mapred.Task: Task 'attempt_local1308469918_0004_m_000002_0' done.
+16/01/09 15:41:34 INFO mapred.LocalJobRunner: Finishing task: attempt_local1308469918_0004_m_000002_0
+16/01/09 15:41:34 INFO mapred.LocalJobRunner: Starting task: attempt_local1308469918_0004_m_000003_0
+16/01/09 15:41:34 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:41:34 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:402653184+134217728
+16/01/09 15:41:34 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:41:34 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:41:34 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:41:34 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:41:34 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:41:34 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:41:34 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+16/01/09 15:41:35 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:41:37 INFO mapred.MapTask: Spilling map output
+16/01/09 15:41:37 INFO mapred.MapTask: bufstart = 0; bufend = 51998606; bufvoid = 104857600
+16/01/09 15:41:37 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 18242532(72970128); length = 7971865/6553600
+16/01/09 15:41:37 INFO mapred.MapTask: (EQUATOR) 59987742 kvi 14996928(59987712)
+16/01/09 15:41:40 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:402653184+134217728 > map
+16/01/09 15:41:41 INFO mapreduce.Job:  map 67% reduce 0%
+16/01/09 15:41:41 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:41:41 INFO mapred.MapTask: (RESET) equator 59987742 kv 14996928(59987712) kvi 13007120(52028480)
+16/01/09 15:41:43 INFO mapred.MapTask: Spilling map output
+16/01/09 15:41:43 INFO mapred.MapTask: bufstart = 59987742; bufend = 7130289; bufvoid = 104857600
+16/01/09 15:41:43 INFO mapred.MapTask: kvstart = 14996928(59987712); kvend = 7025448(28101792); length = 7971481/6553600
+16/01/09 15:41:43 INFO mapred.MapTask: (EQUATOR) 15119425 kvi 3779852(15119408)
+16/01/09 15:41:43 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:402653184+134217728 > map
+16/01/09 15:41:44 INFO mapreduce.Job:  map 72% reduce 0%
+16/01/09 15:41:46 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:402653184+134217728 > map
+16/01/09 15:41:48 INFO mapred.MapTask: Finished spill 1
+16/01/09 15:41:48 INFO mapred.MapTask: (RESET) equator 15119425 kv 3779852(15119408) kvi 1789932(7159728)
+16/01/09 15:41:48 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:402653184+134217728 > map
+16/01/09 15:41:48 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:41:48 INFO mapred.MapTask: Spilling map output
+16/01/09 15:41:48 INFO mapred.MapTask: bufstart = 15119425; bufend = 36936787; bufvoid = 104857600
+16/01/09 15:41:48 INFO mapred.MapTask: kvstart = 3779852(15119408); kvend = 435584(1742336); length = 3344269/6553600
+16/01/09 15:41:49 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:402653184+134217728 > sort
+16/01/09 15:41:50 INFO mapred.MapTask: Finished spill 2
+16/01/09 15:41:50 INFO mapred.Merger: Merging 3 sorted segments
+16/01/09 15:41:50 INFO mapred.Merger: Down to the last merge-pass, with 3 segments left of total size: 135459927 bytes
+16/01/09 15:41:50 INFO mapreduce.Job:  map 73% reduce 0%
+16/01/09 15:41:52 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:402653184+134217728 > sort >
+16/01/09 15:41:53 INFO mapreduce.Job:  map 79% reduce 0%
+16/01/09 15:41:54 INFO mapred.Task: Task:attempt_local1308469918_0004_m_000003_0 is done. And is in the process of committing
+16/01/09 15:41:54 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:402653184+134217728 > sort
+16/01/09 15:41:54 INFO mapred.Task: Task 'attempt_local1308469918_0004_m_000003_0' done.
+16/01/09 15:41:54 INFO mapred.LocalJobRunner: Finishing task: attempt_local1308469918_0004_m_000003_0
+16/01/09 15:41:54 INFO mapred.LocalJobRunner: Starting task: attempt_local1308469918_0004_m_000004_0
+16/01/09 15:41:54 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:41:54 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:536870912+29570860
+16/01/09 15:41:54 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:41:54 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:41:54 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:41:54 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:41:54 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:41:54 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:41:54 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+16/01/09 15:41:54 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:41:55 INFO mapred.LocalJobRunner:
+16/01/09 15:41:55 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:41:55 INFO mapred.MapTask: Spilling map output
+16/01/09 15:41:55 INFO mapred.MapTask: bufstart = 0; bufend = 27719342; bufvoid = 104857600
+16/01/09 15:41:55 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 21965200(87860800); length = 4249197/6553600
+16/01/09 15:41:55 INFO mapreduce.Job:  map 80% reduce 0%
+16/01/09 15:41:57 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:41:57 INFO mapred.Task: Task:attempt_local1308469918_0004_m_000004_0 is done. And is in the process of committing
+16/01/09 15:41:57 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:536870912+29570860
+16/01/09 15:41:57 INFO mapred.Task: Task 'attempt_local1308469918_0004_m_000004_0' done.
+16/01/09 15:41:57 INFO mapred.LocalJobRunner: Finishing task: attempt_local1308469918_0004_m_000004_0
+16/01/09 15:41:57 INFO mapred.LocalJobRunner: Map task executor complete.
+16/01/09 15:41:57 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:41:57 INFO mapred.Merger: Merging 5 sorted segments
+16/01/09 15:41:57 INFO mapred.Merger: Down to the last merge-pass, with 5 segments left of total size: 571764582 bytes
+16/01/09 15:41:57 INFO mapred.LocalJobRunner:
+RedStage2: number_nodes = 500000, mixing_c = 0.8500000238418579, random_coeff = 2.999999523162842E-7, converge_threshold = 2.0E-7
+16/01/09 15:41:57 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:42:03 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:42:03 INFO mapreduce.Job:  map 100% reduce 74%
+16/01/09 15:42:06 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:42:06 INFO mapreduce.Job:  map 100% reduce 77%
+16/01/09 15:42:09 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:42:09 INFO mapreduce.Job:  map 100% reduce 80%
+16/01/09 15:42:12 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:42:12 INFO mapreduce.Job:  map 100% reduce 83%
+16/01/09 15:42:15 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:42:15 INFO mapreduce.Job:  map 100% reduce 87%
+16/01/09 15:42:18 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:42:18 INFO mapreduce.Job:  map 100% reduce 90%
+16/01/09 15:42:21 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:42:21 INFO mapreduce.Job:  map 100% reduce 94%
+16/01/09 15:42:24 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:42:24 INFO mapreduce.Job:  map 100% reduce 98%
+16/01/09 15:42:27 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:42:27 INFO mapreduce.Job:  map 100% reduce 100%
+16/01/09 15:42:28 INFO mapred.Task: Task:attempt_local1308469918_0004_r_000000_0 is done. And is in the process of committing
+16/01/09 15:42:28 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:42:28 INFO mapred.Task: Task attempt_local1308469918_0004_r_000000_0 is allowed to commit now
+16/01/09 15:42:28 INFO output.FileOutputCommitter: Saved output of task 'attempt_local1308469918_0004_r_000000_0' to hdfs://master:54310/HiBench/Pagerank/Output/pr_output/_temporary/0/task_local1308469918_0004_r_000000
+16/01/09 15:42:28 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:42:28 INFO mapred.Task: Task 'attempt_local1308469918_0004_r_000000_0' done.
+16/01/09 15:42:28 INFO mapreduce.Job: Job job_local1308469918_0004 completed successfully
+16/01/09 15:42:28 INFO mapreduce.Job: Counters: 33
+	File System Counters
+		FILE: Number of bytes read=13157549748
+		FILE: Number of bytes written=15044271608
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=8722032710
+		HDFS: Number of bytes written=6698712184
+		HDFS: Number of read operations=685
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=140
+	Map-Reduce Framework
+		Map input records=20258969
+		Map output records=20258969
+		Map output bytes=531246644
+		Map output materialized bytes=571764612
+		Input split bytes=565
+		Combine input records=0
+		Combine output records=0
+		Reduce input groups=500000
+		Reduce shuffle bytes=0
+		Reduce input records=20258969
+		Reduce output records=500000
+		Spilled Records=59714607
+		Shuffled Maps =0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=2213
+		CPU time spent (ms)=0
+		Physical memory (bytes) snapshot=0
+		Virtual memory (bytes) snapshot=0
+		Total committed heap usage (bytes)=3209691136
+	File Input Format Counters
+		Bytes Read=566458156
+	File Output Format Counters
+		Bytes Written=14409634
+	pegasus.PagerankNaive$PrCounters
+		CONVERGE_CHECK=1
+Iteration = 2, changed reducer = 1
+16/01/09 15:42:28 INFO jvm.JvmMetrics: Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+16/01/09 15:42:28 INFO jvm.JvmMetrics: Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+16/01/09 15:42:28 INFO mapred.FileInputFormat: Total input paths to process : 13
+16/01/09 15:42:28 INFO mapreduce.JobSubmitter: number of splits:13
+16/01/09 15:42:28 INFO Configuration.deprecation: user.name is deprecated. Instead, use mapreduce.job.user.name
+16/01/09 15:42:28 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/01/09 15:42:28 INFO Configuration.deprecation: mapred.reduce.tasks is deprecated. Instead, use mapreduce.job.reduces
+16/01/09 15:42:28 INFO Configuration.deprecation: mapred.output.value.class is deprecated. Instead, use mapreduce.job.output.value.class
+16/01/09 15:42:28 INFO Configuration.deprecation: mapred.job.name is deprecated. Instead, use mapreduce.job.name
+16/01/09 15:42:28 INFO Configuration.deprecation: mapred.input.dir is deprecated. Instead, use mapreduce.input.fileinputformat.inputdir
+16/01/09 15:42:28 INFO Configuration.deprecation: mapred.output.dir is deprecated. Instead, use mapreduce.output.fileoutputformat.outputdir
+16/01/09 15:42:28 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/01/09 15:42:28 INFO Configuration.deprecation: mapred.output.key.class is deprecated. Instead, use mapreduce.job.output.key.class
+16/01/09 15:42:28 INFO Configuration.deprecation: mapred.working.dir is deprecated. Instead, use mapreduce.job.working.dir
+16/01/09 15:42:28 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_local800497594_0005
+16/01/09 15:42:28 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/staging/hduser800497594/.staging/job_local800497594_0005/job.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.retry.interval;  Ignoring.
+16/01/09 15:42:28 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/staging/hduser800497594/.staging/job_local800497594_0005/job.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.attempts;  Ignoring.
+16/01/09 15:42:28 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/local/localRunner/hduser/job_local800497594_0005/job_local800497594_0005.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.retry.interval;  Ignoring.
+16/01/09 15:42:28 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/local/localRunner/hduser/job_local800497594_0005/job_local800497594_0005.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.attempts;  Ignoring.
+16/01/09 15:42:28 INFO mapreduce.Job: The url to track the job: http://localhost:8080/
+16/01/09 15:42:28 INFO mapreduce.Job: Running job: job_local800497594_0005
+16/01/09 15:42:28 INFO mapred.LocalJobRunner: OutputCommitter set in config null
+16/01/09 15:42:28 INFO mapred.LocalJobRunner: OutputCommitter is org.apache.hadoop.mapred.FileOutputCommitter
+16/01/09 15:42:28 INFO mapred.LocalJobRunner: Waiting for map tasks
+16/01/09 15:42:28 INFO mapred.LocalJobRunner: Starting task: attempt_local800497594_0005_m_000000_0
+16/01/09 15:42:28 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:42:28 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00009:0+20944746
+16/01/09 15:42:28 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:42:28 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:42:28 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:42:28 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:42:28 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:42:28 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:42:28 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:42:29 INFO mapreduce.Job: Job job_local800497594_0005 running in uber mode : false
+16/01/09 15:42:29 INFO mapreduce.Job:  map 0% reduce 0%
+16/01/09 15:42:30 INFO mapred.LocalJobRunner:
+16/01/09 15:42:30 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:42:30 INFO mapred.MapTask: Spilling map output
+16/01/09 15:42:30 INFO mapred.MapTask: bufstart = 0; bufend = 16001304; bufvoid = 104857600
+16/01/09 15:42:30 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19623144(78492576); length = 6591253/6553600
+16/01/09 15:42:32 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:42:32 INFO mapred.Task: Task:attempt_local800497594_0005_m_000000_0 is done. And is in the process of committing
+16/01/09 15:42:32 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00009:0+20944746
+16/01/09 15:42:32 INFO mapred.Task: Task 'attempt_local800497594_0005_m_000000_0' done.
+16/01/09 15:42:32 INFO mapred.LocalJobRunner: Finishing task: attempt_local800497594_0005_m_000000_0
+16/01/09 15:42:32 INFO mapred.LocalJobRunner: Starting task: attempt_local800497594_0005_m_000001_0
+16/01/09 15:42:32 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:42:32 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00007:0+20943016
+16/01/09 15:42:32 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:42:32 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:42:32 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:42:32 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:42:32 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:42:32 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:42:32 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:42:32 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:42:34 INFO mapred.LocalJobRunner:
+16/01/09 15:42:34 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:42:34 INFO mapred.MapTask: Spilling map output
+16/01/09 15:42:34 INFO mapred.MapTask: bufstart = 0; bufend = 16000648; bufvoid = 104857600
+16/01/09 15:42:34 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19624576(78498304); length = 6589821/6553600
+16/01/09 15:42:34 INFO mapreduce.Job:  map 8% reduce 0%
+16/01/09 15:42:36 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:42:36 INFO mapred.Task: Task:attempt_local800497594_0005_m_000001_0 is done. And is in the process of committing
+16/01/09 15:42:36 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00007:0+20943016
+16/01/09 15:42:36 INFO mapred.Task: Task 'attempt_local800497594_0005_m_000001_0' done.
+16/01/09 15:42:36 INFO mapred.LocalJobRunner: Finishing task: attempt_local800497594_0005_m_000001_0
+16/01/09 15:42:36 INFO mapred.LocalJobRunner: Starting task: attempt_local800497594_0005_m_000002_0
+16/01/09 15:42:36 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:42:36 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00008:0+20939808
+16/01/09 15:42:36 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:42:36 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:42:36 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:42:36 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:42:36 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:42:36 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:42:36 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:42:36 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:42:38 INFO mapred.LocalJobRunner:
+16/01/09 15:42:38 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:42:38 INFO mapred.MapTask: Spilling map output
+16/01/09 15:42:38 INFO mapred.MapTask: bufstart = 0; bufend = 15997380; bufvoid = 104857600
+16/01/09 15:42:38 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19624496(78497984); length = 6589901/6553600
+16/01/09 15:42:38 INFO mapreduce.Job:  map 15% reduce 0%
+16/01/09 15:42:40 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:42:40 INFO mapred.Task: Task:attempt_local800497594_0005_m_000002_0 is done. And is in the process of committing
+16/01/09 15:42:40 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00008:0+20939808
+16/01/09 15:42:40 INFO mapred.Task: Task 'attempt_local800497594_0005_m_000002_0' done.
+16/01/09 15:42:40 INFO mapred.LocalJobRunner: Finishing task: attempt_local800497594_0005_m_000002_0
+16/01/09 15:42:40 INFO mapred.LocalJobRunner: Starting task: attempt_local800497594_0005_m_000003_0
+16/01/09 15:42:40 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:42:40 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00002:0+20939412
+16/01/09 15:42:40 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:42:40 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:42:40 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:42:40 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:42:40 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:42:40 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:42:40 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:42:40 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:42:41 INFO mapred.LocalJobRunner:
+16/01/09 15:42:41 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:42:41 INFO mapred.MapTask: Spilling map output
+16/01/09 15:42:41 INFO mapred.MapTask: bufstart = 0; bufend = 15997221; bufvoid = 104857600
+16/01/09 15:42:41 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19624812(78499248); length = 6589585/6553600
+16/01/09 15:42:41 INFO mapreduce.Job:  map 23% reduce 0%
+16/01/09 15:42:43 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:42:43 INFO mapred.Task: Task:attempt_local800497594_0005_m_000003_0 is done. And is in the process of committing
+16/01/09 15:42:43 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00002:0+20939412
+16/01/09 15:42:43 INFO mapred.Task: Task 'attempt_local800497594_0005_m_000003_0' done.
+16/01/09 15:42:43 INFO mapred.LocalJobRunner: Finishing task: attempt_local800497594_0005_m_000003_0
+16/01/09 15:42:43 INFO mapred.LocalJobRunner: Starting task: attempt_local800497594_0005_m_000004_0
+16/01/09 15:42:43 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:42:43 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00005:0+20930302
+16/01/09 15:42:43 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:42:43 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:42:43 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:42:43 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:42:43 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:42:43 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:42:43 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:42:43 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:42:45 INFO mapred.LocalJobRunner:
+16/01/09 15:42:45 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:42:45 INFO mapred.MapTask: Spilling map output
+16/01/09 15:42:45 INFO mapred.MapTask: bufstart = 0; bufend = 15990835; bufvoid = 104857600
+16/01/09 15:42:45 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19628444(78513776); length = 6585953/6553600
+16/01/09 15:42:45 INFO mapreduce.Job:  map 31% reduce 0%
+16/01/09 15:42:47 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:42:47 INFO mapred.Task: Task:attempt_local800497594_0005_m_000004_0 is done. And is in the process of committing
+16/01/09 15:42:47 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00005:0+20930302
+16/01/09 15:42:47 INFO mapred.Task: Task 'attempt_local800497594_0005_m_000004_0' done.
+16/01/09 15:42:47 INFO mapred.LocalJobRunner: Finishing task: attempt_local800497594_0005_m_000004_0
+16/01/09 15:42:47 INFO mapred.LocalJobRunner: Starting task: attempt_local800497594_0005_m_000005_0
+16/01/09 15:42:47 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:42:47 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00000:0+20929489
+16/01/09 15:42:47 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:42:47 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:42:47 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:42:47 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:42:47 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:42:47 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:42:47 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:42:47 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:42:49 INFO mapred.LocalJobRunner:
+16/01/09 15:42:49 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:42:49 INFO mapred.MapTask: Spilling map output
+16/01/09 15:42:49 INFO mapred.MapTask: bufstart = 0; bufend = 15989809; bufvoid = 104857600
+16/01/09 15:42:49 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19628160(78512640); length = 6586237/6553600
+16/01/09 15:42:49 INFO mapreduce.Job:  map 38% reduce 0%
+16/01/09 15:42:50 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:42:50 INFO mapred.Task: Task:attempt_local800497594_0005_m_000005_0 is done. And is in the process of committing
+16/01/09 15:42:50 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00000:0+20929489
+16/01/09 15:42:50 INFO mapred.Task: Task 'attempt_local800497594_0005_m_000005_0' done.
+16/01/09 15:42:50 INFO mapred.LocalJobRunner: Finishing task: attempt_local800497594_0005_m_000005_0
+16/01/09 15:42:50 INFO mapred.LocalJobRunner: Starting task: attempt_local800497594_0005_m_000006_0
+16/01/09 15:42:50 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:42:50 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00010:0+20928955
+16/01/09 15:42:50 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:42:50 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:42:50 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:42:50 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:42:50 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:42:50 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:42:50 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:42:51 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:42:52 INFO mapred.LocalJobRunner:
+16/01/09 15:42:52 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:42:52 INFO mapred.MapTask: Spilling map output
+16/01/09 15:42:52 INFO mapred.MapTask: bufstart = 0; bufend = 15989086; bufvoid = 104857600
+16/01/09 15:42:52 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19627908(78511632); length = 6586489/6553600
+16/01/09 15:42:52 INFO mapreduce.Job:  map 46% reduce 0%
+16/01/09 15:42:54 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:42:54 INFO mapred.Task: Task:attempt_local800497594_0005_m_000006_0 is done. And is in the process of committing
+16/01/09 15:42:54 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00010:0+20928955
+16/01/09 15:42:54 INFO mapred.Task: Task 'attempt_local800497594_0005_m_000006_0' done.
+16/01/09 15:42:54 INFO mapred.LocalJobRunner: Finishing task: attempt_local800497594_0005_m_000006_0
+16/01/09 15:42:54 INFO mapred.LocalJobRunner: Starting task: attempt_local800497594_0005_m_000007_0
+16/01/09 15:42:54 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:42:54 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00006:0+20914784
+16/01/09 15:42:54 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:42:54 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:42:54 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:42:54 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:42:54 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:42:54 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:42:54 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:42:54 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:42:56 INFO mapred.LocalJobRunner:
+16/01/09 15:42:56 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:42:56 INFO mapred.MapTask: Spilling map output
+16/01/09 15:42:56 INFO mapred.MapTask: bufstart = 0; bufend = 15978338; bufvoid = 104857600
+16/01/09 15:42:56 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19632472(78529888); length = 6581925/6553600
+16/01/09 15:42:56 INFO mapreduce.Job:  map 54% reduce 0%
+16/01/09 15:42:58 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:42:58 INFO mapred.Task: Task:attempt_local800497594_0005_m_000007_0 is done. And is in the process of committing
+16/01/09 15:42:58 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00006:0+20914784
+16/01/09 15:42:58 INFO mapred.Task: Task 'attempt_local800497594_0005_m_000007_0' done.
+16/01/09 15:42:58 INFO mapred.LocalJobRunner: Finishing task: attempt_local800497594_0005_m_000007_0
+16/01/09 15:42:58 INFO mapred.LocalJobRunner: Starting task: attempt_local800497594_0005_m_000008_0
+16/01/09 15:42:58 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:42:58 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00001:0+20905180
+16/01/09 15:42:58 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:42:58 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:42:58 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:42:58 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:42:58 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:42:58 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:42:58 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:42:58 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:43:00 INFO mapred.LocalJobRunner:
+16/01/09 15:43:00 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:43:00 INFO mapred.MapTask: Spilling map output
+16/01/09 15:43:00 INFO mapred.MapTask: bufstart = 0; bufend = 15971179; bufvoid = 104857600
+16/01/09 15:43:00 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19635732(78542928); length = 6578665/6553600
+16/01/09 15:43:00 INFO mapreduce.Job:  map 62% reduce 0%
+16/01/09 15:43:01 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:43:01 INFO mapred.Task: Task:attempt_local800497594_0005_m_000008_0 is done. And is in the process of committing
+16/01/09 15:43:01 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00001:0+20905180
+16/01/09 15:43:01 INFO mapred.Task: Task 'attempt_local800497594_0005_m_000008_0' done.
+16/01/09 15:43:01 INFO mapred.LocalJobRunner: Finishing task: attempt_local800497594_0005_m_000008_0
+16/01/09 15:43:01 INFO mapred.LocalJobRunner: Starting task: attempt_local800497594_0005_m_000009_0
+16/01/09 15:43:01 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:43:01 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00004:0+20265683
+16/01/09 15:43:01 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:43:01 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:43:01 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:43:01 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:43:01 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:43:01 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:43:01 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:43:01 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:43:03 INFO mapred.LocalJobRunner:
+16/01/09 15:43:03 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:43:03 INFO mapred.MapTask: Spilling map output
+16/01/09 15:43:03 INFO mapred.MapTask: bufstart = 0; bufend = 15986015; bufvoid = 104857600
+16/01/09 15:43:03 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19629416(78517664); length = 6584981/6553600
+16/01/09 15:43:03 INFO mapreduce.Job:  map 69% reduce 0%
+16/01/09 15:43:05 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:43:05 INFO mapred.Task: Task:attempt_local800497594_0005_m_000009_0 is done. And is in the process of committing
+16/01/09 15:43:05 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00004:0+20265683
+16/01/09 15:43:05 INFO mapred.Task: Task 'attempt_local800497594_0005_m_000009_0' done.
+16/01/09 15:43:05 INFO mapred.LocalJobRunner: Finishing task: attempt_local800497594_0005_m_000009_0
+16/01/09 15:43:05 INFO mapred.LocalJobRunner: Starting task: attempt_local800497594_0005_m_000010_0
+16/01/09 15:43:05 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:43:05 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00003:0+19280483
+16/01/09 15:43:05 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:43:05 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:43:05 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:43:05 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:43:05 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:43:05 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:43:05 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:43:05 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:43:07 INFO mapred.LocalJobRunner:
+16/01/09 15:43:07 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:43:07 INFO mapred.MapTask: Spilling map output
+16/01/09 15:43:07 INFO mapred.MapTask: bufstart = 0; bufend = 15987703; bufvoid = 104857600
+16/01/09 15:43:07 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19628840(78515360); length = 6585557/6553600
+16/01/09 15:43:07 INFO mapreduce.Job:  map 77% reduce 0%
+16/01/09 15:43:09 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:43:09 INFO mapred.Task: Task:attempt_local800497594_0005_m_000010_0 is done. And is in the process of committing
+16/01/09 15:43:09 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00003:0+19280483
+16/01/09 15:43:09 INFO mapred.Task: Task 'attempt_local800497594_0005_m_000010_0' done.
+16/01/09 15:43:09 INFO mapred.LocalJobRunner: Finishing task: attempt_local800497594_0005_m_000010_0
+16/01/09 15:43:09 INFO mapred.LocalJobRunner: Starting task: attempt_local800497594_0005_m_000011_0
+16/01/09 15:43:09 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:43:09 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00011:0+18842518
+16/01/09 15:43:09 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:43:09 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:43:09 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:43:09 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:43:09 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:43:09 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:43:09 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:43:09 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:43:10 INFO mapred.LocalJobRunner:
+16/01/09 15:43:10 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:43:10 INFO mapred.MapTask: Spilling map output
+16/01/09 15:43:10 INFO mapred.MapTask: bufstart = 0; bufend = 15988472; bufvoid = 104857600
+16/01/09 15:43:10 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 19628924(78515696); length = 6585473/6553600
+16/01/09 15:43:10 INFO mapreduce.Job:  map 85% reduce 0%
+16/01/09 15:43:12 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:43:12 INFO mapred.Task: Task:attempt_local800497594_0005_m_000011_0 is done. And is in the process of committing
+16/01/09 15:43:12 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Input/edges/part-00011:0+18842518
+16/01/09 15:43:12 INFO mapred.Task: Task 'attempt_local800497594_0005_m_000011_0' done.
+16/01/09 15:43:12 INFO mapred.LocalJobRunner: Finishing task: attempt_local800497594_0005_m_000011_0
+16/01/09 15:43:12 INFO mapred.LocalJobRunner: Starting task: attempt_local800497594_0005_m_000012_0
+16/01/09 15:43:12 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:43:12 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Output/pr_vector/part-00000:0+14409634
+16/01/09 15:43:12 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:43:12 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:43:12 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:43:12 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:43:12 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:43:12 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:43:12 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+MapStage1 : make_symmetric = 0
+16/01/09 15:43:12 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:43:13 INFO mapred.LocalJobRunner:
+16/01/09 15:43:13 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:43:13 INFO mapred.MapTask: Spilling map output
+16/01/09 15:43:13 INFO mapred.MapTask: bufstart = 0; bufend = 13020744; bufvoid = 104857600
+16/01/09 15:43:13 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 24214400(96857600); length = 1999997/6553600
+16/01/09 15:43:13 INFO mapreduce.Job:  map 92% reduce 0%
+16/01/09 15:43:14 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:43:14 INFO mapred.Task: Task:attempt_local800497594_0005_m_000012_0 is done. And is in the process of committing
+16/01/09 15:43:14 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_vector/part-00000:0+14409634
+16/01/09 15:43:14 INFO mapred.Task: Task 'attempt_local800497594_0005_m_000012_0' done.
+16/01/09 15:43:14 INFO mapred.LocalJobRunner: Finishing task: attempt_local800497594_0005_m_000012_0
+16/01/09 15:43:14 INFO mapred.LocalJobRunner: Map task executor complete.
+16/01/09 15:43:14 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:43:14 INFO mapred.Merger: Merging 13 sorted segments
+16/01/09 15:43:14 INFO mapred.Merger: Merging 4 intermediate segments out of a total of 13
+16/01/09 15:43:14 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:43:17 INFO mapred.Merger: Down to the last merge-pass, with 10 segments left of total size: 245416704 bytes
+16/01/09 15:43:17 INFO mapred.LocalJobRunner:
+RedStage1: number_nodes = 500000, mixing_c = 0.8500000238418579, random_coeff = 2.999999523162842E-7
+16/01/09 15:43:20 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:43:20 INFO mapreduce.Job:  map 100% reduce 75%
+16/01/09 15:43:23 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:43:23 INFO mapreduce.Job:  map 100% reduce 76%
+16/01/09 15:43:26 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:43:26 INFO mapreduce.Job:  map 100% reduce 77%
+16/01/09 15:43:29 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:43:32 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:43:32 INFO mapreduce.Job:  map 100% reduce 78%
+16/01/09 15:43:35 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:43:35 INFO mapreduce.Job:  map 100% reduce 79%
+16/01/09 15:43:38 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:43:38 INFO mapreduce.Job:  map 100% reduce 80%
+16/01/09 15:43:41 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:43:41 INFO mapreduce.Job:  map 100% reduce 81%
+16/01/09 15:43:44 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:43:47 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:43:47 INFO mapreduce.Job:  map 100% reduce 82%
+16/01/09 15:43:50 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:43:50 INFO mapreduce.Job:  map 100% reduce 83%
+16/01/09 15:43:53 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:43:53 INFO mapreduce.Job:  map 100% reduce 84%
+16/01/09 15:43:56 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:43:56 INFO mapreduce.Job:  map 100% reduce 85%
+16/01/09 15:43:59 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:44:02 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:44:02 INFO mapreduce.Job:  map 100% reduce 86%
+16/01/09 15:44:05 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:44:06 INFO mapreduce.Job:  map 100% reduce 87%
+16/01/09 15:44:08 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:44:09 INFO mapreduce.Job:  map 100% reduce 88%
+16/01/09 15:44:11 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:44:12 INFO mapreduce.Job:  map 100% reduce 89%
+16/01/09 15:44:14 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:44:17 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:44:18 INFO mapreduce.Job:  map 100% reduce 90%
+16/01/09 15:44:20 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:44:21 INFO mapreduce.Job:  map 100% reduce 91%
+16/01/09 15:44:23 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:44:24 INFO mapreduce.Job:  map 100% reduce 92%
+16/01/09 15:44:26 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:44:27 INFO mapreduce.Job:  map 100% reduce 93%
+16/01/09 15:44:29 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:44:30 INFO mapreduce.Job:  map 100% reduce 94%
+16/01/09 15:44:32 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:44:35 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:44:36 INFO mapreduce.Job:  map 100% reduce 95%
+16/01/09 15:44:38 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:44:39 INFO mapreduce.Job:  map 100% reduce 96%
+16/01/09 15:44:41 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:44:42 INFO mapreduce.Job:  map 100% reduce 97%
+16/01/09 15:44:44 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:44:45 INFO mapreduce.Job:  map 100% reduce 98%
+16/01/09 15:44:47 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:44:50 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:44:51 INFO mapreduce.Job:  map 100% reduce 99%
+16/01/09 15:44:53 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:44:53 INFO mapred.Task: Task:attempt_local800497594_0005_r_000000_0 is done. And is in the process of committing
+16/01/09 15:44:53 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:44:53 INFO mapred.Task: Task attempt_local800497594_0005_r_000000_0 is allowed to commit now
+16/01/09 15:44:53 INFO output.FileOutputCommitter: Saved output of task 'attempt_local800497594_0005_r_000000_0' to hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/_temporary/0/task_local800497594_0005_r_000000
+16/01/09 15:44:53 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:44:53 INFO mapred.Task: Task 'attempt_local800497594_0005_r_000000_0' done.
+16/01/09 15:44:54 INFO mapreduce.Job:  map 100% reduce 100%
+16/01/09 15:44:54 INFO mapreduce.Job: Job job_local800497594_0005 completed successfully
+16/01/09 15:44:54 INFO mapreduce.Job: Counters: 32
+	File System Counters
+		FILE: Number of bytes read=39588962220
+		FILE: Number of bytes written=41247993457
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=24654338564
+		HDFS: Number of bytes written=16364377225
+		HDFS: Number of read operations=2059
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=450
+	Map-Reduce Framework
+		Map input records=20258969
+		Map output records=20258969
+		Map output bytes=204898734
+		Map output materialized bytes=245416750
+		Input split bytes=1448
+		Combine input records=0
+		Combine output records=0
+		Reduce input groups=500000
+		Reduce shuffle bytes=0
+		Reduce input records=20258969
+		Reduce output records=20258969
+		Spilled Records=45954333
+		Shuffled Maps =0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=4664
+		CPU time spent (ms)=0
+		Physical memory (bytes) snapshot=0
+		Virtual memory (bytes) snapshot=0
+		Total committed heap usage (bytes)=7408713728
+	File Input Format Counters
+		Bytes Read=261174010
+	File Output Format Counters
+		Bytes Written=565936399
+16/01/09 15:44:54 INFO jvm.JvmMetrics: Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+16/01/09 15:44:54 INFO jvm.JvmMetrics: Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+16/01/09 15:44:54 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/01/09 15:44:54 INFO mapreduce.JobSubmitter: number of splits:5
+16/01/09 15:44:54 INFO Configuration.deprecation: user.name is deprecated. Instead, use mapreduce.job.user.name
+16/01/09 15:44:54 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/01/09 15:44:54 INFO Configuration.deprecation: mapred.reduce.tasks is deprecated. Instead, use mapreduce.job.reduces
+16/01/09 15:44:54 INFO Configuration.deprecation: mapred.output.value.class is deprecated. Instead, use mapreduce.job.output.value.class
+16/01/09 15:44:54 INFO Configuration.deprecation: mapred.job.name is deprecated. Instead, use mapreduce.job.name
+16/01/09 15:44:54 INFO Configuration.deprecation: mapred.input.dir is deprecated. Instead, use mapreduce.input.fileinputformat.inputdir
+16/01/09 15:44:54 INFO Configuration.deprecation: mapred.output.dir is deprecated. Instead, use mapreduce.output.fileoutputformat.outputdir
+16/01/09 15:44:54 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/01/09 15:44:54 INFO Configuration.deprecation: mapred.output.key.class is deprecated. Instead, use mapreduce.job.output.key.class
+16/01/09 15:44:54 INFO Configuration.deprecation: mapred.working.dir is deprecated. Instead, use mapreduce.job.working.dir
+16/01/09 15:44:54 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_local1503361412_0006
+16/01/09 15:44:54 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/staging/hduser1503361412/.staging/job_local1503361412_0006/job.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.retry.interval;  Ignoring.
+16/01/09 15:44:54 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/staging/hduser1503361412/.staging/job_local1503361412_0006/job.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.attempts;  Ignoring.
+16/01/09 15:44:54 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/local/localRunner/hduser/job_local1503361412_0006/job_local1503361412_0006.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.retry.interval;  Ignoring.
+16/01/09 15:44:54 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/local/localRunner/hduser/job_local1503361412_0006/job_local1503361412_0006.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.attempts;  Ignoring.
+16/01/09 15:44:54 INFO mapreduce.Job: The url to track the job: http://localhost:8080/
+16/01/09 15:44:54 INFO mapreduce.Job: Running job: job_local1503361412_0006
+16/01/09 15:44:54 INFO mapred.LocalJobRunner: OutputCommitter set in config null
+16/01/09 15:44:54 INFO mapred.LocalJobRunner: OutputCommitter is org.apache.hadoop.mapred.FileOutputCommitter
+16/01/09 15:44:54 INFO mapred.LocalJobRunner: Waiting for map tasks
+16/01/09 15:44:54 INFO mapred.LocalJobRunner: Starting task: attempt_local1503361412_0006_m_000000_0
+16/01/09 15:44:54 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:44:54 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:0+134217728
+16/01/09 15:44:54 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:44:54 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:44:54 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:44:54 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:44:54 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:44:54 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:44:54 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+16/01/09 15:44:55 INFO mapreduce.Job: Job job_local1503361412_0006 running in uber mode : false
+16/01/09 15:44:55 INFO mapreduce.Job:  map 0% reduce 0%
+16/01/09 15:44:56 INFO mapred.MapTask: Spilling map output
+16/01/09 15:44:56 INFO mapred.MapTask: bufstart = 0; bufend = 52332858; bufvoid = 104857600
+16/01/09 15:44:56 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 18326096(73304384); length = 7888301/6553600
+16/01/09 15:44:56 INFO mapred.MapTask: (EQUATOR) 60321994 kvi 15080492(60321968)
+16/01/09 15:45:00 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:0+134217728 > map
+16/01/09 15:45:00 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:45:00 INFO mapred.MapTask: (RESET) equator 60321994 kv 15080492(60321968) kvi 13123080(52492320)
+16/01/09 15:45:01 INFO mapreduce.Job:  map 7% reduce 0%
+16/01/09 15:45:02 INFO mapred.MapTask: Spilling map output
+16/01/09 15:45:02 INFO mapred.MapTask: bufstart = 60321994; bufend = 7788919; bufvoid = 104857600
+16/01/09 15:45:02 INFO mapred.MapTask: kvstart = 15080492(60321968); kvend = 7190108(28760432); length = 7890385/6553600
+16/01/09 15:45:02 INFO mapred.MapTask: (EQUATOR) 15778055 kvi 3944508(15778032)
+16/01/09 15:45:03 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:0+134217728 > map
+16/01/09 15:45:04 INFO mapreduce.Job:  map 12% reduce 0%
+16/01/09 15:45:06 INFO mapred.MapTask: Finished spill 1
+16/01/09 15:45:06 INFO mapred.MapTask: (RESET) equator 15778055 kv 3944508(15778032) kvi 1986528(7946112)
+16/01/09 15:45:06 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:0+134217728 > map
+16/01/09 15:45:06 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:0+134217728 > map
+16/01/09 15:45:06 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:45:06 INFO mapred.MapTask: Spilling map output
+16/01/09 15:45:06 INFO mapred.MapTask: bufstart = 15778055; bufend = 37170297; bufvoid = 104857600
+16/01/09 15:45:06 INFO mapred.MapTask: kvstart = 3944508(15778032); kvend = 719128(2876512); length = 3225381/6553600
+16/01/09 15:45:07 INFO mapreduce.Job:  map 13% reduce 0%
+16/01/09 15:45:07 INFO mapred.MapTask: Finished spill 2
+16/01/09 15:45:07 INFO mapred.Merger: Merging 3 sorted segments
+16/01/09 15:45:07 INFO mapred.Merger: Down to the last merge-pass, with 3 segments left of total size: 135551663 bytes
+16/01/09 15:45:09 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:0+134217728 > sort >
+16/01/09 15:45:10 INFO mapreduce.Job:  map 17% reduce 0%
+16/01/09 15:45:11 INFO mapred.Task: Task:attempt_local1503361412_0006_m_000000_0 is done. And is in the process of committing
+16/01/09 15:45:11 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:0+134217728 > sort
+16/01/09 15:45:11 INFO mapred.Task: Task 'attempt_local1503361412_0006_m_000000_0' done.
+16/01/09 15:45:11 INFO mapred.LocalJobRunner: Finishing task: attempt_local1503361412_0006_m_000000_0
+16/01/09 15:45:11 INFO mapred.LocalJobRunner: Starting task: attempt_local1503361412_0006_m_000001_0
+16/01/09 15:45:11 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:45:11 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:134217728+134217728
+16/01/09 15:45:11 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:45:11 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:45:11 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:45:11 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:45:11 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:45:11 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:45:11 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+16/01/09 15:45:12 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:45:13 INFO mapred.MapTask: Spilling map output
+16/01/09 15:45:13 INFO mapred.MapTask: bufstart = 0; bufend = 52019844; bufvoid = 104857600
+16/01/09 15:45:13 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 18247840(72991360); length = 7966557/6553600
+16/01/09 15:45:13 INFO mapred.MapTask: (EQUATOR) 60008980 kvi 15002240(60008960)
+16/01/09 15:45:17 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:134217728+134217728 > map
+16/01/09 15:45:18 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:45:18 INFO mapred.MapTask: (RESET) equator 60008980 kv 15002240(60008960) kvi 13011764(52047056)
+16/01/09 15:45:18 INFO mapreduce.Job:  map 27% reduce 0%
+16/01/09 15:45:19 INFO mapred.MapTask: Spilling map output
+16/01/09 15:45:19 INFO mapred.MapTask: bufstart = 60008980; bufend = 7150089; bufvoid = 104857598
+16/01/09 15:45:19 INFO mapred.MapTask: kvstart = 15002240(60008960); kvend = 7030400(28121600); length = 7971841/6553600
+16/01/09 15:45:19 INFO mapred.MapTask: (EQUATOR) 15139225 kvi 3784800(15139200)
+16/01/09 15:45:20 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:134217728+134217728 > map
+16/01/09 15:45:21 INFO mapreduce.Job:  map 32% reduce 0%
+16/01/09 15:45:23 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:134217728+134217728 > map
+16/01/09 15:45:24 INFO mapred.MapTask: Finished spill 1
+16/01/09 15:45:24 INFO mapred.MapTask: (RESET) equator 15139225 kv 3784800(15139200) kvi 1794736(7178944)
+16/01/09 15:45:24 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:134217728+134217728 > map
+16/01/09 15:45:24 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:45:24 INFO mapred.MapTask: Spilling map output
+16/01/09 15:45:24 INFO mapred.MapTask: bufstart = 15139225; bufend = 36935201; bufvoid = 104857600
+16/01/09 15:45:24 INFO mapred.MapTask: kvstart = 3784800(15139200); kvend = 443664(1774656); length = 3341137/6553600
+16/01/09 15:45:26 INFO mapred.MapTask: Finished spill 2
+16/01/09 15:45:26 INFO mapred.Merger: Merging 3 sorted segments
+16/01/09 15:45:26 INFO mapred.Merger: Down to the last merge-pass, with 3 segments left of total size: 135454299 bytes
+16/01/09 15:45:26 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:134217728+134217728 > sort >
+16/01/09 15:45:27 INFO mapreduce.Job:  map 34% reduce 0%
+16/01/09 15:45:29 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:134217728+134217728 > sort >
+16/01/09 15:45:29 INFO mapred.Task: Task:attempt_local1503361412_0006_m_000001_0 is done. And is in the process of committing
+16/01/09 15:45:29 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:134217728+134217728 > sort
+16/01/09 15:45:29 INFO mapred.Task: Task 'attempt_local1503361412_0006_m_000001_0' done.
+16/01/09 15:45:29 INFO mapred.LocalJobRunner: Finishing task: attempt_local1503361412_0006_m_000001_0
+16/01/09 15:45:29 INFO mapred.LocalJobRunner: Starting task: attempt_local1503361412_0006_m_000002_0
+16/01/09 15:45:29 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:45:29 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:268435456+134217728
+16/01/09 15:45:29 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:45:29 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:45:29 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:45:29 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:45:29 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:45:29 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:45:29 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+16/01/09 15:45:30 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:45:32 INFO mapred.MapTask: Spilling map output
+16/01/09 15:45:32 INFO mapred.MapTask: bufstart = 0; bufend = 51998010; bufvoid = 104857600
+16/01/09 15:45:32 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 18242384(72969536); length = 7972013/6553600
+16/01/09 15:45:32 INFO mapred.MapTask: (EQUATOR) 59987146 kvi 14996780(59987120)
+16/01/09 15:45:35 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:268435456+134217728 > map
+16/01/09 15:45:36 INFO mapreduce.Job:  map 47% reduce 0%
+16/01/09 15:45:36 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:45:36 INFO mapred.MapTask: (RESET) equator 59987146 kv 14996780(59987120) kvi 13006404(52025616)
+16/01/09 15:45:38 INFO mapred.MapTask: Spilling map output
+16/01/09 15:45:38 INFO mapred.MapTask: bufstart = 59987146; bufend = 7130648; bufvoid = 104857600
+16/01/09 15:45:38 INFO mapred.MapTask: kvstart = 14996780(59987120); kvend = 7025544(28102176); length = 7971237/6553600
+16/01/09 15:45:38 INFO mapred.MapTask: (EQUATOR) 15119784 kvi 3779940(15119760)
+16/01/09 15:45:38 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:268435456+134217728 > map
+16/01/09 15:45:39 INFO mapreduce.Job:  map 52% reduce 0%
+16/01/09 15:45:41 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:268435456+134217728 > map
+16/01/09 15:45:42 INFO mapred.MapTask: Finished spill 1
+16/01/09 15:45:42 INFO mapred.MapTask: (RESET) equator 15119784 kv 3779940(15119760) kvi 1789396(7157584)
+16/01/09 15:45:42 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:268435456+134217728 > map
+16/01/09 15:45:42 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:45:42 INFO mapred.MapTask: Spilling map output
+16/01/09 15:45:42 INFO mapred.MapTask: bufstart = 15119784; bufend = 36936167; bufvoid = 104857600
+16/01/09 15:45:42 INFO mapred.MapTask: kvstart = 3779940(15119760); kvend = 435152(1740608); length = 3344789/6553600
+16/01/09 15:45:44 INFO mapred.MapTask: Finished spill 2
+16/01/09 15:45:44 INFO mapred.Merger: Merging 3 sorted segments
+16/01/09 15:45:44 INFO mapred.Merger: Down to the last merge-pass, with 3 segments left of total size: 135459519 bytes
+16/01/09 15:45:44 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:268435456+134217728 > sort >
+16/01/09 15:45:45 INFO mapreduce.Job:  map 55% reduce 0%
+16/01/09 15:45:47 INFO mapred.Task: Task:attempt_local1503361412_0006_m_000002_0 is done. And is in the process of committing
+16/01/09 15:45:47 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:268435456+134217728 > sort
+16/01/09 15:45:47 INFO mapred.Task: Task 'attempt_local1503361412_0006_m_000002_0' done.
+16/01/09 15:45:47 INFO mapred.LocalJobRunner: Finishing task: attempt_local1503361412_0006_m_000002_0
+16/01/09 15:45:47 INFO mapred.LocalJobRunner: Starting task: attempt_local1503361412_0006_m_000003_0
+16/01/09 15:45:47 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:45:47 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:402653184+134217728
+16/01/09 15:45:47 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:45:47 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:45:47 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:45:47 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:45:47 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:45:47 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:45:47 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+16/01/09 15:45:48 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:45:49 INFO mapred.MapTask: Spilling map output
+16/01/09 15:45:49 INFO mapred.MapTask: bufstart = 0; bufend = 51998442; bufvoid = 104857600
+16/01/09 15:45:49 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 18242488(72969952); length = 7971909/6553600
+16/01/09 15:45:49 INFO mapred.MapTask: (EQUATOR) 59987578 kvi 14996888(59987552)
+16/01/09 15:45:53 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:402653184+134217728 > map
+16/01/09 15:45:54 INFO mapreduce.Job:  map 67% reduce 0%
+16/01/09 15:45:54 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:45:54 INFO mapred.MapTask: (RESET) equator 59987578 kv 14996888(59987552) kvi 13007160(52028640)
+16/01/09 15:45:56 INFO mapred.MapTask: Spilling map output
+16/01/09 15:45:56 INFO mapred.MapTask: bufstart = 59987578; bufend = 7130421; bufvoid = 104857600
+16/01/09 15:45:56 INFO mapred.MapTask: kvstart = 14996888(59987552); kvend = 7025484(28101936); length = 7971405/6553600
+16/01/09 15:45:56 INFO mapred.MapTask: (EQUATOR) 15119557 kvi 3779884(15119536)
+16/01/09 15:45:56 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:402653184+134217728 > map
+16/01/09 15:45:57 INFO mapreduce.Job:  map 71% reduce 0%
+16/01/09 15:45:59 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:402653184+134217728 > map
+16/01/09 15:46:00 INFO mapreduce.Job:  map 72% reduce 0%
+16/01/09 15:46:00 INFO mapred.MapTask: Finished spill 1
+16/01/09 15:46:00 INFO mapred.MapTask: (RESET) equator 15119557 kv 3779884(15119536) kvi 1789764(7159056)
+16/01/09 15:46:01 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:402653184+134217728 > map
+16/01/09 15:46:01 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:46:01 INFO mapred.MapTask: Spilling map output
+16/01/09 15:46:01 INFO mapred.MapTask: bufstart = 15119557; bufend = 36936553; bufvoid = 104857600
+16/01/09 15:46:01 INFO mapred.MapTask: kvstart = 3779884(15119536); kvend = 435644(1742576); length = 3344241/6553600
+16/01/09 15:46:02 INFO mapred.MapTask: Finished spill 2
+16/01/09 15:46:02 INFO mapred.Merger: Merging 3 sorted segments
+16/01/09 15:46:02 INFO mapred.Merger: Down to the last merge-pass, with 3 segments left of total size: 135459663 bytes
+16/01/09 15:46:02 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:402653184+134217728 > sort >
+16/01/09 15:46:03 INFO mapreduce.Job:  map 73% reduce 0%
+16/01/09 15:46:05 INFO mapred.Task: Task:attempt_local1503361412_0006_m_000003_0 is done. And is in the process of committing
+16/01/09 15:46:05 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:402653184+134217728 > sort
+16/01/09 15:46:05 INFO mapred.Task: Task 'attempt_local1503361412_0006_m_000003_0' done.
+16/01/09 15:46:05 INFO mapred.LocalJobRunner: Finishing task: attempt_local1503361412_0006_m_000003_0
+16/01/09 15:46:05 INFO mapred.LocalJobRunner: Starting task: attempt_local1503361412_0006_m_000004_0
+16/01/09 15:46:05 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:46:05 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:536870912+29065487
+16/01/09 15:46:05 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:46:05 INFO mapred.MapTask: numReduceTasks: 1
+16/01/09 15:46:05 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 15:46:05 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 15:46:05 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 15:46:05 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 15:46:05 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 15:46:05 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+16/01/09 15:46:06 INFO mapred.LocalJobRunner:
+16/01/09 15:46:06 INFO mapred.MapTask: Starting flush of map output
+16/01/09 15:46:06 INFO mapred.MapTask: Spilling map output
+16/01/09 15:46:06 INFO mapred.MapTask: bufstart = 0; bufend = 27245743; bufvoid = 104857600
+16/01/09 15:46:06 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 22037756(88151024); length = 4176641/6553600
+16/01/09 15:46:07 INFO mapreduce.Job:  map 80% reduce 0%
+16/01/09 15:46:08 INFO mapred.MapTask: Finished spill 0
+16/01/09 15:46:08 INFO mapred.Task: Task:attempt_local1503361412_0006_m_000004_0 is done. And is in the process of committing
+16/01/09 15:46:08 INFO mapred.LocalJobRunner: hdfs://master:54310/HiBench/Pagerank/Output/pr_tmp/part-00000:536870912+29065487
+16/01/09 15:46:08 INFO mapred.Task: Task 'attempt_local1503361412_0006_m_000004_0' done.
+16/01/09 15:46:08 INFO mapred.LocalJobRunner: Finishing task: attempt_local1503361412_0006_m_000004_0
+16/01/09 15:46:08 INFO mapred.LocalJobRunner: Map task executor complete.
+16/01/09 15:46:08 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:46:08 INFO mapred.Merger: Merging 5 sorted segments
+16/01/09 15:46:08 INFO mapred.Merger: Down to the last merge-pass, with 5 segments left of total size: 571259209 bytes
+16/01/09 15:46:08 INFO mapred.LocalJobRunner:
+RedStage2: number_nodes = 500000, mixing_c = 0.8500000238418579, random_coeff = 2.999999523162842E-7, converge_threshold = 2.0E-7
+16/01/09 15:46:09 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:46:14 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:46:15 INFO mapreduce.Job:  map 100% reduce 73%
+16/01/09 15:46:17 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:46:18 INFO mapreduce.Job:  map 100% reduce 75%
+16/01/09 15:46:20 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:46:21 INFO mapreduce.Job:  map 100% reduce 79%
+16/01/09 15:46:23 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:46:24 INFO mapreduce.Job:  map 100% reduce 81%
+16/01/09 15:46:26 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:46:27 INFO mapreduce.Job:  map 100% reduce 84%
+16/01/09 15:46:29 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:46:30 INFO mapreduce.Job:  map 100% reduce 87%
+16/01/09 15:46:32 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:46:33 INFO mapreduce.Job:  map 100% reduce 90%
+16/01/09 15:46:35 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:46:36 INFO mapreduce.Job:  map 100% reduce 93%
+16/01/09 15:46:38 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:46:39 INFO mapreduce.Job:  map 100% reduce 96%
+16/01/09 15:46:41 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:46:42 INFO mapreduce.Job:  map 100% reduce 98%
+16/01/09 15:46:44 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:46:45 INFO mapreduce.Job:  map 100% reduce 100%
+16/01/09 15:46:45 INFO mapred.Task: Task:attempt_local1503361412_0006_r_000000_0 is done. And is in the process of committing
+16/01/09 15:46:45 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:46:45 INFO mapred.Task: Task attempt_local1503361412_0006_r_000000_0 is allowed to commit now
+16/01/09 15:46:45 INFO output.FileOutputCommitter: Saved output of task 'attempt_local1503361412_0006_r_000000_0' to hdfs://master:54310/HiBench/Pagerank/Output/pr_output/_temporary/0/task_local1503361412_0006_r_000000
+16/01/09 15:46:45 INFO mapred.LocalJobRunner: reduce > reduce
+16/01/09 15:46:45 INFO mapred.Task: Task 'attempt_local1503361412_0006_r_000000_0' done.
+16/01/09 15:46:46 INFO mapreduce.Job: Job job_local1503361412_0006 completed successfully
+16/01/09 15:46:46 INFO mapreduce.Job: Counters: 33
+	File System Counters
+		FILE: Number of bytes read=21745856071
+		FILE: Number of bytes written=23634260330
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=13686814960
+		HDFS: Number of bytes written=10180788289
+		HDFS: Number of read operations=1063
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=230
+	Map-Reduce Framework
+		Map input records=20258969
+		Map output records=20258969
+		Map output bytes=530741271
+		Map output materialized bytes=571259239
+		Input split bytes=565
+		Combine input records=0
+		Combine output records=0
+		Reduce input groups=500000
+		Reduce shuffle bytes=0
+		Reduce input records=20258969
+		Reduce output records=500000
+		Spilled Records=59732746
+		Shuffled Maps =0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=2186
+		CPU time spent (ms)=0
+		Physical memory (bytes) snapshot=0
+		Virtual memory (bytes) snapshot=0
+		Total committed heap usage (bytes)=3218079744
+	File Input Format Counters
+		Bytes Read=565952783
+	File Output Format Counters
+		Bytes Written=14409541
+	pegasus.PagerankNaive$PrCounters
+		CONVERGE_CHECK=1
+Iteration = 3, changed reducer = 1
+
+[PEGASUS] PageRank computed.
+[PEGASUS] The final PageRanks are in the HDFS pr_vector.

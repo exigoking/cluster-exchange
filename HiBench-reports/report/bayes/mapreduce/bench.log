@@ -1,0 +1,28 @@
+MAHOUT_LOCAL is not set; adding HADOOP_CONF_DIR to classpath.
+Running on hadoop, using /usr/local/hadoop/bin/hadoop and HADOOP_CONF_DIR=/usr/local/hadoop/etc/hadoop
+MAHOUT-JOB: /home/hduser/HiBench/src/mahout/target/mahout-distribution-0.9/mahout-examples-0.9-job.jar
+16/01/09 15:50:21 WARN driver.MahoutDriver: No trainnb.props found on classpath, will use command-line arguments only
+16/01/09 15:50:21 INFO common.AbstractJob: Command line arguments: {--alphaI=[1.0], --endPhase=[2147483647], --extractLabels=null, --input=[hdfs://master:54310/HiBench/Bayes/Output/vectors/tfidf-vectors], --labelIndex=[hdfs://master:54310/HiBench/Bayes/Output/labelindex], --output=[hdfs://master:54310/HiBench/Bayes/Output/model], --overwrite=null, --startPhase=[0], --tempDir=[hdfs://master:54310/HiBench/Bayes/Output/temp]}
+16/01/09 15:50:22 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/01/09 15:50:23 INFO Configuration.deprecation: mapred.input.dir is deprecated. Instead, use mapreduce.input.fileinputformat.inputdir
+16/01/09 15:50:23 INFO Configuration.deprecation: mapred.compress.map.output is deprecated. Instead, use mapreduce.map.output.compress
+16/01/09 15:50:23 INFO Configuration.deprecation: mapred.output.dir is deprecated. Instead, use mapreduce.output.fileoutputformat.outputdir
+Exception in thread "main" java.lang.IncompatibleClassChangeError: Found interface org.apache.hadoop.mapreduce.JobContext, but class was expected
+	at org.apache.mahout.common.HadoopUtil.getCustomJobName(HadoopUtil.java:174)
+	at org.apache.mahout.common.AbstractJob.prepareJob(AbstractJob.java:614)
+	at org.apache.mahout.classifier.naivebayes.training.TrainNaiveBayesJob.run(TrainNaiveBayesJob.java:103)
+	at org.apache.hadoop.util.ToolRunner.run(ToolRunner.java:70)
+	at org.apache.mahout.classifier.naivebayes.training.TrainNaiveBayesJob.main(TrainNaiveBayesJob.java:64)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.apache.hadoop.util.ProgramDriver$ProgramDescription.invoke(ProgramDriver.java:72)
+	at org.apache.hadoop.util.ProgramDriver.run(ProgramDriver.java:144)
+	at org.apache.hadoop.util.ProgramDriver.driver(ProgramDriver.java:152)
+	at org.apache.mahout.driver.MahoutDriver.main(MahoutDriver.java:195)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.apache.hadoop.util.RunJar.main(RunJar.java:212)

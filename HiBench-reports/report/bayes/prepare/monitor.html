@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>System monitor report of HadoopPrepareBayes</title>
+    <style TYPE="text/css">
+      .highcharts-tooltip>span {
+	background: rgba(255,255,255,0.85);
+	border: 1px solid silver;
+	border-radius: 3px;
+	box-shadow: 1px 1px 2px #888;
+	padding: 8px;
+	z-index: 2;
+      }
+    </style>
+    <script type='text/javascript' src='https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.min.js'></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/modules/data.js"></script>
+    <script src="http://code.highcharts.com/modules/heatmap.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+    <script type='text/javascript'>
+    Object.defineProperty(Number.prototype,'fileSize',{value:function(a,b,c,d){
+	return (a=a?[1e3,'k','B']:[1024,'K','iB'],b=Math,c=b.log,
+		d=c(this)/c(a[0])|0,this/b.pow(a[0],d)).toFixed(2)
+	    +(d?(a[1]+'MGTPEZY')[--d]+a[2]:'Bytes');
+    },writable:false,enumerable:false});
+
+    function parse_events(){
+	var data = document.getElementById("csv_events").innerHTML;
+	var events=[];
+	var csv_header = [];
+	$.each(data.split('\n'), function(lineNo, line){
+	    var items = line.split(',');
+	    if (lineNo==0){
+		$.each(items, function(itemNo, item){
+		    csv_header.push(item);
+		});
+	    }else {
+		value = [];
+		$.each(items, function(itemNo, item){
+		    if (itemNo == 0){ // 0 -> timestamp
+			item = parseFloat(item);
+		    }
+//		    value[csv_header[itemNo]] = item;
+		    value.push(item);
+		});
+		events.push({color: 'red',
+			     dashStyle: 'longdashdot',
+			     value: value[0],
+			     label:{
+				 useHTML: true,
+				 text:value[1],
+				 align:'left'
+			     },
+			     width: 2});
+	    }
+	});
+	return events;
+    }
+
+function merge_options(obj1,obj2){
+    var obj3 = {};
+    for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
+    for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
+    return obj3;
+}
+
+function gen_overall_options(suffix, title, yAxis_desc, plot_options, plot_events, chart_type){
+    var data = document.getElementById("csv_"+suffix).innerHTML;
+    var csv_header = [];
+	
+    var series=[];
+    var yaxis=0;
+    $.each(data.split('\n'), function(lineNo, line){
+	var items = line.split(',');
+	if (lineNo==0){
+	    $.each(items, function(itemNo, item){
+		if (item[0]=='|'){ // new axis
+		    item = item.substring(1);
+		    yaxis +=1;
+		}
+		csv_header.push(item);
+		series.push({name:item, yAxis: yaxis, data:[],
+			     tooltip: yAxis_desc[yaxis].tooltip
+			    })
+	    });
+	} else {
+	    $.each(items, function(itemNo, item){
+		if (itemNo>0){
+		    series[itemNo].data.push([parseFloat(items[0]), parseFloat(item)])
+		}
+	    });
+	}
+    });
+    series.splice(0,1);
+    var options = {
+	chart: merge_options({
+	    renderTo: 'container_'+suffix,
+	},
+			     chart_type),
+	title: {
+	    text: title
+	},
+	// tooltip: {
+	// 	pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b> ({point.y:,.0f})<br/>',
+        // shared: true
+        // },
+	
+	
+	plotOptions: plot_options,
+	
+	xAxis: {
+	    type: 'datetime',
+	    tickmarkPlacement: 'on',
+	    labels: {
+                align: 'left',
+                x: 5,
+                format: '{value:%M:%S}'
+	    },
+	    plotLines: plot_events,
+	    title: {
+                enabled: false
+	    }
+	},
+	yAxis: yAxis_desc,
+	series: series
+    };
+    //	console.log(options.series)
+
+    var newchart = new Highcharts.Chart(options);
+}
+
+function gen_heatmap_options(suffix, title, yAxis_desc, colorAxis_desc, series_desc){
+    
+    var data = document.getElementById("csv_"+suffix).innerHTML;
+    var csv_header = [];
+	
+    var series=[];
+    var yaxis=0;
+
+    var options = {
+	chart: {
+	    renderTo: 'container_'+suffix,
+	    type: 'heatmap',
+	    margin: [60, 10, 80, 70]
+	},
+	title: {
+	    text: title
+	},
+	tooltip: {
+	    backgroundColor: null,
+	    borderWidth: 0,
+	    distance: 10,
+	    shadow: false,
+	    useHTML: true,
+	    style: {
+                padding: 0,
+                color: 'black'
+	    }
+        },
+	xAxis: {
+	    type: 'datetime',
+	    labels: {
+                align: 'left',
+                x: 5,
+                format: '{value:%M:%S}'
+	    },
+	    showLastLabel: false,
+	    tickLength: 16
+	},
+	yAxis: yAxis_desc,
+	colorAxis: merge_options({
+	    stops: [
+                [0, '#3060cf'],
+                [0.5, '#fffbbc'],
+                [0.9, '#c4463a'],
+                [1, '#c4463a']
+	    ],
+	    startOnTick: false,
+	    endOnTick: false,
+	    labels: {
+                format: '{value}%'
+	    }
+	},
+				 colorAxis_desc),
+	series: [merge_options({
+	    name : 'CPU usage',
+	    borderWidth: 1,
+	    nullColor: '#EFEFEF',
+	    colsize: 5000.0, // 1s
+	    tooltip: {
+                headerFormat: 'CPU Usage<br/>',
+                pointFormat: '{point.x%Y-%m-%d %H:%M:%S}<br/>{point.hostname}.{point.coreid}<br/><b>{point.value:%.2f} %</b>'
+	    },
+	    turboThreshold: Number.MAX_VALUE,
+	    data: []
+	}, series_desc)]
+    };
+    
+    var data =  document.getElementById('csv_'+suffix).innerHTML;
+    // Split the lines
+    var lines = data.split('\n');
+    var csv_header = [];
+    var max_value = 0;
+    var min_value = -1;
+    $.each(lines, function(lineNo, line) {
+	var items = line.split(',');
+	    
+	// header line containes categories
+	if (lineNo == 0) {
+	    $.each(items, function(itemNo, item){
+		csv_header.push(item);
+	    });
+	} else { // the rest of the lines contain data with their name in the first position
+	    var series_data = {};
+	    $.each(items, function(itemNo, item) {
+		var value;
+		if (itemNo <= 2) {
+		    value = parseFloat(item);
+		    if (itemNo == 2){
+			if (max_value< value) max_value = value;		
+			if ((min_value<0) || ( min_value>value)) min_value = value;
+		    }
+		} else {
+		    value = item;
+		}
+		series_data[csv_header[itemNo]] = value;
+	    });
+	    options.series[0].data.push(series_data);
+	}
+    }  );
+    if (!("max" in colorAxis_desc)){
+	options.colorAxis.max = max_value;
+    }
+    if (!("min" in colorAxis_desc)){
+	options.colorAxis,min = min_value;
+    }
+
+
+    var newchart = new Highcharts.Chart(options);
+}
+
+    $(function() {
+
+	/**
+	 * This plugin extends Highcharts in two ways:
+	 * - Use HTML5 canvas instead of SVG for rendering of the heatmap squares. Canvas
+	 *   outperforms SVG when it comes to thousands of single shapes.
+	 * - Add a K-D-tree to find the nearest point on mouse move. Since we no longer have SVG shapes
+	 *   to capture mouseovers, we need another way of detecting hover points for the tooltip.
+	 */
+	(function (H) {
+            var wrap = H.wrap,
+            seriesTypes = H.seriesTypes;
+	    
+            /**
+             * Get the canvas context for a series
+             */
+            H.Series.prototype.getContext = function () {
+		var canvas;
+		if (!this.ctx) {
+                    canvas = document.createElement('canvas');
+                    canvas.setAttribute('width', this.chart.plotWidth);
+                    canvas.setAttribute('height', this.chart.plotHeight);
+                    canvas.style.position = 'absolute';
+                    canvas.style.left = this.group.translateX + 'px';
+                    canvas.style.top = this.group.translateY + 'px';
+                    canvas.style.zIndex = 0;
+                    canvas.style.cursor = 'crosshair';
+                    this.chart.container.appendChild(canvas);
+                    if (canvas.getContext) {
+			this.ctx = canvas.getContext('2d');
+                    }
+		}
+		return this.ctx;
+            }
+
+            /**
+             * Wrap the drawPoints method to draw the points in canvas instead of the slower SVG,
+             * that requires one shape each point.
+             */
+            H.wrap(H.seriesTypes.heatmap.prototype, 'drawPoints', function (proceed) {
+		
+		var ctx;
+		if (this.chart.renderer.forExport) {
+                    // Run SVG shapes
+                    proceed.call(this);
+		    
+		} else {
+		    
+                    if (ctx = this.getContext()) {
+			
+			// draw the columns
+			H.each(this.points, function (point) {
+                            var plotY = point.plotY,
+                            shapeArgs;
+			    
+                            if (plotY !== undefined && !isNaN(plotY) && point.y !== null) {
+				shapeArgs = point.shapeArgs;
+				
+				ctx.fillStyle = point.pointAttr[''].fill;
+				ctx.fillRect(shapeArgs.x, shapeArgs.y, shapeArgs.width, shapeArgs.height);
+                            }
+			});
+			
+                    } else {
+			this.chart.showLoading("Your browser doesn't support HTML5 canvas, <br>please use a modern browser");
+			
+			// Uncomment this to provide low-level (slow) support in oldIE. It will cause script errors on
+			// charts with more than a few thousand points.
+			//proceed.call(this);
+                    }
+		}
+            });
+	}(Highcharts));
+
+
+//	var chart_cpu_heatmap = new Highcharts.Chart(options);
+	var events = parse_events();
+
+	// generate heatmaps
+	// generate cpu heatmap
+	gen_heatmap_options("cpu_heatmap", "CPU usage heatmap", 
+			    {
+				title: {
+				    text: null
+				},
+				labels: {
+				    formatter: function(){
+					return 'Core-'+this.value;
+				    }
+				},
+				minPadding: 0,
+				maxPadding: 0,
+				startOnTick: false,
+				endOnTick: false,
+				tickWidth: 1,
+				min: 0,
+			    },
+			    {min:0, max:100, labels:{format:'{value}%'}},
+			    {name : 'CPU Usage',
+			     tooltip:{
+				 headerFormat: 'CPU Usage<br/>',
+				 pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.hostname}.{point.coreid}<br/><b>{point.value:%.2f} %</b>'
+			     }});
+
+	// generate network throughputs heatmap
+	gen_heatmap_options("network_heatmap", "Network throughputs heatmap", 
+			    {
+				title: {
+				    text: null
+				},
+				labels: {
+				    formatter: function(){
+					return  'Eth-'+this.value;
+				    }
+				},
+				minPadding: 0,
+				maxPadding: 0,
+				startOnTick: false,
+				endOnTick: false,
+				tickWidth: 1,
+				min: 0,
+			    },
+			    {labels:{format:'{value}'}},
+			    {name : 'Network throughputs',
+			     tooltip:{
+				 headerFormat: 'Network throughputs<br/>',
+				 pointFormatter: function () {
+				     return Highcharts.dateFormat("%Y-%m-%d %H:%M:%S",this.x)+'<br/>'+this.hostname+"."+this.adapterid+'<br/><b>'+this.value.fileSize()+'</b>';}
+			     }}
+			    );
+
+	// generate disk io throughputs heatmap
+	gen_heatmap_options("diskio_heatmap", "Disk throughputs heatmap", 
+			    {
+				title: {
+				    text: null
+				},
+				labels: {
+				    formatter: function (){
+					return 'Disk-'+this.value;
+				    }
+				},
+				minPadding: 0,
+				maxPadding: 0,
+				startOnTick: false,
+				endOnTick: false,
+				tickWidth: 1,
+				min: 0,
+			    },
+			    {labels:{format: '{value}'}},
+			    {name : 'DiskIO throughputs',
+			     tooltip:{
+				 headerFormat: 'DiskIO throughputs<br/>',
+				 pointFormatter: function () {
+				     return Highcharts.dateFormat("%Y-%m-%d %H:%M:%S",this.x)+'<br/>'+this.hostname+"."+this.diskid+'<br/><b>'+this.value.fileSize()+'</b>';}
+			     }});
+
+	// generate memory usage heatmap
+	gen_heatmap_options("memory_heatmap", "Memory usage heatmap", 
+			    {
+				title: {
+				    text: null
+				},
+				labels: {
+				    formatter: function () {
+					return 'Node-'+this.value;
+				    }
+				},
+				minPadding: 0,
+				maxPadding: 0,
+				startOnTick: false,
+				endOnTick: false,
+				tickWidth: 1,
+				min: 0,
+			    },
+			    {labels:{formatter: function (){ return this.value.fileSize();}}},
+			    {name : 'Memory Usage',
+			     tooltip:{
+				 headerFormat: 'Memory Usage<br/>',
+				 pointFormatter: function () {
+				     return Highcharts.dateFormat("%Y-%m-%d %H:%M:%S",this.x)+'<br/>'+this.hostname+'<br/><b>'+this.value.fileSize()+'</b>';}
+			     }});
+
+	// generate proc numbers heatmap
+	gen_heatmap_options("procload_heatmap", "Process numbers heatmap", 
+			    {
+				title: {
+				    text: null
+				},
+				labels: {
+				    formatter: function () {
+					return  'Node-'+ this.value;
+				    }
+				},
+				minPadding: 0,
+				maxPadding: 0,
+				startOnTick: false,
+				endOnTick: false,
+				tickWidth: 1,
+				min: 0,
+			    },
+			    {labels:{format:'{value}'}},
+			    {name : 'Process(/Thread) numbers',
+			     tooltip:{
+				 headerFormat: 'Process numbers<br/>',
+				 pointFormatter: function () {
+				     return Highcharts.dateFormat("%Y-%m-%d %H:%M:%S",this.x)+'<br/>'+this.hostname+'<br/><b>'+this.value+'</b>';}
+			     }}
+			   );
+	
+
+	// load cpu overall
+	gen_overall_options("cpu_overall", "Summarized CPU usage",
+			    [{	// yaxis
+				title: {
+				    text: 'Percent'
+				},
+				tooltip: {
+				    pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b>)<br/>',
+				},
+			    }], 
+			    {	// plot options
+				area: {
+				    stacking: 'percent',
+				    lineColor: '#ffffff',
+				    lineWidth: 1,
+				    marker: {
+					lineWidth: 1,
+					lineColor: '#ffffff'
+				    }
+				}
+			    },
+			    events,
+			    {	// chart type
+			    	type: 'area',
+			    }
+			   );
+
+	// load network overall
+	gen_overall_options("network_overall", "Summarized Network throughputs & Packet-per-seconds", 
+			    [	// yaxis
+				{
+				    title:{
+					text: "Throughput Per Second"
+				    },
+				    tooltip: {
+					pointFormatter: function () {
+					    return '<span style="color:'+this.series.color+'">'+this.series.name+'</span>: <b>' + this.y.fileSize()+'</b>)<br/>';
+					}
+				    },
+				    labels: {
+					formatter: function() {
+					    return this.value.fileSize();
+					    }
+					}
+				},
+				{
+				    title:{
+					text: "Packets Per Second"
+				    },
+				    tooltip: {
+					pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.0f} packets</b>)<br/>',
+				    },
+				    opposite: true,
+				    reversed: true
+				},
+			    ],
+			    {},	// plot options
+			    events,
+			    {	// chart type
+			    	type: 'area',
+			    }
+			   );
+
+	// load diskio overall
+	gen_overall_options("diskio_overall", "Summarized Disk throughputs & IOPS",
+			    [	// yaxis
+				{
+				    title:{
+					text: "Throughput Per Second"
+				    },
+				    tooltip: {
+					pointFormatter: function () {
+					    return '<span style="color:'+this.series.color +'">'+this.series.name+'</span>: <b>' + this.y.fileSize()+'</b>)<br/>';
+					},
+				    },
+				    labels: {
+					formatter: function() {
+					    return this.value.fileSize();
+					}
+				    }
+				},
+				{
+				    title:{
+					text: "Operations Per Second"
+				    },
+				    tooltip: {
+					pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.0f} IO</b>)<br/>',
+				    },
+				    opposite: true,
+				    reversed: true
+				}
+			    ],
+			    {},	// plot operations
+			    events,
+			    {	// chart type
+			    	type: 'area',
+			    }
+			   );
+
+	// load memory overall
+	gen_overall_options("memory_overall", "Summarized Memory usage",
+			    [{	// yaxis
+				title: {
+				    text: 'Percent'
+				},
+				tooltip: {
+				    pointFormatter: function () {
+					return '<span style="color:'+this.series.color+'">'+this.series.name+'</span>: <b>' + (this.y*1024).fileSize()+'</b>)<br/>';
+				    }
+				},
+			    }], 
+			    {	// plot options
+				area: {
+				    stacking: 'percent',
+				    lineColor: '#ffffff',
+				    lineWidth: 1,
+				    marker: {
+					lineWidth: 1,
+					lineColor: '#ffffff'
+				    }
+				}
+			    },
+			    events,
+			    {	// chart type
+			    	type: 'area',
+			    }
+			   );
+
+	// load procload overall
+	gen_overall_options("procload_overall", "Summarized system load",
+			    [{	// yaxis for loads
+				title: {
+				    text: 'load'
+				},
+				tooltip: {
+				    pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:0.2f}</b>)<br/>',
+				},
+			    },
+			     {	// yaxis for running & total process
+				 title: {
+				     text: 'process number'
+				 },
+				 tooltip: {
+				     pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.0f}</b>)<br/>',
+				 },
+				 opposite: true,
+			    }], 
+			    {	// plot options
+			    },
+			    events,
+			     {	// chart type
+			    }
+			   );
+    });
+</script>
+</head>
+<body>
+    <h1>Workload: HadoopPrepareBayes</h1>
+    
+    <div id="container_cpu_heatmap" style="height: 800px; max-width: 1000px; margin: 0 auto"></div>
+    <div id="container_cpu_overall" style="height: 400px; max-width: 1000px; margin: 0 auto"></div>
+    
+    <div id="container_network_heatmap" style="height: 800px; max-width: 1000px; margin: 0 auto"></div>
+    <div id="container_network_overall" style="height: 400px; max-width: 1000px; margin: 0 auto"></div>
+
+    <div id="container_diskio_heatmap" style="height: 800px; max-width: 1000px; margin: 0 auto"></div>
+    <div id="container_diskio_overall" style="height: 400px; max-width: 1000px; margin: 0 auto"></div>
+    
+    <div id="container_memory_heatmap" style="height: 400px; max-width: 1000px; margin: 0 auto"></div>
+    <div id="container_memory_overall" style="height: 400px; max-width: 1000px; margin: 0 auto"></div>
+
+    <div id="container_procload_heatmap" style="height: 400px; max-width: 1000px; margin: 0 auto"></div>
+    <div id="container_procload_overall" style="height: 400px; max-width: 1000px; margin: 0 auto"></div>
+
+    <pre id="csv_cpu_heatmap" style="display: none">x,y,value,hostname,coreid
+1452372455000,0,0.60120240481,localhost,cpu22
+1452372455000,1,0.998003992016,localhost,cpu23
+1452372455000,2,0.0,localhost,cpu20
+1452372455000,3,2.4,localhost,cpu21
+1452372455000,4,0.2,localhost,cpu26
+1452372455000,5,1.59680638723,localhost,cpu27
+1452372455000,6,0.199600798403,localhost,cpu24
+1452372455000,7,0.2,localhost,cpu25
+1452372455000,8,2.78884462151,localhost,cpu28
+1452372455000,9,0.6,localhost,cpu29
+1452372455000,10,0.0,localhost,cpu17
+1452372455000,11,0.2,localhost,cpu16
+1452372455000,12,25.6513026052,localhost,cpu15
+1452372455000,13,0.602409638554,localhost,cpu14
+1452372455000,14,0.4,localhost,cpu13
+1452372455000,15,0.801603206413,localhost,cpu12
+1452372455000,16,0.4,localhost,cpu11
+1452372455000,17,10.0,localhost,cpu10
+1452372455000,18,0.0,localhost,cpu19
+1452372455000,19,0.0,localhost,cpu18
+1452372455000,20,0.0,localhost,cpu31
+1452372455000,21,8.96414342629,localhost,cpu30
+1452372455000,22,1.00200400802,localhost,cpu3
+1452372455000,23,1.80722891566,localhost,cpu2
+1452372455000,24,5.43259557344,localhost,cpu1
+1452372455000,25,15.2304609218,localhost,cpu0
+1452372455000,26,3.79241516966,localhost,cpu7
+1452372455000,27,2.00803212851,localhost,cpu6
+1452372455000,28,25.6565656566,localhost,cpu5
+1452372455000,29,33.1337325349,localhost,cpu4
+1452372455000,30,18.0722891566,localhost,cpu9
+1452372455000,31,18.2364729459,localhost,cpu8
+1452372460000,0,0.796812749004,localhost,cpu22
+1452372460000,1,0.2,localhost,cpu23
+1452372460000,2,0.200400801603,localhost,cpu20
+1452372460000,3,0.8,localhost,cpu21
+1452372460000,4,0.796812749004,localhost,cpu26
+1452372460000,5,0.2,localhost,cpu27
+1452372460000,6,0.0,localhost,cpu24
+1452372460000,7,11.4,localhost,cpu25
+1452372460000,8,11.623246493,localhost,cpu28
+1452372460000,9,1.39442231076,localhost,cpu29
+1452372460000,10,0.796812749004,localhost,cpu17
+1452372460000,11,0.998003992016,localhost,cpu16
+1452372460000,12,21.4428857715,localhost,cpu15
+1452372460000,13,1.40562248996,localhost,cpu14
+1452372460000,14,2.20440881764,localhost,cpu13
+1452372460000,15,9.0,localhost,cpu12
+1452372460000,16,8.41683366733,localhost,cpu11
+1452372460000,17,10.2204408818,localhost,cpu10
+1452372460000,18,3.2,localhost,cpu19
+1452372460000,19,0.0,localhost,cpu18
+1452372460000,20,3.38645418327,localhost,cpu31
+1452372460000,21,0.399201596806,localhost,cpu30
+1452372460000,22,15.2129817444,localhost,cpu3
+1452372460000,23,14.553014553,localhost,cpu2
+1452372460000,24,10.7070707071,localhost,cpu1
+1452372460000,25,2.44897959184,localhost,cpu0
+1452372460000,26,1.00401606426,localhost,cpu7
+1452372460000,27,5.62248995984,localhost,cpu6
+1452372460000,28,22.3107569721,localhost,cpu5
+1452372460000,29,2.4,localhost,cpu4
+1452372460000,30,13.627254509,localhost,cpu9
+1452372460000,31,44.1117764471,localhost,cpu8
+1452372465000,0,2.8,localhost,cpu22
+1452372465000,1,2.8,localhost,cpu23
+1452372465000,2,2.19123505976,localhost,cpu20
+1452372465000,3,4.40881763527,localhost,cpu21
+1452372465000,4,1.8,localhost,cpu26
+1452372465000,5,1.00200400802,localhost,cpu27
+1452372465000,6,0.0,localhost,cpu24
+1452372465000,7,2.2,localhost,cpu25
+1452372465000,8,0.0,localhost,cpu28
+1452372465000,9,1.20481927711,localhost,cpu29
+1452372465000,10,2.60521042084,localhost,cpu17
+1452372465000,11,1.20724346076,localhost,cpu16
+1452372465000,12,2.4,localhost,cpu15
+1452372465000,13,2.79441117764,localhost,cpu14
+1452372465000,14,3.21285140562,localhost,cpu13
+1452372465000,15,37.7510040161,localhost,cpu12
+1452372465000,16,5.23138832998,localhost,cpu11
+1452372465000,17,18.2,localhost,cpu10
+1452372465000,18,5.58882235529,localhost,cpu19
+1452372465000,19,1.8,localhost,cpu18
+1452372465000,20,0.0,localhost,cpu31
+1452372465000,21,0.400801603206,localhost,cpu30
+1452372465000,22,14.3442622951,localhost,cpu3
+1452372465000,23,12.1649484536,localhost,cpu2
+1452372465000,24,3.61445783133,localhost,cpu1
+1452372465000,25,5.45454545455,localhost,cpu0
+1452372465000,26,2.20440881764,localhost,cpu7
+1452372465000,27,2.80561122244,localhost,cpu6
+1452372465000,28,10.060362173,localhost,cpu5
+1452372465000,29,13.4419551935,localhost,cpu4
+1452372465000,30,3.2,localhost,cpu9
+1452372465000,31,32.4649298597,localhost,cpu8
+1452372470000,0,13.8554216867,localhost,cpu22
+1452372470000,1,13.7724550898,localhost,cpu23
+1452372470000,2,13.373253493,localhost,cpu20
+1452372470000,3,14.4288577154,localhost,cpu21
+1452372470000,4,6.0,localhost,cpu26
+1452372470000,5,2.0,localhost,cpu27
+1452372470000,6,25.3493013972,localhost,cpu24
+1452372470000,7,3.8,localhost,cpu25
+1452372470000,8,1.2,localhost,cpu28
+1452372470000,9,1.99600798403,localhost,cpu29
+1452372470000,10,14.371257485,localhost,cpu17
+1452372470000,11,12.5498007968,localhost,cpu16
+1452372470000,12,9.23694779116,localhost,cpu15
+1452372470000,13,12.2,localhost,cpu14
+1452372470000,14,14.4,localhost,cpu13
+1452372470000,15,17.4,localhost,cpu12
+1452372470000,16,48.3935742972,localhost,cpu11
+1452372470000,17,12.0481927711,localhost,cpu10
+1452372470000,18,14.0,localhost,cpu19
+1452372470000,19,14.7704590818,localhost,cpu18
+1452372470000,20,9.4,localhost,cpu31
+1452372470000,21,2.0,localhost,cpu30
+1452372470000,22,15.9183673469,localhost,cpu3
+1452372470000,23,19.28721174,localhost,cpu2
+1452372470000,24,13.849287169,localhost,cpu1
+1452372470000,25,14.0562248996,localhost,cpu0
+1452372470000,26,18.9134808853,localhost,cpu7
+1452372470000,27,19.0669371197,localhost,cpu6
+1452372470000,28,14.9193548387,localhost,cpu5
+1452372470000,29,16.7676767677,localhost,cpu4
+1452372470000,30,12.6506024096,localhost,cpu9
+1452372470000,31,15.2304609218,localhost,cpu8
+1452372475000,0,0.399201596806,localhost,cpu22
+1452372475000,1,0.803212851406,localhost,cpu23
+1452372475000,2,1.19521912351,localhost,cpu20
+1452372475000,3,1.0,localhost,cpu21
+1452372475000,4,0.0,localhost,cpu26
+1452372475000,5,0.0,localhost,cpu27
+1452372475000,6,0.0,localhost,cpu24
+1452372475000,7,0.0,localhost,cpu25
+1452372475000,8,0.0,localhost,cpu28
+1452372475000,9,0.0,localhost,cpu29
+1452372475000,10,0.998003992016,localhost,cpu17
+1452372475000,11,0.200400801603,localhost,cpu16
+1452372475000,12,0.2,localhost,cpu15
+1452372475000,13,0.200400801603,localhost,cpu14
+1452372475000,14,0.200400801603,localhost,cpu13
+1452372475000,15,0.59880239521,localhost,cpu12
+1452372475000,16,8.38323353293,localhost,cpu11
+1452372475000,17,0.4,localhost,cpu10
+1452372475000,18,0.998003992016,localhost,cpu19
+1452372475000,19,0.8,localhost,cpu18
+1452372475000,20,0.0,localhost,cpu31
+1452372475000,21,0.0,localhost,cpu30
+1452372475000,22,4.88798370672,localhost,cpu3
+1452372475000,23,5.99173553719,localhost,cpu2
+1452372475000,24,2.99401197605,localhost,cpu1
+1452372475000,25,3.83838383838,localhost,cpu0
+1452372475000,26,9.49494949495,localhost,cpu7
+1452372475000,27,2.0202020202,localhost,cpu6
+1452372475000,28,2.20440881764,localhost,cpu5
+1452372475000,29,8.87096774194,localhost,cpu4
+1452372475000,30,26.6932270916,localhost,cpu9
+1452372475000,31,11.2,localhost,cpu8
+1452372480000,0,5.97609561753,localhost,cpu22
+1452372480000,1,1.81451612903,localhost,cpu23
+1452372480000,2,2.4,localhost,cpu20
+1452372480000,3,3.39321357285,localhost,cpu21
+1452372480000,4,0.2,localhost,cpu26
+1452372480000,5,0.2,localhost,cpu27
+1452372480000,6,1.2,localhost,cpu24
+1452372480000,7,2.39520958084,localhost,cpu25
+1452372480000,8,0.59880239521,localhost,cpu28
+1452372480000,9,0.0,localhost,cpu29
+1452372480000,10,2.83400809717,localhost,cpu17
+1452372480000,11,5.21042084168,localhost,cpu16
+1452372480000,12,2.8,localhost,cpu15
+1452372480000,13,2.6,localhost,cpu14
+1452372480000,14,3.4,localhost,cpu13
+1452372480000,15,4.6,localhost,cpu12
+1452372480000,16,3.81526104418,localhost,cpu11
+1452372480000,17,23.8866396761,localhost,cpu10
+1452372480000,18,2.6,localhost,cpu19
+1452372480000,19,3.0,localhost,cpu18
+1452372480000,20,0.8,localhost,cpu31
+1452372480000,21,2.59481037924,localhost,cpu30
+1452372480000,22,7.92682926829,localhost,cpu3
+1452372480000,23,17.0526315789,localhost,cpu2
+1452372480000,24,3.23886639676,localhost,cpu1
+1452372480000,25,7.77096114519,localhost,cpu0
+1452372480000,26,8.88888888889,localhost,cpu7
+1452372480000,27,9.41883767535,localhost,cpu6
+1452372480000,28,14.4869215292,localhost,cpu5
+1452372480000,29,5.65656565657,localhost,cpu4
+1452372480000,30,64.4,localhost,cpu9
+1452372480000,31,3.60721442886,localhost,cpu8
+1452372485000,0,0.8,localhost,cpu22
+1452372485000,1,0.401606425703,localhost,cpu23
+1452372485000,2,0.0,localhost,cpu20
+1452372485000,3,0.400801603206,localhost,cpu21
+1452372485000,4,0.798403193613,localhost,cpu26
+1452372485000,5,1.59680638723,localhost,cpu27
+1452372485000,6,3.19361277445,localhost,cpu24
+1452372485000,7,1.2,localhost,cpu25
+1452372485000,8,9.2,localhost,cpu28
+1452372485000,9,0.59880239521,localhost,cpu29
+1452372485000,10,0.199600798403,localhost,cpu17
+1452372485000,11,1.39720558882,localhost,cpu16
+1452372485000,12,10.2409638554,localhost,cpu15
+1452372485000,13,1.20240480962,localhost,cpu14
+1452372485000,14,30.8467741935,localhost,cpu13
+1452372485000,15,12.5748502994,localhost,cpu12
+1452372485000,16,1.79640718563,localhost,cpu11
+1452372485000,17,1.8,localhost,cpu10
+1452372485000,18,1.19760479042,localhost,cpu19
+1452372485000,19,0.0,localhost,cpu18
+1452372485000,20,0.801603206413,localhost,cpu31
+1452372485000,21,1.99600798403,localhost,cpu30
+1452372485000,22,4.70347648262,localhost,cpu3
+1452372485000,23,13.2075471698,localhost,cpu2
+1452372485000,24,2.41448692153,localhost,cpu1
+1452372485000,25,2.00803212851,localhost,cpu0
+1452372485000,26,1.40562248996,localhost,cpu7
+1452372485000,27,4.65587044534,localhost,cpu6
+1452372485000,28,4.00801603206,localhost,cpu5
+1452372485000,29,4.6,localhost,cpu4
+1452372485000,30,5.62248995984,localhost,cpu9
+1452372485000,31,7.0281124498,localhost,cpu8
+1452372490000,0,2.0,localhost,cpu22
+1452372490000,1,1.60320641283,localhost,cpu23
+1452372490000,2,1.6,localhost,cpu20
+1452372490000,3,1.0,localhost,cpu21
+1452372490000,4,6.57370517928,localhost,cpu26
+1452372490000,5,0.0,localhost,cpu27
+1452372490000,6,0.199600798403,localhost,cpu24
+1452372490000,7,0.199600798403,localhost,cpu25
+1452372490000,8,0.59880239521,localhost,cpu28
+1452372490000,9,0.0,localhost,cpu29
+1452372490000,10,1.60320641283,localhost,cpu17
+1452372490000,11,2.39520958084,localhost,cpu16
+1452372490000,12,4.40881763527,localhost,cpu15
+1452372490000,13,36.9477911647,localhost,cpu14
+1452372490000,14,8.43373493976,localhost,cpu13
+1452372490000,15,4.22535211268,localhost,cpu12
+1452372490000,16,2.00803212851,localhost,cpu11
+1452372490000,17,9.21843687375,localhost,cpu10
+1452372490000,18,2.2,localhost,cpu19
+1452372490000,19,2.19560878244,localhost,cpu18
+1452372490000,20,0.996015936255,localhost,cpu31
+1452372490000,21,4.19161676647,localhost,cpu30
+1452372490000,22,11.4754098361,localhost,cpu3
+1452372490000,23,18.8720173536,localhost,cpu2
+1452372490000,24,3.22580645161,localhost,cpu1
+1452372490000,25,2.21774193548,localhost,cpu0
+1452372490000,26,3.19361277445,localhost,cpu7
+1452372490000,27,3.0,localhost,cpu6
+1452372490000,28,5.82329317269,localhost,cpu5
+1452372490000,29,4.41767068273,localhost,cpu4
+1452372490000,30,18.2730923695,localhost,cpu9
+1452372490000,31,32.7345309381,localhost,cpu8
+1452372495000,0,0.2,localhost,cpu22
+1452372495000,1,0.0,localhost,cpu23
+1452372495000,2,0.6,localhost,cpu20
+1452372495000,3,0.0,localhost,cpu21
+1452372495000,4,0.6,localhost,cpu26
+1452372495000,5,2.39043824701,localhost,cpu27
+1452372495000,6,2.59481037924,localhost,cpu24
+1452372495000,7,8.0,localhost,cpu25
+1452372495000,8,2.58449304175,localhost,cpu28
+1452372495000,9,0.8,localhost,cpu29
+1452372495000,10,1.80360721443,localhost,cpu17
+1452372495000,11,1.81818181818,localhost,cpu16
+1452372495000,12,2.8,localhost,cpu15
+1452372495000,13,27.6892430279,localhost,cpu14
+1452372495000,14,2.78884462151,localhost,cpu13
+1452372495000,15,2.78884462151,localhost,cpu12
+1452372495000,16,2.2,localhost,cpu11
+1452372495000,17,2.6,localhost,cpu10
+1452372495000,18,0.0,localhost,cpu19
+1452372495000,19,6.66666666667,localhost,cpu18
+1452372495000,20,2.20440881764,localhost,cpu31
+1452372495000,21,11.0220440882,localhost,cpu30
+1452372495000,22,12.7835051546,localhost,cpu3
+1452372495000,23,12.6315789474,localhost,cpu2
+1452372495000,24,3.79241516966,localhost,cpu1
+1452372495000,25,6.47773279352,localhost,cpu0
+1452372495000,26,2.2,localhost,cpu7
+1452372495000,27,2.81124497992,localhost,cpu6
+1452372495000,28,5.04032258065,localhost,cpu5
+1452372495000,29,1.60320641283,localhost,cpu4
+1452372495000,30,20.1195219124,localhost,cpu9
+1452372495000,31,37.0741482966,localhost,cpu8
+1452372500000,0,3.59281437126,localhost,cpu22
+1452372500000,1,1.40280561122,localhost,cpu23
+1452372500000,2,1.80722891566,localhost,cpu20
+1452372500000,3,2.00400801603,localhost,cpu21
+1452372500000,4,0.0,localhost,cpu26
+1452372500000,5,0.2,localhost,cpu27
+1452372500000,6,0.0,localhost,cpu24
+1452372500000,7,0.199203187251,localhost,cpu25
+1452372500000,8,0.60120240481,localhost,cpu28
+1452372500000,9,2.20883534137,localhost,cpu29
+1452372500000,10,2.0,localhost,cpu17
+1452372500000,11,1.99600798403,localhost,cpu16
+1452372500000,12,3.0,localhost,cpu15
+1452372500000,13,5.78842315369,localhost,cpu14
+1452372500000,14,0.60120240481,localhost,cpu13
+1452372500000,15,1.4,localhost,cpu12
+1452372500000,16,2.4,localhost,cpu11
+1452372500000,17,0.8,localhost,cpu10
+1452372500000,18,1.8,localhost,cpu19
+1452372500000,19,1.80360721443,localhost,cpu18
+1452372500000,20,0.0,localhost,cpu31
+1452372500000,21,0.0,localhost,cpu30
+1452372500000,22,3.65111561866,localhost,cpu3
+1452372500000,23,10.2725366876,localhost,cpu2
+1452372500000,24,4.04858299595,localhost,cpu1
+1452372500000,25,2.22222222222,localhost,cpu0
+1452372500000,26,3.00601202405,localhost,cpu7
+1452372500000,27,3.22580645161,localhost,cpu6
+1452372500000,28,2.22222222222,localhost,cpu5
+1452372500000,29,8.2995951417,localhost,cpu4
+1452372500000,30,1.6,localhost,cpu9
+1452372500000,31,56.6,localhost,cpu8
+1452372505000,0,0.2,localhost,cpu22
+1452372505000,1,0.200803212851,localhost,cpu23
+1452372505000,2,6.17529880478,localhost,cpu20
+1452372505000,3,1.19760479042,localhost,cpu21
+1452372505000,4,5.6,localhost,cpu26
+1452372505000,5,4.8,localhost,cpu27
+1452372505000,6,1.80360721443,localhost,cpu24
+1452372505000,7,11.8236472946,localhost,cpu25
+1452372505000,8,4.6,localhost,cpu28
+1452372505000,9,1.2,localhost,cpu29
+1452372505000,10,2.8,localhost,cpu17
+1452372505000,11,2.99401197605,localhost,cpu16
+1452372505000,12,6.0,localhost,cpu15
+1452372505000,13,4.6,localhost,cpu14
+1452372505000,14,6.98602794411,localhost,cpu13
+1452372505000,15,5.21042084168,localhost,cpu12
+1452372505000,16,28.7425149701,localhost,cpu11
+1452372505000,17,5.82329317269,localhost,cpu10
+1452372505000,18,1.19760479042,localhost,cpu19
+1452372505000,19,2.99401197605,localhost,cpu18
+1452372505000,20,4.39121756487,localhost,cpu31
+1452372505000,21,5.17928286853,localhost,cpu30
+1452372505000,22,12.0901639344,localhost,cpu3
+1452372505000,23,11.974789916,localhost,cpu2
+1452372505000,24,2.81690140845,localhost,cpu1
+1452372505000,25,6.03621730382,localhost,cpu0
+1452372505000,26,5.22088353414,localhost,cpu7
+1452372505000,27,4.83870967742,localhost,cpu6
+1452372505000,28,34.9494949495,localhost,cpu5
+1452372505000,29,11.9341563786,localhost,cpu4
+1452372505000,30,14.4,localhost,cpu9
+1452372505000,31,15.8953722334,localhost,cpu8
+1452372510000,0,0.199600798403,localhost,cpu22
+1452372510000,1,1.59680638723,localhost,cpu23
+1452372510000,2,0.6,localhost,cpu20
+1452372510000,3,1.2,localhost,cpu21
+1452372510000,4,1.39720558882,localhost,cpu26
+1452372510000,5,0.0,localhost,cpu27
+1452372510000,6,0.399201596806,localhost,cpu24
+1452372510000,7,0.0,localhost,cpu25
+1452372510000,8,0.0,localhost,cpu28
+1452372510000,9,0.199600798403,localhost,cpu29
+1452372510000,10,0.6,localhost,cpu17
+1452372510000,11,0.801603206413,localhost,cpu16
+1452372510000,12,0.998003992016,localhost,cpu15
+1452372510000,13,1.39720558882,localhost,cpu14
+1452372510000,14,1.39720558882,localhost,cpu13
+1452372510000,15,1.39720558882,localhost,cpu12
+1452372510000,16,3.80761523046,localhost,cpu11
+1452372510000,17,29.4820717131,localhost,cpu10
+1452372510000,18,1.39720558882,localhost,cpu19
+1452372510000,19,1.39720558882,localhost,cpu18
+1452372510000,20,0.798403193613,localhost,cpu31
+1452372510000,21,0.0,localhost,cpu30
+1452372510000,22,3.83838383838,localhost,cpu3
+1452372510000,23,3.08641975309,localhost,cpu2
+1452372510000,24,2.61569416499,localhost,cpu1
+1452372510000,25,2.61569416499,localhost,cpu0
+1452372510000,26,2.43407707911,localhost,cpu7
+1452372510000,27,2.4,localhost,cpu6
+1452372510000,28,9.35550935551,localhost,cpu5
+1452372510000,29,3.62173038229,localhost,cpu4
+1452372510000,30,23.75249501,localhost,cpu9
+1452372510000,31,7.01402805611,localhost,cpu8</pre>
+    <pre id="csv_cpu_overall" style="display: none">x,idle,user,system,iowait,others
+1452372455000,94.333604353,4.12158358872,0.738007380074,0.800550378385,0.00625429983113
+1452372460000,93.0965357389,4.848712648,0.839441207793,1.15893002568,0.0563803796279
+1452372465000,93.812751004,4.38002008032,1.38679718876,0.35140562249,0.0690261044177
+1452372470000,86.356219405,12.332119995,1.0857286306,0.188276641145,0.0376553282289
+1452372475000,97.0496116262,1.87922826359,0.839388624405,0.200451014783,0.0313204710599
+1452372480000,93.1616954474,4.79120879121,1.58241758242,0.389324960754,0.0753532182104
+1452372485000,95.8696333438,2.95832027578,0.977749921655,0.15042306487,0.0438733939204
+1452372490000,93.943387937,3.86618966924,1.44982112596,0.702943576225,0.0376576915835
+1452372495000,94.1740875455,4.01354571679,1.57406246081,0.188134955475,0.0501693214599
+1452372500000,95.9864542832,2.71541452402,1.12880973285,0.144236799197,0.02508466073
+1452372505000,92.6944078328,5.78045565807,1.34312433315,0.138078202473,0.0439339735141
+1452372510000,96.5541006203,2.6627404298,0.620261888353,0.144101246789,0.0187958147986</pre>
+    <pre id="csv_network_heatmap" style="display: none">x,y,value,hostname,adapterid
+1452372455000,0,1318.4,localhost,eno3.recv
+1452372455000,1,473.8,localhost,eno3.send
+1452372460000,0,127077.4,localhost,eno3.recv
+1452372460000,1,1416346.2,localhost,eno3.send
+1452372465000,0,291661.2,localhost,eno3.recv
+1452372465000,1,7969988.0,localhost,eno3.send
+1452372470000,0,208360.8,localhost,eno3.recv
+1452372470000,1,11239413.4,localhost,eno3.send
+1452372475000,0,202057.6,localhost,eno3.recv
+1452372475000,1,4358842.2,localhost,eno3.send
+1452372480000,0,251117.6,localhost,eno3.recv
+1452372480000,1,13867759.8,localhost,eno3.send
+1452372485000,0,184761.0,localhost,eno3.recv
+1452372485000,1,7460298.6,localhost,eno3.send
+1452372490000,0,333347.0,localhost,eno3.recv
+1452372490000,1,8301763.0,localhost,eno3.send
+1452372495000,0,363306.6,localhost,eno3.recv
+1452372495000,1,8324810.8,localhost,eno3.send
+1452372500000,0,242187.4,localhost,eno3.recv
+1452372500000,1,7496099.4,localhost,eno3.send
+1452372505000,0,275414.0,localhost,eno3.recv
+1452372505000,1,8690859.2,localhost,eno3.send
+1452372510000,0,207028.2,localhost,eno3.recv
+1452372510000,1,6543731.4,localhost,eno3.send</pre>
+    <pre id="csv_network_overall" style="display: none">x,recv_bytes,send_bytes,|recv_packets,send_packets,errors
+1452372455000,1318.4,473.8,9.2,4.2,0.0
+1452372460000,127077.4,1416346.2,1894.8,5375.2,0.0
+1452372465000,291661.2,7969988.0,4383.6,14033.6,0.0
+1452372470000,208360.8,11239413.4,3107.2,15470.2,0.0
+1452372475000,202057.6,4358842.2,3034.6,9274.2,0.0
+1452372480000,251117.6,13867759.8,3749.8,16814.8,0.0
+1452372485000,184761.0,7460298.6,2764.4,10640.2,0.0
+1452372490000,333347.0,8301763.0,5009.2,15987.2,0.0
+1452372495000,363306.6,8324810.8,5471.6,16314.2,0.0
+1452372500000,242187.4,7496099.4,3635.6,11265.0,0.0
+1452372505000,275414.0,8690859.2,4131.2,14249.2,0.0
+1452372510000,207028.2,6543731.4,3108.8,9824.2,0.0</pre>
+    <pre id="csv_diskio_heatmap" style="display: none">x,y,value,hostname,diskid
+1452372455000,0,12324044.8,localhost,sda
+1452372460000,0,14580940.8,localhost,sda
+1452372465000,0,13927219.2,localhost,sda
+1452372470000,0,5330534.4,localhost,sda
+1452372475000,0,11884134.4,localhost,sda
+1452372480000,0,6783795.2,localhost,sda
+1452372485000,0,6967296.0,localhost,sda
+1452372490000,0,13476659.2,localhost,sda
+1452372495000,0,7040204.8,localhost,sda
+1452372500000,0,6937804.8,localhost,sda
+1452372505000,0,6692044.8,localhost,sda
+1452372510000,0,6974668.8,localhost,sda</pre>
+    <pre id="csv_diskio_overall" style="display: none">x,read_bytes,write_bytes,|read_io,write_io
+1452372455000,1638.4,12322406.4,0.4,1952.8
+1452372460000,1185382.4,13395558.4,14.4,1902.4
+1452372465000,1057587.2,12869632.0,8.8,35.4
+1452372470000,81920.0,5248614.4,0.8,57.6
+1452372475000,0.0,11884134.4,0.0,26.6
+1452372480000,0.0,6783795.2,0.0,16.8
+1452372485000,0.0,6967296.0,0.0,15.6
+1452372490000,0.0,13476659.2,0.0,33.4
+1452372495000,0.0,7040204.8,0.0,19.0
+1452372500000,0.0,6937804.8,0.0,16.4
+1452372505000,819.2,6691225.6,0.2,26.8
+1452372510000,0.0,6974668.8,0.0,16.8</pre>
+    <pre id="csv_memory_heatmap" style="display: none">x,y,value,hostname
+1452372450000,0,5394364000,localhost
+1452372455000,0,5786660000,localhost
+1452372460000,0,5713228000,localhost
+1452372465000,0,5783248000,localhost
+1452372470000,0,5882340000,localhost
+1452372475000,0,5897620000,localhost
+1452372480000,0,6016084000,localhost
+1452372485000,0,6072788000,localhost
+1452372490000,0,6135200000,localhost
+1452372495000,0,6197492000,localhost
+1452372500000,0,6260428000,localhost
+1452372505000,0,6246956000,localhost
+1452372510000,0,6275528000,localhost</pre>
+    <pre id="csv_memory_overall" style="display: none">x,free,buffer_cache,used
+1452372450000,27381160,3242524,2151840
+1452372455000,26988864,3357020,2429640
+1452372460000,27062296,3269940,2443288
+1452372465000,26992276,3308812,2474436
+1452372470000,26893184,3358368,2523972
+1452372475000,26877904,3376288,2521332
+1452372480000,26759440,3439392,2576692
+1452372485000,26702736,3471728,2601060
+1452372490000,26640324,3506756,2628444
+1452372495000,26578032,3540920,2656572
+1452372500000,26515096,3573700,2686728
+1452372505000,26528568,3610336,2636620
+1452372510000,26499996,3639620,2635908</pre>
+    <pre id="csv_procload_heatmap" style="display: none">x,y,value,hostname
+1452372450000,0,870,localhost
+1452372455000,0,872,localhost
+1452372460000,0,880,localhost
+1452372465000,0,880,localhost
+1452372470000,0,882,localhost
+1452372475000,0,882,localhost
+1452372480000,0,880,localhost
+1452372485000,0,882,localhost
+1452372490000,0,881,localhost
+1452372495000,0,880,localhost
+1452372500000,0,880,localhost
+1452372505000,0,883,localhost
+1452372510000,0,880,localhost</pre>
+    <pre id="csv_procload_overall" style="display: none">x,load5,load10,load15,|running,procs
+1452372450000,0.53,0.81,0.63,7,870
+1452372455000,0.57,0.81,0.64,5,872
+1452372460000,0.52,0.8,0.63,27,880
+1452372465000,0.56,0.8,0.63,3,880
+1452372470000,0.59,0.81,0.64,4,882
+1452372475000,0.55,0.79,0.63,9,882
+1452372480000,0.5,0.78,0.63,3,880
+1452372485000,0.54,0.78,0.63,27,882
+1452372490000,0.58,0.79,0.63,3,881
+1452372495000,0.61,0.79,0.64,2,880
+1452372500000,0.64,0.79,0.64,2,880
+1452372505000,0.67,0.8,0.64,5,883
+1452372510000,0.78,0.82,0.65,3,880</pre>
+    <pre id="csv_events" style="display: none">x,event</pre>
+
+</body>
+</html>
+

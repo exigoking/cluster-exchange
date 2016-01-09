@@ -1,0 +1,313 @@
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/usr/local/hadoop/share/hadoop/common/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/home/hduser/HiBench/src/mahout/target/mahout-distribution-0.9/lib/slf4j-log4j12-1.7.5.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+Generating Mahout KMeans Input Dataset
+16/01/09 15:55:01 INFO kmeans.GenKMeansDataset: KMeans Clustering Input Dataset : Synthetic
+16/01/09 15:55:01 INFO kmeans.GenKMeansDataset: Successfully generated Sample Generator Seeds
+16/01/09 15:55:01 INFO kmeans.GenKMeansDataset: samples seeds are:
+16/01/09 15:55:01 INFO kmeans.GenKMeansDataset: mean: (726.1614916224542,703.5433430167976,534.386646070702,908.7208271978769,160.4783555955921,767.0016747468352,552.8454475841777,577.9616574394646,646.3817437000627,927.2987998468438,435.83004397899595,193.90287704368959,297.55131481715523,35.38116107765088,513.9489981924334,475.27149434618764,111.90998649066763,56.702481159236925,270.31915891224554,954.8737504360298) std: (-68.79581704969995,-89.53770808523728,5.496974048808752,88.36311770610351,-80.21327712220412,-39.91858369611827,13.763257283456554,-9.21325543592721,-61.44883924599529,-97.3727872399059,26.79522199056801,-14.513229245424682,86.49248130468598,19.33056449624719,-34.75144298948764,43.31709847436511,61.584504652689276,-88.04668471241095,-69.06486214807994,-89.47602625632251)
+16/01/09 15:55:01 INFO kmeans.GenKMeansDataset: mean: (876.7425070831076,901.8951123122368,630.9740217464717,163.32141859064674,4.201647964558242,978.7892732134475,673.7999761041168,325.8665606294355,676.2014412663696,873.809701967505,223.40626743900194,40.3953893460397,201.61051542174434,846.0103388101038,410.1445867939121,956.4630718589872,319.7908238506533,137.65824139073322,907.8475175620757,924.344989796516) std: (-50.922465846070295,-1.4827131152904087,88.9393818781482,-73.42075248204196,85.08013080543378,-33.63202422203828,-32.27797676409567,12.044289035687129,28.54371902061149,89.01089787039862,-38.718342310764875,61.26757703068088,-98.07539702974756,8.216582106476096,37.2882382770735,-42.77274720837892,26.790362095444436,-71.6562409326351,83.51932232663921,-40.03124959797153)
+16/01/09 15:55:01 INFO kmeans.GenKMeansDataset: mean: (498.50324525616776,809.5648105881485,816.2872349872742,498.9577004848815,731.8785890734769,807.7513160592688,13.842577339061911,857.1602754612932,649.8565852885222,437.59752336337607,825.0876612619342,265.0974376656168,151.62643312024693,845.2463466703921,287.9068331008978,451.56323501688433,502.93769798959664,19.508775663887313,734.2448230537822,891.2477439821959) std: (-48.633586117197304,-32.681318625063824,-63.667646567452586,67.27915764955785,98.8225608482633,82.86764564353072,58.390711362906615,-5.8031123240922255,72.742757114587,-83.8245150230739,44.92856422497215,92.43844840453795,23.92176215343065,-14.203677150724104,-6.11443333224247,-17.277785517953646,-24.460175212200426,78.44459742311969,-40.8591019560699,56.76834231696833)
+16/01/09 15:55:01 INFO kmeans.GenKMeansDataset: mean: (316.2201948220217,46.129905154870585,744.2937543558112,741.1542791171595,424.0689935053588,997.6660443833765,469.30072931615285,166.01550854289658,282.16158406893555,214.37214373068835,781.4333671406935,528.9195279190167,653.4739593777606,949.267774580077,372.03089944323455,671.3252090060636,835.5359334541012,46.98602298533005,874.3740671899315,156.15249346776127) std: (-83.28758995064425,24.341122324394206,65.7497093710524,-9.65137544455979,-21.626138269620228,-34.29873411212654,20.67303397432036,13.679184291993437,50.17778203350801,5.234524046357208,-29.712758311377073,-99.62612361218386,-31.533692878937188,42.03969966752274,-65.5869974979064,-19.238144541886243,2.3467240062402794,-11.800687399410407,-37.48445218272871,58.34603452227449)
+16/01/09 15:55:01 INFO kmeans.GenKMeansDataset: mean: (584.0171426446519,78.09106361175,618.5970967359884,195.94965250195818,817.6561691405026,577.263742581061,563.0881254162018,27.811721911203403,431.10007716410126,481.60338762195397,716.9607825327417,920.8142937603403,808.0213773478773,486.60203508769996,287.23019172673327,620.6251230619687,729.1949665915876,749.8666221739567,782.1733627163898,16.594306997441024) std: (77.32186211971245,87.53953374260814,21.565947525071877,24.105568216662988,-60.59799109214688,76.98870228849805,97.94850686807047,20.45292460708326,78.25888675781295,80.95753270442904,-19.58311241094897,-80.70521533033892,-47.48527172778929,18.80533233074155,79.23655972665819,33.73102899145371,-43.00566598175648,-67.81080740790068,38.41974179609812,-5.890487937748418)
+16/01/09 15:55:01 INFO Configuration.deprecation: mapred.output.compress is deprecated. Instead, use mapreduce.output.fileoutputformat.compress
+16/01/09 15:55:01 INFO Configuration.deprecation: mapred.output.compression.type is deprecated. Instead, use mapreduce.output.fileoutputformat.compress.type
+16/01/09 15:55:01 INFO Configuration.deprecation: mapred.output.compression.codec is deprecated. Instead, use mapreduce.output.fileoutputformat.compress.codec
+16/01/09 15:55:01 INFO kmeans.GenKMeansDataset: mapred.output.compression.codec=org.apache.hadoop.io.compress.DefaultCodec
+16/01/09 15:55:01 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/01/09 15:55:02 INFO kmeans.GenKMeansDataset: Generate K-Means input Dataset : samples = 20000000sample dimension20 cluster num =5
+16/01/09 15:55:02 INFO kmeans.GenKMeansDataset: Start producing samples...
+16/01/09 15:55:02 INFO kmeans.GenKMeansDataset: creating file hdfs://master:54310/HiBench/Kmeans/Input/samples-seeds/seed0
+16/01/09 15:55:02 INFO kmeans.GenKMeansDataset: creating file hdfs://master:54310/HiBench/Kmeans/Input/samples-seeds/seed1
+16/01/09 15:55:02 INFO kmeans.GenKMeansDataset: creating file hdfs://master:54310/HiBench/Kmeans/Input/samples-seeds/seed2
+16/01/09 15:55:02 INFO kmeans.GenKMeansDataset: creating file hdfs://master:54310/HiBench/Kmeans/Input/samples-seeds/seed3
+16/01/09 15:55:02 INFO kmeans.GenKMeansDataset: creating file hdfs://master:54310/HiBench/Kmeans/Input/samples-seeds/seed4
+16/01/09 15:55:02 INFO kmeans.GenKMeansDataset: Generating 20000000 of samples
+16/01/09 15:55:02 INFO Configuration.deprecation: session.id is deprecated. Instead, use dfs.metrics.session-id
+16/01/09 15:55:02 INFO jvm.JvmMetrics: Initializing JVM Metrics with processName=JobTracker, sessionId=
+16/01/09 15:55:02 INFO jvm.JvmMetrics: Cannot initialize JVM Metrics with processName=JobTracker, sessionId= - already initialized
+16/01/09 15:55:03 INFO mapred.FileInputFormat: Total input paths to process : 5
+16/01/09 15:55:03 INFO mapreduce.JobSubmitter: number of splits:5
+16/01/09 15:55:03 INFO Configuration.deprecation: user.name is deprecated. Instead, use mapreduce.job.user.name
+16/01/09 15:55:03 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/01/09 15:55:03 INFO Configuration.deprecation: mapred.reduce.tasks is deprecated. Instead, use mapreduce.job.reduces
+16/01/09 15:55:03 INFO Configuration.deprecation: mapred.output.value.class is deprecated. Instead, use mapreduce.job.output.value.class
+16/01/09 15:55:03 INFO Configuration.deprecation: mapred.job.name is deprecated. Instead, use mapreduce.job.name
+16/01/09 15:55:03 INFO Configuration.deprecation: mapred.input.dir is deprecated. Instead, use mapreduce.input.fileinputformat.inputdir
+16/01/09 15:55:03 INFO Configuration.deprecation: mapred.output.dir is deprecated. Instead, use mapreduce.output.fileoutputformat.outputdir
+16/01/09 15:55:03 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/01/09 15:55:03 INFO Configuration.deprecation: mapred.output.key.class is deprecated. Instead, use mapreduce.job.output.key.class
+16/01/09 15:55:03 INFO Configuration.deprecation: mapred.working.dir is deprecated. Instead, use mapreduce.job.working.dir
+16/01/09 15:55:03 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_local1700049283_0001
+16/01/09 15:55:03 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/staging/hduser1700049283/.staging/job_local1700049283_0001/job.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.retry.interval;  Ignoring.
+16/01/09 15:55:03 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/staging/hduser1700049283/.staging/job_local1700049283_0001/job.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.attempts;  Ignoring.
+16/01/09 15:55:03 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/local/localRunner/hduser/job_local1700049283_0001/job_local1700049283_0001.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.retry.interval;  Ignoring.
+16/01/09 15:55:03 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/local/localRunner/hduser/job_local1700049283_0001/job_local1700049283_0001.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.attempts;  Ignoring.
+16/01/09 15:55:03 INFO mapreduce.Job: The url to track the job: http://localhost:8080/
+16/01/09 15:55:03 INFO mapred.LocalJobRunner: OutputCommitter set in config null
+16/01/09 15:55:03 INFO mapreduce.Job: Running job: job_local1700049283_0001
+16/01/09 15:55:03 INFO mapred.LocalJobRunner: OutputCommitter is org.apache.hadoop.mapred.FileOutputCommitter
+16/01/09 15:55:04 INFO mapreduce.Job: Job job_local1700049283_0001 running in uber mode : false
+16/01/09 15:55:04 INFO mapreduce.Job:  map 0% reduce 0%
+16/01/09 15:55:04 INFO mapred.LocalJobRunner: Waiting for map tasks
+16/01/09 15:55:04 INFO mapred.LocalJobRunner: Starting task: attempt_local1700049283_0001_m_000000_0
+16/01/09 15:55:04 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:55:04 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Kmeans/Input/samples-seeds/seed3:0+849
+16/01/09 15:55:05 INFO mapred.MapTask: numReduceTasks: 0
+16/01/09 15:55:06 INFO kmeans.GenKMeansDataset: dimension=0: mean=316.2201948220217, std=-83.28758995064425
+16/01/09 15:55:06 INFO kmeans.GenKMeansDataset: dimension=1: mean=46.129905154870585, std=24.341122324394206
+16/01/09 15:55:06 INFO kmeans.GenKMeansDataset: dimension=2: mean=744.2937543558112, std=65.7497093710524
+16/01/09 15:55:06 INFO kmeans.GenKMeansDataset: dimension=3: mean=741.1542791171595, std=-9.65137544455979
+16/01/09 15:55:06 INFO kmeans.GenKMeansDataset: dimension=4: mean=424.0689935053588, std=-21.626138269620228
+16/01/09 15:55:06 INFO kmeans.GenKMeansDataset: dimension=5: mean=997.6660443833765, std=-34.29873411212654
+16/01/09 15:55:06 INFO kmeans.GenKMeansDataset: dimension=6: mean=469.30072931615285, std=20.67303397432036
+16/01/09 15:55:06 INFO kmeans.GenKMeansDataset: dimension=7: mean=166.01550854289658, std=13.679184291993437
+16/01/09 15:55:06 INFO kmeans.GenKMeansDataset: dimension=8: mean=282.16158406893555, std=50.17778203350801
+16/01/09 15:55:06 INFO kmeans.GenKMeansDataset: dimension=9: mean=214.37214373068835, std=5.234524046357208
+16/01/09 15:55:06 INFO kmeans.GenKMeansDataset: dimension=10: mean=781.4333671406935, std=-29.712758311377073
+16/01/09 15:55:06 INFO kmeans.GenKMeansDataset: dimension=11: mean=528.9195279190167, std=-99.62612361218386
+16/01/09 15:55:06 INFO kmeans.GenKMeansDataset: dimension=12: mean=653.4739593777606, std=-31.533692878937188
+16/01/09 15:55:06 INFO kmeans.GenKMeansDataset: dimension=13: mean=949.267774580077, std=42.03969966752274
+16/01/09 15:55:06 INFO kmeans.GenKMeansDataset: dimension=14: mean=372.03089944323455, std=-65.5869974979064
+16/01/09 15:55:06 INFO kmeans.GenKMeansDataset: dimension=15: mean=671.3252090060636, std=-19.238144541886243
+16/01/09 15:55:06 INFO kmeans.GenKMeansDataset: dimension=16: mean=835.5359334541012, std=2.3467240062402794
+16/01/09 15:55:06 INFO kmeans.GenKMeansDataset: dimension=17: mean=46.98602298533005, std=-11.800687399410407
+16/01/09 15:55:06 INFO kmeans.GenKMeansDataset: dimension=18: mean=874.3740671899315, std=-37.48445218272871
+16/01/09 15:55:06 INFO kmeans.GenKMeansDataset: dimension=19: mean=156.15249346776127, std=58.34603452227449
+16/01/09 15:55:10 INFO mapred.LocalJobRunner: 472466 samples generated > map
+16/01/09 15:55:11 INFO mapreduce.Job:  map 20% reduce 0%
+16/01/09 15:55:13 INFO mapred.LocalJobRunner: 788851 samples generated > map
+16/01/09 15:55:16 INFO mapred.LocalJobRunner: 1103816 samples generated > map
+16/01/09 15:55:19 INFO mapred.LocalJobRunner: 1422867 samples generated > map
+16/01/09 15:55:22 INFO mapred.LocalJobRunner: 1739183 samples generated > map
+16/01/09 15:55:25 INFO mapred.LocalJobRunner: 2054661 samples generated > map
+16/01/09 15:55:28 INFO mapred.LocalJobRunner: 2371938 samples generated > map
+16/01/09 15:55:31 INFO mapred.LocalJobRunner: 2690063 samples generated > map
+16/01/09 15:55:34 INFO mapred.LocalJobRunner: 2987684 samples generated > map
+16/01/09 15:55:37 INFO mapred.LocalJobRunner: 3310222 samples generated > map
+16/01/09 15:55:40 INFO mapred.LocalJobRunner: 3633663 samples generated > map
+16/01/09 15:55:43 INFO mapred.LocalJobRunner: 3953649 samples generated > map
+16/01/09 15:55:44 INFO mapred.LocalJobRunner: 3953649 samples generated > map
+16/01/09 15:55:44 INFO mapred.Task: Task:attempt_local1700049283_0001_m_000000_0 is done. And is in the process of committing
+16/01/09 15:55:44 INFO mapred.LocalJobRunner: 3953649 samples generated > map
+16/01/09 15:55:44 INFO mapred.Task: Task attempt_local1700049283_0001_m_000000_0 is allowed to commit now
+16/01/09 15:55:44 INFO output.FileOutputCommitter: Saved output of task 'attempt_local1700049283_0001_m_000000_0' to hdfs://master:54310/HiBench/Kmeans/Input/samples/_temporary/0/task_local1700049283_0001_m_000000
+16/01/09 15:55:44 INFO mapred.LocalJobRunner: 4000000 samples generated
+16/01/09 15:55:44 INFO mapred.Task: Task 'attempt_local1700049283_0001_m_000000_0' done.
+16/01/09 15:55:44 INFO mapred.LocalJobRunner: Finishing task: attempt_local1700049283_0001_m_000000_0
+16/01/09 15:55:44 INFO mapred.LocalJobRunner: Starting task: attempt_local1700049283_0001_m_000001_0
+16/01/09 15:55:44 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:55:44 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Kmeans/Input/samples-seeds/seed0:0+846
+16/01/09 15:55:44 INFO mapred.MapTask: numReduceTasks: 0
+16/01/09 15:55:44 INFO kmeans.GenKMeansDataset: dimension=0: mean=726.1614916224542, std=-68.79581704969995
+16/01/09 15:55:44 INFO kmeans.GenKMeansDataset: dimension=1: mean=703.5433430167976, std=-89.53770808523728
+16/01/09 15:55:44 INFO kmeans.GenKMeansDataset: dimension=2: mean=534.386646070702, std=5.496974048808752
+16/01/09 15:55:44 INFO kmeans.GenKMeansDataset: dimension=3: mean=908.7208271978769, std=88.36311770610351
+16/01/09 15:55:44 INFO kmeans.GenKMeansDataset: dimension=4: mean=160.4783555955921, std=-80.21327712220412
+16/01/09 15:55:44 INFO kmeans.GenKMeansDataset: dimension=5: mean=767.0016747468352, std=-39.91858369611827
+16/01/09 15:55:44 INFO kmeans.GenKMeansDataset: dimension=6: mean=552.8454475841777, std=13.763257283456554
+16/01/09 15:55:44 INFO kmeans.GenKMeansDataset: dimension=7: mean=577.9616574394646, std=-9.21325543592721
+16/01/09 15:55:44 INFO kmeans.GenKMeansDataset: dimension=8: mean=646.3817437000627, std=-61.44883924599529
+16/01/09 15:55:44 INFO kmeans.GenKMeansDataset: dimension=9: mean=927.2987998468438, std=-97.3727872399059
+16/01/09 15:55:44 INFO kmeans.GenKMeansDataset: dimension=10: mean=435.83004397899595, std=26.79522199056801
+16/01/09 15:55:44 INFO kmeans.GenKMeansDataset: dimension=11: mean=193.90287704368959, std=-14.513229245424682
+16/01/09 15:55:44 INFO kmeans.GenKMeansDataset: dimension=12: mean=297.55131481715523, std=86.49248130468598
+16/01/09 15:55:44 INFO kmeans.GenKMeansDataset: dimension=13: mean=35.38116107765088, std=19.33056449624719
+16/01/09 15:55:44 INFO kmeans.GenKMeansDataset: dimension=14: mean=513.9489981924334, std=-34.75144298948764
+16/01/09 15:55:44 INFO kmeans.GenKMeansDataset: dimension=15: mean=475.27149434618764, std=43.31709847436511
+16/01/09 15:55:44 INFO kmeans.GenKMeansDataset: dimension=16: mean=111.90998649066763, std=61.584504652689276
+16/01/09 15:55:44 INFO kmeans.GenKMeansDataset: dimension=17: mean=56.702481159236925, std=-88.04668471241095
+16/01/09 15:55:44 INFO kmeans.GenKMeansDataset: dimension=18: mean=270.31915891224554, std=-69.06486214807994
+16/01/09 15:55:44 INFO kmeans.GenKMeansDataset: dimension=19: mean=954.8737504360298, std=-89.47602625632251
+16/01/09 15:55:44 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:55:50 INFO mapred.LocalJobRunner: 648366 samples generated > map
+16/01/09 15:55:50 INFO mapreduce.Job:  map 40% reduce 0%
+16/01/09 15:55:53 INFO mapred.LocalJobRunner: 981642 samples generated > map
+16/01/09 15:55:56 INFO mapred.LocalJobRunner: 1312388 samples generated > map
+16/01/09 15:55:59 INFO mapred.LocalJobRunner: 1641531 samples generated > map
+16/01/09 15:56:02 INFO mapred.LocalJobRunner: 1972626 samples generated > map
+16/01/09 15:56:05 INFO mapred.LocalJobRunner: 2303438 samples generated > map
+16/01/09 15:56:08 INFO mapred.LocalJobRunner: 2574621 samples generated > map
+16/01/09 15:56:11 INFO mapred.LocalJobRunner: 2917835 samples generated > map
+16/01/09 15:56:14 INFO mapred.LocalJobRunner: 3248981 samples generated > map
+16/01/09 15:56:17 INFO mapred.LocalJobRunner: 3578484 samples generated > map
+16/01/09 15:56:20 INFO mapred.LocalJobRunner: 3907316 samples generated > map
+16/01/09 15:56:21 INFO mapred.LocalJobRunner: 3907316 samples generated > map
+16/01/09 15:56:21 INFO mapred.Task: Task:attempt_local1700049283_0001_m_000001_0 is done. And is in the process of committing
+16/01/09 15:56:21 INFO mapred.LocalJobRunner: 3907316 samples generated > map
+16/01/09 15:56:21 INFO mapred.Task: Task attempt_local1700049283_0001_m_000001_0 is allowed to commit now
+16/01/09 15:56:21 INFO output.FileOutputCommitter: Saved output of task 'attempt_local1700049283_0001_m_000001_0' to hdfs://master:54310/HiBench/Kmeans/Input/samples/_temporary/0/task_local1700049283_0001_m_000001
+16/01/09 15:56:21 INFO mapred.LocalJobRunner: 4000000 samples generated
+16/01/09 15:56:21 INFO mapred.Task: Task 'attempt_local1700049283_0001_m_000001_0' done.
+16/01/09 15:56:21 INFO mapred.LocalJobRunner: Finishing task: attempt_local1700049283_0001_m_000001_0
+16/01/09 15:56:21 INFO mapred.LocalJobRunner: Starting task: attempt_local1700049283_0001_m_000002_0
+16/01/09 15:56:21 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:56:21 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Kmeans/Input/samples-seeds/seed2:0+846
+16/01/09 15:56:21 INFO mapred.MapTask: numReduceTasks: 0
+16/01/09 15:56:21 INFO kmeans.GenKMeansDataset: dimension=0: mean=498.50324525616776, std=-48.633586117197304
+16/01/09 15:56:21 INFO kmeans.GenKMeansDataset: dimension=1: mean=809.5648105881485, std=-32.681318625063824
+16/01/09 15:56:21 INFO kmeans.GenKMeansDataset: dimension=2: mean=816.2872349872742, std=-63.667646567452586
+16/01/09 15:56:21 INFO kmeans.GenKMeansDataset: dimension=3: mean=498.9577004848815, std=67.27915764955785
+16/01/09 15:56:21 INFO kmeans.GenKMeansDataset: dimension=4: mean=731.8785890734769, std=98.8225608482633
+16/01/09 15:56:21 INFO kmeans.GenKMeansDataset: dimension=5: mean=807.7513160592688, std=82.86764564353072
+16/01/09 15:56:21 INFO kmeans.GenKMeansDataset: dimension=6: mean=13.842577339061911, std=58.390711362906615
+16/01/09 15:56:21 INFO kmeans.GenKMeansDataset: dimension=7: mean=857.1602754612932, std=-5.8031123240922255
+16/01/09 15:56:21 INFO kmeans.GenKMeansDataset: dimension=8: mean=649.8565852885222, std=72.742757114587
+16/01/09 15:56:21 INFO kmeans.GenKMeansDataset: dimension=9: mean=437.59752336337607, std=-83.8245150230739
+16/01/09 15:56:21 INFO kmeans.GenKMeansDataset: dimension=10: mean=825.0876612619342, std=44.92856422497215
+16/01/09 15:56:21 INFO kmeans.GenKMeansDataset: dimension=11: mean=265.0974376656168, std=92.43844840453795
+16/01/09 15:56:21 INFO kmeans.GenKMeansDataset: dimension=12: mean=151.62643312024693, std=23.92176215343065
+16/01/09 15:56:21 INFO kmeans.GenKMeansDataset: dimension=13: mean=845.2463466703921, std=-14.203677150724104
+16/01/09 15:56:21 INFO kmeans.GenKMeansDataset: dimension=14: mean=287.9068331008978, std=-6.11443333224247
+16/01/09 15:56:21 INFO kmeans.GenKMeansDataset: dimension=15: mean=451.56323501688433, std=-17.277785517953646
+16/01/09 15:56:21 INFO kmeans.GenKMeansDataset: dimension=16: mean=502.93769798959664, std=-24.460175212200426
+16/01/09 15:56:21 INFO kmeans.GenKMeansDataset: dimension=17: mean=19.508775663887313, std=78.44459742311969
+16/01/09 15:56:21 INFO kmeans.GenKMeansDataset: dimension=18: mean=734.2448230537822, std=-40.8591019560699
+16/01/09 15:56:21 INFO kmeans.GenKMeansDataset: dimension=19: mean=891.2477439821959, std=56.76834231696833
+16/01/09 15:56:21 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:56:27 INFO mapred.LocalJobRunner: 675549 samples generated > map
+16/01/09 15:56:27 INFO mapreduce.Job:  map 60% reduce 0%
+16/01/09 15:56:30 INFO mapred.LocalJobRunner: 998993 samples generated > map
+16/01/09 15:56:33 INFO mapred.LocalJobRunner: 1334444 samples generated > map
+16/01/09 15:56:36 INFO mapred.LocalJobRunner: 1669856 samples generated > map
+16/01/09 15:56:39 INFO mapred.LocalJobRunner: 2005594 samples generated > map
+16/01/09 15:56:42 INFO mapred.LocalJobRunner: 2343057 samples generated > map
+16/01/09 15:56:45 INFO mapred.LocalJobRunner: 2680636 samples generated > map
+16/01/09 15:56:48 INFO mapred.LocalJobRunner: 2950588 samples generated > map
+16/01/09 15:56:51 INFO mapred.LocalJobRunner: 3268634 samples generated > map
+16/01/09 15:56:54 INFO mapred.LocalJobRunner: 3608733 samples generated > map
+16/01/09 15:56:57 INFO mapred.LocalJobRunner: 3943521 samples generated > map
+16/01/09 15:56:57 INFO mapred.LocalJobRunner: 3943521 samples generated > map
+16/01/09 15:56:57 INFO mapred.Task: Task:attempt_local1700049283_0001_m_000002_0 is done. And is in the process of committing
+16/01/09 15:56:57 INFO mapred.LocalJobRunner: 3943521 samples generated > map
+16/01/09 15:56:57 INFO mapred.Task: Task attempt_local1700049283_0001_m_000002_0 is allowed to commit now
+16/01/09 15:56:57 INFO output.FileOutputCommitter: Saved output of task 'attempt_local1700049283_0001_m_000002_0' to hdfs://master:54310/HiBench/Kmeans/Input/samples/_temporary/0/task_local1700049283_0001_m_000002
+16/01/09 15:56:57 INFO mapred.LocalJobRunner: 4000000 samples generated
+16/01/09 15:56:57 INFO mapred.Task: Task 'attempt_local1700049283_0001_m_000002_0' done.
+16/01/09 15:56:57 INFO mapred.LocalJobRunner: Finishing task: attempt_local1700049283_0001_m_000002_0
+16/01/09 15:56:57 INFO mapred.LocalJobRunner: Starting task: attempt_local1700049283_0001_m_000003_0
+16/01/09 15:56:57 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:56:57 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Kmeans/Input/samples-seeds/seed1:0+840
+16/01/09 15:56:57 INFO mapred.MapTask: numReduceTasks: 0
+16/01/09 15:56:57 INFO kmeans.GenKMeansDataset: dimension=0: mean=876.7425070831076, std=-50.922465846070295
+16/01/09 15:56:57 INFO kmeans.GenKMeansDataset: dimension=1: mean=901.8951123122368, std=-1.4827131152904087
+16/01/09 15:56:57 INFO kmeans.GenKMeansDataset: dimension=2: mean=630.9740217464717, std=88.9393818781482
+16/01/09 15:56:57 INFO kmeans.GenKMeansDataset: dimension=3: mean=163.32141859064674, std=-73.42075248204196
+16/01/09 15:56:57 INFO kmeans.GenKMeansDataset: dimension=4: mean=4.201647964558242, std=85.08013080543378
+16/01/09 15:56:57 INFO kmeans.GenKMeansDataset: dimension=5: mean=978.7892732134475, std=-33.63202422203828
+16/01/09 15:56:57 INFO kmeans.GenKMeansDataset: dimension=6: mean=673.7999761041168, std=-32.27797676409567
+16/01/09 15:56:57 INFO kmeans.GenKMeansDataset: dimension=7: mean=325.8665606294355, std=12.044289035687129
+16/01/09 15:56:57 INFO kmeans.GenKMeansDataset: dimension=8: mean=676.2014412663696, std=28.54371902061149
+16/01/09 15:56:57 INFO kmeans.GenKMeansDataset: dimension=9: mean=873.809701967505, std=89.01089787039862
+16/01/09 15:56:57 INFO kmeans.GenKMeansDataset: dimension=10: mean=223.40626743900194, std=-38.718342310764875
+16/01/09 15:56:57 INFO kmeans.GenKMeansDataset: dimension=11: mean=40.3953893460397, std=61.26757703068088
+16/01/09 15:56:57 INFO kmeans.GenKMeansDataset: dimension=12: mean=201.61051542174434, std=-98.07539702974756
+16/01/09 15:56:57 INFO kmeans.GenKMeansDataset: dimension=13: mean=846.0103388101038, std=8.216582106476096
+16/01/09 15:56:57 INFO kmeans.GenKMeansDataset: dimension=14: mean=410.1445867939121, std=37.2882382770735
+16/01/09 15:56:57 INFO kmeans.GenKMeansDataset: dimension=15: mean=956.4630718589872, std=-42.77274720837892
+16/01/09 15:56:57 INFO kmeans.GenKMeansDataset: dimension=16: mean=319.7908238506533, std=26.790362095444436
+16/01/09 15:56:57 INFO kmeans.GenKMeansDataset: dimension=17: mean=137.65824139073322, std=-71.6562409326351
+16/01/09 15:56:57 INFO kmeans.GenKMeansDataset: dimension=18: mean=907.8475175620757, std=83.51932232663921
+16/01/09 15:56:57 INFO kmeans.GenKMeansDataset: dimension=19: mean=924.344989796516, std=-40.03124959797153
+16/01/09 15:56:58 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:57:03 INFO mapred.LocalJobRunner: 663386 samples generated > map
+16/01/09 15:57:04 INFO mapreduce.Job:  map 80% reduce 0%
+16/01/09 15:57:06 INFO mapred.LocalJobRunner: 995466 samples generated > map
+16/01/09 15:57:09 INFO mapred.LocalJobRunner: 1330420 samples generated > map
+16/01/09 15:57:12 INFO mapred.LocalJobRunner: 1662947 samples generated > map
+16/01/09 15:57:15 INFO mapred.LocalJobRunner: 1986714 samples generated > map
+16/01/09 15:57:18 INFO mapred.LocalJobRunner: 2321779 samples generated > map
+16/01/09 15:57:21 INFO mapred.LocalJobRunner: 2652250 samples generated > map
+16/01/09 15:57:24 INFO mapred.LocalJobRunner: 2982814 samples generated > map
+16/01/09 15:57:27 INFO mapred.LocalJobRunner: 3316310 samples generated > map
+16/01/09 15:57:30 INFO mapred.LocalJobRunner: 3599830 samples generated > map
+16/01/09 15:57:33 INFO mapred.LocalJobRunner: 3925803 samples generated > map
+16/01/09 15:57:34 INFO mapred.LocalJobRunner: 3925803 samples generated > map
+16/01/09 15:57:34 INFO mapred.Task: Task:attempt_local1700049283_0001_m_000003_0 is done. And is in the process of committing
+16/01/09 15:57:34 INFO mapred.LocalJobRunner: 3925803 samples generated > map
+16/01/09 15:57:34 INFO mapred.Task: Task attempt_local1700049283_0001_m_000003_0 is allowed to commit now
+16/01/09 15:57:34 INFO output.FileOutputCommitter: Saved output of task 'attempt_local1700049283_0001_m_000003_0' to hdfs://master:54310/HiBench/Kmeans/Input/samples/_temporary/0/task_local1700049283_0001_m_000003
+16/01/09 15:57:34 INFO mapred.LocalJobRunner: 4000000 samples generated
+16/01/09 15:57:34 INFO mapred.Task: Task 'attempt_local1700049283_0001_m_000003_0' done.
+16/01/09 15:57:34 INFO mapred.LocalJobRunner: Finishing task: attempt_local1700049283_0001_m_000003_0
+16/01/09 15:57:34 INFO mapred.LocalJobRunner: Starting task: attempt_local1700049283_0001_m_000004_0
+16/01/09 15:57:34 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 15:57:34 INFO mapred.MapTask: Processing split: hdfs://master:54310/HiBench/Kmeans/Input/samples-seeds/seed4:0+839
+16/01/09 15:57:34 INFO mapred.MapTask: numReduceTasks: 0
+16/01/09 15:57:34 INFO kmeans.GenKMeansDataset: dimension=0: mean=584.0171426446519, std=77.32186211971245
+16/01/09 15:57:34 INFO kmeans.GenKMeansDataset: dimension=1: mean=78.09106361175, std=87.53953374260814
+16/01/09 15:57:34 INFO kmeans.GenKMeansDataset: dimension=2: mean=618.5970967359884, std=21.565947525071877
+16/01/09 15:57:34 INFO kmeans.GenKMeansDataset: dimension=3: mean=195.94965250195818, std=24.105568216662988
+16/01/09 15:57:34 INFO kmeans.GenKMeansDataset: dimension=4: mean=817.6561691405026, std=-60.59799109214688
+16/01/09 15:57:34 INFO kmeans.GenKMeansDataset: dimension=5: mean=577.263742581061, std=76.98870228849805
+16/01/09 15:57:34 INFO kmeans.GenKMeansDataset: dimension=6: mean=563.0881254162018, std=97.94850686807047
+16/01/09 15:57:34 INFO kmeans.GenKMeansDataset: dimension=7: mean=27.811721911203403, std=20.45292460708326
+16/01/09 15:57:34 INFO kmeans.GenKMeansDataset: dimension=8: mean=431.10007716410126, std=78.25888675781295
+16/01/09 15:57:34 INFO kmeans.GenKMeansDataset: dimension=9: mean=481.60338762195397, std=80.95753270442904
+16/01/09 15:57:34 INFO kmeans.GenKMeansDataset: dimension=10: mean=716.9607825327417, std=-19.58311241094897
+16/01/09 15:57:34 INFO kmeans.GenKMeansDataset: dimension=11: mean=920.8142937603403, std=-80.70521533033892
+16/01/09 15:57:34 INFO kmeans.GenKMeansDataset: dimension=12: mean=808.0213773478773, std=-47.48527172778929
+16/01/09 15:57:34 INFO kmeans.GenKMeansDataset: dimension=13: mean=486.60203508769996, std=18.80533233074155
+16/01/09 15:57:34 INFO kmeans.GenKMeansDataset: dimension=14: mean=287.23019172673327, std=79.23655972665819
+16/01/09 15:57:34 INFO kmeans.GenKMeansDataset: dimension=15: mean=620.6251230619687, std=33.73102899145371
+16/01/09 15:57:34 INFO kmeans.GenKMeansDataset: dimension=16: mean=729.1949665915876, std=-43.00566598175648
+16/01/09 15:57:34 INFO kmeans.GenKMeansDataset: dimension=17: mean=749.8666221739567, std=-67.81080740790068
+16/01/09 15:57:34 INFO kmeans.GenKMeansDataset: dimension=18: mean=782.1733627163898, std=38.41974179609812
+16/01/09 15:57:34 INFO kmeans.GenKMeansDataset: dimension=19: mean=16.594306997441024, std=-5.890487937748418
+16/01/09 15:57:34 INFO mapreduce.Job:  map 100% reduce 0%
+16/01/09 15:57:40 INFO mapred.LocalJobRunner: 668979 samples generated > map
+16/01/09 15:57:43 INFO mapred.LocalJobRunner: 992839 samples generated > map
+16/01/09 15:57:46 INFO mapred.LocalJobRunner: 1321119 samples generated > map
+16/01/09 15:57:49 INFO mapred.LocalJobRunner: 1650193 samples generated > map
+16/01/09 15:57:52 INFO mapred.LocalJobRunner: 1981979 samples generated > map
+16/01/09 15:57:55 INFO mapred.LocalJobRunner: 2314954 samples generated > map
+16/01/09 15:57:58 INFO mapred.LocalJobRunner: 2646626 samples generated > map
+16/01/09 15:58:01 INFO mapred.LocalJobRunner: 2978412 samples generated > map
+16/01/09 15:58:04 INFO mapred.LocalJobRunner: 3308097 samples generated > map
+16/01/09 15:58:07 INFO mapred.LocalJobRunner: 3637613 samples generated > map
+16/01/09 15:58:10 INFO mapred.LocalJobRunner: 3948082 samples generated > map
+16/01/09 15:58:11 INFO mapred.LocalJobRunner: 3948082 samples generated > map
+16/01/09 15:58:11 INFO mapred.Task: Task:attempt_local1700049283_0001_m_000004_0 is done. And is in the process of committing
+16/01/09 15:58:11 INFO mapred.LocalJobRunner: 3948082 samples generated > map
+16/01/09 15:58:11 INFO mapred.Task: Task attempt_local1700049283_0001_m_000004_0 is allowed to commit now
+16/01/09 15:58:11 INFO output.FileOutputCommitter: Saved output of task 'attempt_local1700049283_0001_m_000004_0' to hdfs://master:54310/HiBench/Kmeans/Input/samples/_temporary/0/task_local1700049283_0001_m_000004
+16/01/09 15:58:11 INFO mapred.LocalJobRunner: 4000000 samples generated
+16/01/09 15:58:11 INFO mapred.Task: Task 'attempt_local1700049283_0001_m_000004_0' done.
+16/01/09 15:58:11 INFO mapred.LocalJobRunner: Finishing task: attempt_local1700049283_0001_m_000004_0
+16/01/09 15:58:11 INFO mapred.LocalJobRunner: Map task executor complete.
+16/01/09 15:58:11 INFO mapreduce.Job: Job job_local1700049283_0001 completed successfully
+16/01/09 15:58:12 INFO mapreduce.Job: Counters: 24
+	File System Counters
+		FILE: Number of bytes read=163010435
+		FILE: Number of bytes written=165213940
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=12686
+		HDFS: Number of bytes written=12049113370
+		HDFS: Number of read operations=95
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=65
+	Map-Reduce Framework
+		Map input records=5
+		Map output records=20000000
+		Input split bytes=560
+		Spilled Records=0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=3857
+		CPU time spent (ms)=0
+		Physical memory (bytes) snapshot=0
+		Virtual memory (bytes) snapshot=0
+		Total committed heap usage (bytes)=2634547200
+	HiBench.Counters
+		BYTES_DATA_GENERATED=3360000000
+	File Input Format Counters
+		Bytes Read=4220
+	File Output Format Counters
+		Bytes Written=4016364090
+16/01/09 15:58:12 INFO kmeans.GenKMeansDataset: Finished producing samples
+16/01/09 15:58:12 INFO kmeans.GenKMeansDataset: Start generating initial cluster centers ...
+16/01/09 15:58:12 INFO kmeans.GenKMeansDataset: Finished generating initial cluster centers

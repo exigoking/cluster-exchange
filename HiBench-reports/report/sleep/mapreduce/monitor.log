@@ -1,0 +1,1 @@
+{'timestamp': 1452375634.438598, 'hostname': 'localhost', 'proc': Proc(label='total', load5=1.93, load10=1.3, load15=1.15, running=3, procs=870), 'memory/total': Memory(label='total', total=32775524, used=2444028, buffer_cache=12936780, free=17394716, map=41872)}

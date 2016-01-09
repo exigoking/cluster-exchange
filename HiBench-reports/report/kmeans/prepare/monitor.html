@@ -1,0 +1,2285 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>System monitor report of HadoopPrepareKmeans</title>
+    <style TYPE="text/css">
+      .highcharts-tooltip>span {
+	background: rgba(255,255,255,0.85);
+	border: 1px solid silver;
+	border-radius: 3px;
+	box-shadow: 1px 1px 2px #888;
+	padding: 8px;
+	z-index: 2;
+      }
+    </style>
+    <script type='text/javascript' src='https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.2.min.js'></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/modules/data.js"></script>
+    <script src="http://code.highcharts.com/modules/heatmap.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+    <script type='text/javascript'>
+    Object.defineProperty(Number.prototype,'fileSize',{value:function(a,b,c,d){
+	return (a=a?[1e3,'k','B']:[1024,'K','iB'],b=Math,c=b.log,
+		d=c(this)/c(a[0])|0,this/b.pow(a[0],d)).toFixed(2)
+	    +(d?(a[1]+'MGTPEZY')[--d]+a[2]:'Bytes');
+    },writable:false,enumerable:false});
+
+    function parse_events(){
+	var data = document.getElementById("csv_events").innerHTML;
+	var events=[];
+	var csv_header = [];
+	$.each(data.split('\n'), function(lineNo, line){
+	    var items = line.split(',');
+	    if (lineNo==0){
+		$.each(items, function(itemNo, item){
+		    csv_header.push(item);
+		});
+	    }else {
+		value = [];
+		$.each(items, function(itemNo, item){
+		    if (itemNo == 0){ // 0 -> timestamp
+			item = parseFloat(item);
+		    }
+//		    value[csv_header[itemNo]] = item;
+		    value.push(item);
+		});
+		events.push({color: 'red',
+			     dashStyle: 'longdashdot',
+			     value: value[0],
+			     label:{
+				 useHTML: true,
+				 text:value[1],
+				 align:'left'
+			     },
+			     width: 2});
+	    }
+	});
+	return events;
+    }
+
+function merge_options(obj1,obj2){
+    var obj3 = {};
+    for (var attrname in obj1) { obj3[attrname] = obj1[attrname]; }
+    for (var attrname in obj2) { obj3[attrname] = obj2[attrname]; }
+    return obj3;
+}
+
+function gen_overall_options(suffix, title, yAxis_desc, plot_options, plot_events, chart_type){
+    var data = document.getElementById("csv_"+suffix).innerHTML;
+    var csv_header = [];
+	
+    var series=[];
+    var yaxis=0;
+    $.each(data.split('\n'), function(lineNo, line){
+	var items = line.split(',');
+	if (lineNo==0){
+	    $.each(items, function(itemNo, item){
+		if (item[0]=='|'){ // new axis
+		    item = item.substring(1);
+		    yaxis +=1;
+		}
+		csv_header.push(item);
+		series.push({name:item, yAxis: yaxis, data:[],
+			     tooltip: yAxis_desc[yaxis].tooltip
+			    })
+	    });
+	} else {
+	    $.each(items, function(itemNo, item){
+		if (itemNo>0){
+		    series[itemNo].data.push([parseFloat(items[0]), parseFloat(item)])
+		}
+	    });
+	}
+    });
+    series.splice(0,1);
+    var options = {
+	chart: merge_options({
+	    renderTo: 'container_'+suffix,
+	},
+			     chart_type),
+	title: {
+	    text: title
+	},
+	// tooltip: {
+	// 	pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b> ({point.y:,.0f})<br/>',
+        // shared: true
+        // },
+	
+	
+	plotOptions: plot_options,
+	
+	xAxis: {
+	    type: 'datetime',
+	    tickmarkPlacement: 'on',
+	    labels: {
+                align: 'left',
+                x: 5,
+                format: '{value:%M:%S}'
+	    },
+	    plotLines: plot_events,
+	    title: {
+                enabled: false
+	    }
+	},
+	yAxis: yAxis_desc,
+	series: series
+    };
+    //	console.log(options.series)
+
+    var newchart = new Highcharts.Chart(options);
+}
+
+function gen_heatmap_options(suffix, title, yAxis_desc, colorAxis_desc, series_desc){
+    
+    var data = document.getElementById("csv_"+suffix).innerHTML;
+    var csv_header = [];
+	
+    var series=[];
+    var yaxis=0;
+
+    var options = {
+	chart: {
+	    renderTo: 'container_'+suffix,
+	    type: 'heatmap',
+	    margin: [60, 10, 80, 70]
+	},
+	title: {
+	    text: title
+	},
+	tooltip: {
+	    backgroundColor: null,
+	    borderWidth: 0,
+	    distance: 10,
+	    shadow: false,
+	    useHTML: true,
+	    style: {
+                padding: 0,
+                color: 'black'
+	    }
+        },
+	xAxis: {
+	    type: 'datetime',
+	    labels: {
+                align: 'left',
+                x: 5,
+                format: '{value:%M:%S}'
+	    },
+	    showLastLabel: false,
+	    tickLength: 16
+	},
+	yAxis: yAxis_desc,
+	colorAxis: merge_options({
+	    stops: [
+                [0, '#3060cf'],
+                [0.5, '#fffbbc'],
+                [0.9, '#c4463a'],
+                [1, '#c4463a']
+	    ],
+	    startOnTick: false,
+	    endOnTick: false,
+	    labels: {
+                format: '{value}%'
+	    }
+	},
+				 colorAxis_desc),
+	series: [merge_options({
+	    name : 'CPU usage',
+	    borderWidth: 1,
+	    nullColor: '#EFEFEF',
+	    colsize: 5000.0, // 1s
+	    tooltip: {
+                headerFormat: 'CPU Usage<br/>',
+                pointFormat: '{point.x%Y-%m-%d %H:%M:%S}<br/>{point.hostname}.{point.coreid}<br/><b>{point.value:%.2f} %</b>'
+	    },
+	    turboThreshold: Number.MAX_VALUE,
+	    data: []
+	}, series_desc)]
+    };
+    
+    var data =  document.getElementById('csv_'+suffix).innerHTML;
+    // Split the lines
+    var lines = data.split('\n');
+    var csv_header = [];
+    var max_value = 0;
+    var min_value = -1;
+    $.each(lines, function(lineNo, line) {
+	var items = line.split(',');
+	    
+	// header line containes categories
+	if (lineNo == 0) {
+	    $.each(items, function(itemNo, item){
+		csv_header.push(item);
+	    });
+	} else { // the rest of the lines contain data with their name in the first position
+	    var series_data = {};
+	    $.each(items, function(itemNo, item) {
+		var value;
+		if (itemNo <= 2) {
+		    value = parseFloat(item);
+		    if (itemNo == 2){
+			if (max_value< value) max_value = value;		
+			if ((min_value<0) || ( min_value>value)) min_value = value;
+		    }
+		} else {
+		    value = item;
+		}
+		series_data[csv_header[itemNo]] = value;
+	    });
+	    options.series[0].data.push(series_data);
+	}
+    }  );
+    if (!("max" in colorAxis_desc)){
+	options.colorAxis.max = max_value;
+    }
+    if (!("min" in colorAxis_desc)){
+	options.colorAxis,min = min_value;
+    }
+
+
+    var newchart = new Highcharts.Chart(options);
+}
+
+    $(function() {
+
+	/**
+	 * This plugin extends Highcharts in two ways:
+	 * - Use HTML5 canvas instead of SVG for rendering of the heatmap squares. Canvas
+	 *   outperforms SVG when it comes to thousands of single shapes.
+	 * - Add a K-D-tree to find the nearest point on mouse move. Since we no longer have SVG shapes
+	 *   to capture mouseovers, we need another way of detecting hover points for the tooltip.
+	 */
+	(function (H) {
+            var wrap = H.wrap,
+            seriesTypes = H.seriesTypes;
+	    
+            /**
+             * Get the canvas context for a series
+             */
+            H.Series.prototype.getContext = function () {
+		var canvas;
+		if (!this.ctx) {
+                    canvas = document.createElement('canvas');
+                    canvas.setAttribute('width', this.chart.plotWidth);
+                    canvas.setAttribute('height', this.chart.plotHeight);
+                    canvas.style.position = 'absolute';
+                    canvas.style.left = this.group.translateX + 'px';
+                    canvas.style.top = this.group.translateY + 'px';
+                    canvas.style.zIndex = 0;
+                    canvas.style.cursor = 'crosshair';
+                    this.chart.container.appendChild(canvas);
+                    if (canvas.getContext) {
+			this.ctx = canvas.getContext('2d');
+                    }
+		}
+		return this.ctx;
+            }
+
+            /**
+             * Wrap the drawPoints method to draw the points in canvas instead of the slower SVG,
+             * that requires one shape each point.
+             */
+            H.wrap(H.seriesTypes.heatmap.prototype, 'drawPoints', function (proceed) {
+		
+		var ctx;
+		if (this.chart.renderer.forExport) {
+                    // Run SVG shapes
+                    proceed.call(this);
+		    
+		} else {
+		    
+                    if (ctx = this.getContext()) {
+			
+			// draw the columns
+			H.each(this.points, function (point) {
+                            var plotY = point.plotY,
+                            shapeArgs;
+			    
+                            if (plotY !== undefined && !isNaN(plotY) && point.y !== null) {
+				shapeArgs = point.shapeArgs;
+				
+				ctx.fillStyle = point.pointAttr[''].fill;
+				ctx.fillRect(shapeArgs.x, shapeArgs.y, shapeArgs.width, shapeArgs.height);
+                            }
+			});
+			
+                    } else {
+			this.chart.showLoading("Your browser doesn't support HTML5 canvas, <br>please use a modern browser");
+			
+			// Uncomment this to provide low-level (slow) support in oldIE. It will cause script errors on
+			// charts with more than a few thousand points.
+			//proceed.call(this);
+                    }
+		}
+            });
+	}(Highcharts));
+
+
+//	var chart_cpu_heatmap = new Highcharts.Chart(options);
+	var events = parse_events();
+
+	// generate heatmaps
+	// generate cpu heatmap
+	gen_heatmap_options("cpu_heatmap", "CPU usage heatmap", 
+			    {
+				title: {
+				    text: null
+				},
+				labels: {
+				    formatter: function(){
+					return 'Core-'+this.value;
+				    }
+				},
+				minPadding: 0,
+				maxPadding: 0,
+				startOnTick: false,
+				endOnTick: false,
+				tickWidth: 1,
+				min: 0,
+			    },
+			    {min:0, max:100, labels:{format:'{value}%'}},
+			    {name : 'CPU Usage',
+			     tooltip:{
+				 headerFormat: 'CPU Usage<br/>',
+				 pointFormat: '{point.x:%Y-%m-%d %H:%M:%S}<br/>{point.hostname}.{point.coreid}<br/><b>{point.value:%.2f} %</b>'
+			     }});
+
+	// generate network throughputs heatmap
+	gen_heatmap_options("network_heatmap", "Network throughputs heatmap", 
+			    {
+				title: {
+				    text: null
+				},
+				labels: {
+				    formatter: function(){
+					return  'Eth-'+this.value;
+				    }
+				},
+				minPadding: 0,
+				maxPadding: 0,
+				startOnTick: false,
+				endOnTick: false,
+				tickWidth: 1,
+				min: 0,
+			    },
+			    {labels:{format:'{value}'}},
+			    {name : 'Network throughputs',
+			     tooltip:{
+				 headerFormat: 'Network throughputs<br/>',
+				 pointFormatter: function () {
+				     return Highcharts.dateFormat("%Y-%m-%d %H:%M:%S",this.x)+'<br/>'+this.hostname+"."+this.adapterid+'<br/><b>'+this.value.fileSize()+'</b>';}
+			     }}
+			    );
+
+	// generate disk io throughputs heatmap
+	gen_heatmap_options("diskio_heatmap", "Disk throughputs heatmap", 
+			    {
+				title: {
+				    text: null
+				},
+				labels: {
+				    formatter: function (){
+					return 'Disk-'+this.value;
+				    }
+				},
+				minPadding: 0,
+				maxPadding: 0,
+				startOnTick: false,
+				endOnTick: false,
+				tickWidth: 1,
+				min: 0,
+			    },
+			    {labels:{format: '{value}'}},
+			    {name : 'DiskIO throughputs',
+			     tooltip:{
+				 headerFormat: 'DiskIO throughputs<br/>',
+				 pointFormatter: function () {
+				     return Highcharts.dateFormat("%Y-%m-%d %H:%M:%S",this.x)+'<br/>'+this.hostname+"."+this.diskid+'<br/><b>'+this.value.fileSize()+'</b>';}
+			     }});
+
+	// generate memory usage heatmap
+	gen_heatmap_options("memory_heatmap", "Memory usage heatmap", 
+			    {
+				title: {
+				    text: null
+				},
+				labels: {
+				    formatter: function () {
+					return 'Node-'+this.value;
+				    }
+				},
+				minPadding: 0,
+				maxPadding: 0,
+				startOnTick: false,
+				endOnTick: false,
+				tickWidth: 1,
+				min: 0,
+			    },
+			    {labels:{formatter: function (){ return this.value.fileSize();}}},
+			    {name : 'Memory Usage',
+			     tooltip:{
+				 headerFormat: 'Memory Usage<br/>',
+				 pointFormatter: function () {
+				     return Highcharts.dateFormat("%Y-%m-%d %H:%M:%S",this.x)+'<br/>'+this.hostname+'<br/><b>'+this.value.fileSize()+'</b>';}
+			     }});
+
+	// generate proc numbers heatmap
+	gen_heatmap_options("procload_heatmap", "Process numbers heatmap", 
+			    {
+				title: {
+				    text: null
+				},
+				labels: {
+				    formatter: function () {
+					return  'Node-'+ this.value;
+				    }
+				},
+				minPadding: 0,
+				maxPadding: 0,
+				startOnTick: false,
+				endOnTick: false,
+				tickWidth: 1,
+				min: 0,
+			    },
+			    {labels:{format:'{value}'}},
+			    {name : 'Process(/Thread) numbers',
+			     tooltip:{
+				 headerFormat: 'Process numbers<br/>',
+				 pointFormatter: function () {
+				     return Highcharts.dateFormat("%Y-%m-%d %H:%M:%S",this.x)+'<br/>'+this.hostname+'<br/><b>'+this.value+'</b>';}
+			     }}
+			   );
+	
+
+	// load cpu overall
+	gen_overall_options("cpu_overall", "Summarized CPU usage",
+			    [{	// yaxis
+				title: {
+				    text: 'Percent'
+				},
+				tooltip: {
+				    pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b>)<br/>',
+				},
+			    }], 
+			    {	// plot options
+				area: {
+				    stacking: 'percent',
+				    lineColor: '#ffffff',
+				    lineWidth: 1,
+				    marker: {
+					lineWidth: 1,
+					lineColor: '#ffffff'
+				    }
+				}
+			    },
+			    events,
+			    {	// chart type
+			    	type: 'area',
+			    }
+			   );
+
+	// load network overall
+	gen_overall_options("network_overall", "Summarized Network throughputs & Packet-per-seconds", 
+			    [	// yaxis
+				{
+				    title:{
+					text: "Throughput Per Second"
+				    },
+				    tooltip: {
+					pointFormatter: function () {
+					    return '<span style="color:'+this.series.color+'">'+this.series.name+'</span>: <b>' + this.y.fileSize()+'</b>)<br/>';
+					}
+				    },
+				    labels: {
+					formatter: function() {
+					    return this.value.fileSize();
+					    }
+					}
+				},
+				{
+				    title:{
+					text: "Packets Per Second"
+				    },
+				    tooltip: {
+					pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.0f} packets</b>)<br/>',
+				    },
+				    opposite: true,
+				    reversed: true
+				},
+			    ],
+			    {},	// plot options
+			    events,
+			    {	// chart type
+			    	type: 'area',
+			    }
+			   );
+
+	// load diskio overall
+	gen_overall_options("diskio_overall", "Summarized Disk throughputs & IOPS",
+			    [	// yaxis
+				{
+				    title:{
+					text: "Throughput Per Second"
+				    },
+				    tooltip: {
+					pointFormatter: function () {
+					    return '<span style="color:'+this.series.color +'">'+this.series.name+'</span>: <b>' + this.y.fileSize()+'</b>)<br/>';
+					},
+				    },
+				    labels: {
+					formatter: function() {
+					    return this.value.fileSize();
+					}
+				    }
+				},
+				{
+				    title:{
+					text: "Operations Per Second"
+				    },
+				    tooltip: {
+					pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.0f} IO</b>)<br/>',
+				    },
+				    opposite: true,
+				    reversed: true
+				}
+			    ],
+			    {},	// plot operations
+			    events,
+			    {	// chart type
+			    	type: 'area',
+			    }
+			   );
+
+	// load memory overall
+	gen_overall_options("memory_overall", "Summarized Memory usage",
+			    [{	// yaxis
+				title: {
+				    text: 'Percent'
+				},
+				tooltip: {
+				    pointFormatter: function () {
+					return '<span style="color:'+this.series.color+'">'+this.series.name+'</span>: <b>' + (this.y*1024).fileSize()+'</b>)<br/>';
+				    }
+				},
+			    }], 
+			    {	// plot options
+				area: {
+				    stacking: 'percent',
+				    lineColor: '#ffffff',
+				    lineWidth: 1,
+				    marker: {
+					lineWidth: 1,
+					lineColor: '#ffffff'
+				    }
+				}
+			    },
+			    events,
+			    {	// chart type
+			    	type: 'area',
+			    }
+			   );
+
+	// load procload overall
+	gen_overall_options("procload_overall", "Summarized system load",
+			    [{	// yaxis for loads
+				title: {
+				    text: 'load'
+				},
+				tooltip: {
+				    pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:0.2f}</b>)<br/>',
+				},
+			    },
+			     {	// yaxis for running & total process
+				 title: {
+				     text: 'process number'
+				 },
+				 tooltip: {
+				     pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y:.0f}</b>)<br/>',
+				 },
+				 opposite: true,
+			    }], 
+			    {	// plot options
+			    },
+			    events,
+			     {	// chart type
+			    }
+			   );
+    });
+</script>
+</head>
+<body>
+    <h1>Workload: HadoopPrepareKmeans</h1>
+    
+    <div id="container_cpu_heatmap" style="height: 800px; max-width: 1000px; margin: 0 auto"></div>
+    <div id="container_cpu_overall" style="height: 400px; max-width: 1000px; margin: 0 auto"></div>
+    
+    <div id="container_network_heatmap" style="height: 800px; max-width: 1000px; margin: 0 auto"></div>
+    <div id="container_network_overall" style="height: 400px; max-width: 1000px; margin: 0 auto"></div>
+
+    <div id="container_diskio_heatmap" style="height: 800px; max-width: 1000px; margin: 0 auto"></div>
+    <div id="container_diskio_overall" style="height: 400px; max-width: 1000px; margin: 0 auto"></div>
+    
+    <div id="container_memory_heatmap" style="height: 400px; max-width: 1000px; margin: 0 auto"></div>
+    <div id="container_memory_overall" style="height: 400px; max-width: 1000px; margin: 0 auto"></div>
+
+    <div id="container_procload_heatmap" style="height: 400px; max-width: 1000px; margin: 0 auto"></div>
+    <div id="container_procload_overall" style="height: 400px; max-width: 1000px; margin: 0 auto"></div>
+
+    <pre id="csv_cpu_heatmap" style="display: none">x,y,value,hostname,coreid
+1452372900000,0,0.0,localhost,cpu22
+1452372900000,1,0.0,localhost,cpu23
+1452372900000,2,0.0,localhost,cpu20
+1452372900000,3,0.0,localhost,cpu21
+1452372900000,4,2.2,localhost,cpu26
+1452372900000,5,21.2851405622,localhost,cpu27
+1452372900000,6,1.8,localhost,cpu24
+1452372900000,7,4.0,localhost,cpu25
+1452372900000,8,1.99600798403,localhost,cpu28
+1452372900000,9,1.4,localhost,cpu29
+1452372900000,10,0.200803212851,localhost,cpu17
+1452372900000,11,0.0,localhost,cpu16
+1452372900000,12,2.39043824701,localhost,cpu15
+1452372900000,13,3.99201596806,localhost,cpu14
+1452372900000,14,2.39043824701,localhost,cpu13
+1452372900000,15,2.2,localhost,cpu12
+1452372900000,16,2.39043824701,localhost,cpu11
+1452372900000,17,2.39043824701,localhost,cpu10
+1452372900000,18,0.0,localhost,cpu19
+1452372900000,19,0.199600798403,localhost,cpu18
+1452372900000,20,1.79282868526,localhost,cpu31
+1452372900000,21,1.4,localhost,cpu30
+1452372900000,22,21.8436873747,localhost,cpu3
+1452372900000,23,16.8674698795,localhost,cpu2
+1452372900000,24,2.82258064516,localhost,cpu1
+1452372900000,25,3.22580645161,localhost,cpu0
+1452372900000,26,16.0320641283,localhost,cpu7
+1452372900000,27,0.401606425703,localhost,cpu6
+1452372900000,28,0.801603206413,localhost,cpu5
+1452372900000,29,43.0,localhost,cpu4
+1452372900000,30,2.2,localhost,cpu9
+1452372900000,31,20.8,localhost,cpu8
+1452372905000,0,0.199600798403,localhost,cpu22
+1452372905000,1,0.0,localhost,cpu23
+1452372905000,2,0.0,localhost,cpu20
+1452372905000,3,0.59880239521,localhost,cpu21
+1452372905000,4,0.0,localhost,cpu26
+1452372905000,5,2.19560878244,localhost,cpu27
+1452372905000,6,0.796812749004,localhost,cpu24
+1452372905000,7,1.19760479042,localhost,cpu25
+1452372905000,8,0.59880239521,localhost,cpu28
+1452372905000,9,0.399201596806,localhost,cpu29
+1452372905000,10,0.199600798403,localhost,cpu17
+1452372905000,11,0.998003992016,localhost,cpu16
+1452372905000,12,0.60120240481,localhost,cpu15
+1452372905000,13,1.0,localhost,cpu14
+1452372905000,14,1.60320641283,localhost,cpu13
+1452372905000,15,14.5161290323,localhost,cpu12
+1452372905000,16,9.8,localhost,cpu11
+1452372905000,17,10.2204408818,localhost,cpu10
+1452372905000,18,0.597609561753,localhost,cpu19
+1452372905000,19,0.400801603206,localhost,cpu18
+1452372905000,20,0.4,localhost,cpu31
+1452372905000,21,0.798403193613,localhost,cpu30
+1452372905000,22,39.8785425101,localhost,cpu3
+1452372905000,23,14.7177419355,localhost,cpu2
+1452372905000,24,30.3212851406,localhost,cpu1
+1452372905000,25,2.62626262626,localhost,cpu0
+1452372905000,26,31.8548387097,localhost,cpu7
+1452372905000,27,9.67741935484,localhost,cpu6
+1452372905000,28,2.20883534137,localhost,cpu5
+1452372905000,29,4.61847389558,localhost,cpu4
+1452372905000,30,1.2,localhost,cpu9
+1452372905000,31,10.2,localhost,cpu8
+1452372910000,0,5.42168674699,localhost,cpu22
+1452372910000,1,0.0,localhost,cpu23
+1452372910000,2,0.6,localhost,cpu20
+1452372910000,3,0.4,localhost,cpu21
+1452372910000,4,1.59680638723,localhost,cpu26
+1452372910000,5,0.6,localhost,cpu27
+1452372910000,6,2.4,localhost,cpu24
+1452372910000,7,2.79441117764,localhost,cpu25
+1452372910000,8,2.0,localhost,cpu28
+1452372910000,9,2.59481037924,localhost,cpu29
+1452372910000,10,0.0,localhost,cpu17
+1452372910000,11,0.199600798403,localhost,cpu16
+1452372910000,12,33.9960238569,localhost,cpu15
+1452372910000,13,3.00601202405,localhost,cpu14
+1452372910000,14,3.99201596806,localhost,cpu13
+1452372910000,15,3.79241516966,localhost,cpu12
+1452372910000,16,4.00801603206,localhost,cpu11
+1452372910000,17,3.2,localhost,cpu10
+1452372910000,18,0.401606425703,localhost,cpu19
+1452372910000,19,0.597609561753,localhost,cpu18
+1452372910000,20,2.8,localhost,cpu31
+1452372910000,21,2.39520958084,localhost,cpu30
+1452372910000,22,9.71074380165,localhost,cpu3
+1452372910000,23,13.7014314928,localhost,cpu2
+1452372910000,24,41.4141414141,localhost,cpu1
+1452372910000,25,20.612244898,localhost,cpu0
+1452372910000,26,7.27272727273,localhost,cpu7
+1452372910000,27,1.20724346076,localhost,cpu6
+1452372910000,28,2.64227642276,localhost,cpu5
+1452372910000,29,3.65853658537,localhost,cpu4
+1452372910000,30,4.61847389558,localhost,cpu9
+1452372910000,31,11.0441767068,localhost,cpu8
+1452372915000,0,0.199600798403,localhost,cpu22
+1452372915000,1,0.0,localhost,cpu23
+1452372915000,2,0.806451612903,localhost,cpu20
+1452372915000,3,0.199600798403,localhost,cpu21
+1452372915000,4,1.59680638723,localhost,cpu26
+1452372915000,5,1.4,localhost,cpu27
+1452372915000,6,0.602409638554,localhost,cpu24
+1452372915000,7,1.2,localhost,cpu25
+1452372915000,8,1.79640718563,localhost,cpu28
+1452372915000,9,1.39720558882,localhost,cpu29
+1452372915000,10,0.0,localhost,cpu17
+1452372915000,11,0.200400801603,localhost,cpu16
+1452372915000,12,4.03225806452,localhost,cpu15
+1452372915000,13,8.01603206413,localhost,cpu14
+1452372915000,14,2.00400801603,localhost,cpu13
+1452372915000,15,1.99600798403,localhost,cpu12
+1452372915000,16,1.40562248996,localhost,cpu11
+1452372915000,17,2.2,localhost,cpu10
+1452372915000,18,0.0,localhost,cpu19
+1452372915000,19,1.0,localhost,cpu18
+1452372915000,20,0.998003992016,localhost,cpu31
+1452372915000,21,1.2,localhost,cpu30
+1452372915000,22,5.79710144928,localhost,cpu3
+1452372915000,23,24.5967741935,localhost,cpu2
+1452372915000,24,21.6326530612,localhost,cpu1
+1452372915000,25,48.59437751,localhost,cpu0
+1452372915000,26,14.3434343434,localhost,cpu7
+1452372915000,27,2.6369168357,localhost,cpu6
+1452372915000,28,2.63157894737,localhost,cpu5
+1452372915000,29,4.43548387097,localhost,cpu4
+1452372915000,30,4.83870967742,localhost,cpu9
+1452372915000,31,15.0602409639,localhost,cpu8
+1452372920000,0,0.400801603206,localhost,cpu22
+1452372920000,1,0.199600798403,localhost,cpu23
+1452372920000,2,0.4,localhost,cpu20
+1452372920000,3,0.0,localhost,cpu21
+1452372920000,4,0.998003992016,localhost,cpu26
+1452372920000,5,1.79640718563,localhost,cpu27
+1452372920000,6,1.2,localhost,cpu24
+1452372920000,7,0.399201596806,localhost,cpu25
+1452372920000,8,1.59362549801,localhost,cpu28
+1452372920000,9,0.0,localhost,cpu29
+1452372920000,10,0.0,localhost,cpu17
+1452372920000,11,0.4,localhost,cpu16
+1452372920000,12,2.19560878244,localhost,cpu15
+1452372920000,13,15.5818540434,localhost,cpu14
+1452372920000,14,2.39520958084,localhost,cpu13
+1452372920000,15,2.80561122244,localhost,cpu12
+1452372920000,16,1.99600798403,localhost,cpu11
+1452372920000,17,4.00801603206,localhost,cpu10
+1452372920000,18,0.0,localhost,cpu19
+1452372920000,19,0.4,localhost,cpu18
+1452372920000,20,1.2,localhost,cpu31
+1452372920000,21,1.6,localhost,cpu30
+1452372920000,22,7.34693877551,localhost,cpu3
+1452372920000,23,45.7831325301,localhost,cpu2
+1452372920000,24,50.1002004008,localhost,cpu1
+1452372920000,25,21.7213114754,localhost,cpu0
+1452372920000,26,6.85483870968,localhost,cpu7
+1452372920000,27,4.4,localhost,cpu6
+1452372920000,28,9.79591836735,localhost,cpu5
+1452372920000,29,7.04225352113,localhost,cpu4
+1452372920000,30,2.39520958084,localhost,cpu9
+1452372920000,31,2.21327967807,localhost,cpu8
+1452372925000,0,0.199600798403,localhost,cpu22
+1452372925000,1,0.0,localhost,cpu23
+1452372925000,2,0.201612903226,localhost,cpu20
+1452372925000,3,0.6,localhost,cpu21
+1452372925000,4,1.0,localhost,cpu26
+1452372925000,5,1.2,localhost,cpu27
+1452372925000,6,0.399201596806,localhost,cpu24
+1452372925000,7,0.199600798403,localhost,cpu25
+1452372925000,8,2.81690140845,localhost,cpu28
+1452372925000,9,1.0,localhost,cpu29
+1452372925000,10,0.2,localhost,cpu17
+1452372925000,11,0.6,localhost,cpu16
+1452372925000,12,1.20240480962,localhost,cpu15
+1452372925000,13,1.8,localhost,cpu14
+1452372925000,14,1.2,localhost,cpu13
+1452372925000,15,3.97614314115,localhost,cpu12
+1452372925000,16,1.6,localhost,cpu11
+1452372925000,17,3.57142857143,localhost,cpu10
+1452372925000,18,0.2,localhost,cpu19
+1452372925000,19,4.02414486922,localhost,cpu18
+1452372925000,20,0.2,localhost,cpu31
+1452372925000,21,1.19521912351,localhost,cpu30
+1452372925000,22,3.44129554656,localhost,cpu3
+1452372925000,23,3.21931589537,localhost,cpu2
+1452372925000,24,12.1399176955,localhost,cpu1
+1452372925000,25,86.4919354839,localhost,cpu0
+1452372925000,26,2.20440881764,localhost,cpu7
+1452372925000,27,2.62626262626,localhost,cpu6
+1452372925000,28,3.64372469636,localhost,cpu5
+1452372925000,29,2.0325203252,localhost,cpu4
+1452372925000,30,15.6312625251,localhost,cpu9
+1452372925000,31,5.18962075848,localhost,cpu8
+1452372930000,0,0.199600798403,localhost,cpu22
+1452372930000,1,1.19521912351,localhost,cpu23
+1452372930000,2,0.0,localhost,cpu20
+1452372930000,3,0.199600798403,localhost,cpu21
+1452372930000,4,1.19760479042,localhost,cpu26
+1452372930000,5,1.8,localhost,cpu27
+1452372930000,6,1.4,localhost,cpu24
+1452372930000,7,0.6,localhost,cpu25
+1452372930000,8,2.20883534137,localhost,cpu28
+1452372930000,9,1.0,localhost,cpu29
+1452372930000,10,0.0,localhost,cpu17
+1452372930000,11,0.0,localhost,cpu16
+1452372930000,12,2.4,localhost,cpu15
+1452372930000,13,34.9301397206,localhost,cpu14
+1452372930000,14,1.8,localhost,cpu13
+1452372930000,15,2.0,localhost,cpu12
+1452372930000,16,7.78443113772,localhost,cpu11
+1452372930000,17,2.01207243461,localhost,cpu10
+1452372930000,18,0.0,localhost,cpu19
+1452372930000,19,0.0,localhost,cpu18
+1452372930000,20,1.6,localhost,cpu31
+1452372930000,21,0.0,localhost,cpu30
+1452372930000,22,2.44897959184,localhost,cpu3
+1452372930000,23,11.5151515152,localhost,cpu2
+1452372930000,24,5.28455284553,localhost,cpu1
+1452372930000,25,29.5918367347,localhost,cpu0
+1452372930000,26,1.41987829615,localhost,cpu7
+1452372930000,27,0.803212851406,localhost,cpu6
+1452372930000,28,14.4016227181,localhost,cpu5
+1452372930000,29,27.4549098196,localhost,cpu4
+1452372930000,30,2.4,localhost,cpu9
+1452372930000,31,10.8870967742,localhost,cpu8
+1452372935000,0,0.199600798403,localhost,cpu22
+1452372935000,1,0.0,localhost,cpu23
+1452372935000,2,0.0,localhost,cpu20
+1452372935000,3,0.199600798403,localhost,cpu21
+1452372935000,4,0.8,localhost,cpu26
+1452372935000,5,0.998003992016,localhost,cpu27
+1452372935000,6,1.39442231076,localhost,cpu24
+1452372935000,7,0.798403193613,localhost,cpu25
+1452372935000,8,1.19760479042,localhost,cpu28
+1452372935000,9,0.597609561753,localhost,cpu29
+1452372935000,10,0.0,localhost,cpu17
+1452372935000,11,0.2,localhost,cpu16
+1452372935000,12,1.2,localhost,cpu15
+1452372935000,13,32.8,localhost,cpu14
+1452372935000,14,1.4,localhost,cpu13
+1452372935000,15,1.99600798403,localhost,cpu12
+1452372935000,16,8.2,localhost,cpu11
+1452372935000,17,2.79441117764,localhost,cpu10
+1452372935000,18,0.0,localhost,cpu19
+1452372935000,19,0.0,localhost,cpu18
+1452372935000,20,1.39720558882,localhost,cpu31
+1452372935000,21,1.19760479042,localhost,cpu30
+1452372935000,22,6.17283950617,localhost,cpu3
+1452372935000,23,15.6312625251,localhost,cpu2
+1452372935000,24,57.2289156627,localhost,cpu1
+1452372935000,25,2.83975659229,localhost,cpu0
+1452372935000,26,4.03225806452,localhost,cpu7
+1452372935000,27,3.21285140562,localhost,cpu6
+1452372935000,28,1.62932790224,localhost,cpu5
+1452372935000,29,4.04858299595,localhost,cpu4
+1452372935000,30,1.60320641283,localhost,cpu9
+1452372935000,31,3.0,localhost,cpu8
+1452372940000,0,0.399201596806,localhost,cpu22
+1452372940000,1,0.8,localhost,cpu23
+1452372940000,2,0.796812749004,localhost,cpu20
+1452372940000,3,0.2,localhost,cpu21
+1452372940000,4,0.0,localhost,cpu26
+1452372940000,5,0.0,localhost,cpu27
+1452372940000,6,0.2,localhost,cpu24
+1452372940000,7,0.2,localhost,cpu25
+1452372940000,8,0.2,localhost,cpu28
+1452372940000,9,0.0,localhost,cpu29
+1452372940000,10,0.0,localhost,cpu17
+1452372940000,11,0.399201596806,localhost,cpu16
+1452372940000,12,3.83838383838,localhost,cpu15
+1452372940000,13,3.4,localhost,cpu14
+1452372940000,14,1.41129032258,localhost,cpu13
+1452372940000,15,4.0404040404,localhost,cpu12
+1452372940000,16,4.61847389558,localhost,cpu11
+1452372940000,17,3.42052313883,localhost,cpu10
+1452372940000,18,0.59880239521,localhost,cpu19
+1452372940000,19,0.4,localhost,cpu18
+1452372940000,20,0.2,localhost,cpu31
+1452372940000,21,2.6369168357,localhost,cpu30
+1452372940000,22,1.61943319838,localhost,cpu3
+1452372940000,23,14.314516129,localhost,cpu2
+1452372940000,24,99.2015968064,localhost,cpu1
+1452372940000,25,4.26829268293,localhost,cpu0
+1452372940000,26,1.79640718563,localhost,cpu7
+1452372940000,27,2.19560878244,localhost,cpu6
+1452372940000,28,2.0,localhost,cpu5
+1452372940000,29,2.00400801603,localhost,cpu4
+1452372940000,30,1.0060362173,localhost,cpu9
+1452372940000,31,1.41414141414,localhost,cpu8
+1452372945000,0,0.4,localhost,cpu22
+1452372945000,1,0.798403193613,localhost,cpu23
+1452372945000,2,0.199600798403,localhost,cpu20
+1452372945000,3,0.0,localhost,cpu21
+1452372945000,4,1.20240480962,localhost,cpu26
+1452372945000,5,0.801603206413,localhost,cpu27
+1452372945000,6,1.59680638723,localhost,cpu24
+1452372945000,7,0.998003992016,localhost,cpu25
+1452372945000,8,0.399201596806,localhost,cpu28
+1452372945000,9,1.79640718563,localhost,cpu29
+1452372945000,10,0.0,localhost,cpu17
+1452372945000,11,0.199600798403,localhost,cpu16
+1452372945000,12,11.2,localhost,cpu15
+1452372945000,13,3.6,localhost,cpu14
+1452372945000,14,1.6,localhost,cpu13
+1452372945000,15,1.80360721443,localhost,cpu12
+1452372945000,16,2.62096774194,localhost,cpu11
+1452372945000,17,2.4,localhost,cpu10
+1452372945000,18,1.81086519115,localhost,cpu19
+1452372945000,19,0.0,localhost,cpu18
+1452372945000,20,0.199600798403,localhost,cpu31
+1452372945000,21,0.2,localhost,cpu30
+1452372945000,22,23.7218813906,localhost,cpu3
+1452372945000,23,12.7272727273,localhost,cpu2
+1452372945000,24,13.6546184739,localhost,cpu1
+1452372945000,25,4.48979591837,localhost,cpu0
+1452372945000,26,49.1967871486,localhost,cpu7
+1452372945000,27,16.4989939638,localhost,cpu6
+1452372945000,28,8.01603206413,localhost,cpu5
+1452372945000,29,2.41935483871,localhost,cpu4
+1452372945000,30,5.6,localhost,cpu9
+1452372945000,31,3.42052313883,localhost,cpu8
+1452372950000,0,0.798403193613,localhost,cpu22
+1452372950000,1,0.0,localhost,cpu23
+1452372950000,2,0.0,localhost,cpu20
+1452372950000,3,0.0,localhost,cpu21
+1452372950000,4,1.39720558882,localhost,cpu26
+1452372950000,5,0.0,localhost,cpu27
+1452372950000,6,0.0,localhost,cpu24
+1452372950000,7,1.2,localhost,cpu25
+1452372950000,8,0.998003992016,localhost,cpu28
+1452372950000,9,1.19760479042,localhost,cpu29
+1452372950000,10,0.0,localhost,cpu17
+1452372950000,11,0.399201596806,localhost,cpu16
+1452372950000,12,1.99600798403,localhost,cpu15
+1452372950000,13,1.6,localhost,cpu14
+1452372950000,14,3.81526104418,localhost,cpu13
+1452372950000,15,7.0281124498,localhost,cpu12
+1452372950000,16,3.01204819277,localhost,cpu11
+1452372950000,17,1.60642570281,localhost,cpu10
+1452372950000,18,0.0,localhost,cpu19
+1452372950000,19,0.0,localhost,cpu18
+1452372950000,20,0.2,localhost,cpu31
+1452372950000,21,0.59880239521,localhost,cpu30
+1452372950000,22,44.0162271805,localhost,cpu3
+1452372950000,23,8.96130346232,localhost,cpu2
+1452372950000,24,12.1457489879,localhost,cpu1
+1452372950000,25,25.2525252525,localhost,cpu0
+1452372950000,26,26.7605633803,localhost,cpu7
+1452372950000,27,1.60965794769,localhost,cpu6
+1452372950000,28,2.24032586558,localhost,cpu5
+1452372950000,29,1.41414141414,localhost,cpu4
+1452372950000,30,3.6,localhost,cpu9
+1452372950000,31,9.91902834008,localhost,cpu8
+1452372955000,0,0.0,localhost,cpu22
+1452372955000,1,0.0,localhost,cpu23
+1452372955000,2,0.0,localhost,cpu20
+1452372955000,3,0.199600798403,localhost,cpu21
+1452372955000,4,0.801603206413,localhost,cpu26
+1452372955000,5,0.798403193613,localhost,cpu27
+1452372955000,6,0.798403193613,localhost,cpu24
+1452372955000,7,1.0,localhost,cpu25
+1452372955000,8,1.0,localhost,cpu28
+1452372955000,9,0.8,localhost,cpu29
+1452372955000,10,0.0,localhost,cpu17
+1452372955000,11,0.0,localhost,cpu16
+1452372955000,12,1.20724346076,localhost,cpu15
+1452372955000,13,3.2,localhost,cpu14
+1452372955000,14,0.803212851406,localhost,cpu13
+1452372955000,15,1.20240480962,localhost,cpu12
+1452372955000,16,8.88888888889,localhost,cpu11
+1452372955000,17,6.37450199203,localhost,cpu10
+1452372955000,18,0.0,localhost,cpu19
+1452372955000,19,0.0,localhost,cpu18
+1452372955000,20,0.998003992016,localhost,cpu31
+1452372955000,21,0.798403193613,localhost,cpu30
+1452372955000,22,36.2173038229,localhost,cpu3
+1452372955000,23,34.5381526104,localhost,cpu2
+1452372955000,24,17.3195876289,localhost,cpu1
+1452372955000,25,11.4919354839,localhost,cpu0
+1452372955000,26,2.00803212851,localhost,cpu7
+1452372955000,27,0.201612903226,localhost,cpu6
+1452372955000,28,1.0060362173,localhost,cpu5
+1452372955000,29,1.00806451613,localhost,cpu4
+1452372955000,30,1.4,localhost,cpu9
+1452372955000,31,15.6822810591,localhost,cpu8
+1452372960000,0,0.0,localhost,cpu22
+1452372960000,1,0.0,localhost,cpu23
+1452372960000,2,0.199600798403,localhost,cpu20
+1452372960000,3,0.0,localhost,cpu21
+1452372960000,4,0.803212851406,localhost,cpu26
+1452372960000,5,1.0,localhost,cpu27
+1452372960000,6,13.8832997988,localhost,cpu24
+1452372960000,7,0.8,localhost,cpu25
+1452372960000,8,1.0,localhost,cpu28
+1452372960000,9,1.2,localhost,cpu29
+1452372960000,10,0.0,localhost,cpu17
+1452372960000,11,0.6,localhost,cpu16
+1452372960000,12,9.73630831643,localhost,cpu15
+1452372960000,13,3.60721442886,localhost,cpu14
+1452372960000,14,1.40845070423,localhost,cpu13
+1452372960000,15,1.20481927711,localhost,cpu12
+1452372960000,16,2.64227642276,localhost,cpu11
+1452372960000,17,9.85915492958,localhost,cpu10
+1452372960000,18,0.0,localhost,cpu19
+1452372960000,19,0.0,localhost,cpu18
+1452372960000,20,0.8,localhost,cpu31
+1452372960000,21,0.801603206413,localhost,cpu30
+1452372960000,22,35.5555555556,localhost,cpu3
+1452372960000,23,0.202429149798,localhost,cpu2
+1452372960000,24,5.53278688525,localhost,cpu1
+1452372960000,25,55.7344064386,localhost,cpu0
+1452372960000,26,0.402414486922,localhost,cpu7
+1452372960000,27,1.40280561122,localhost,cpu6
+1452372960000,28,0.603621730382,localhost,cpu5
+1452372960000,29,1.0060362173,localhost,cpu4
+1452372960000,30,1.20967741935,localhost,cpu9
+1452372960000,31,1.20481927711,localhost,cpu8
+1452372965000,0,0.0,localhost,cpu22
+1452372965000,1,0.2,localhost,cpu23
+1452372965000,2,0.0,localhost,cpu20
+1452372965000,3,0.0,localhost,cpu21
+1452372965000,4,0.2,localhost,cpu26
+1452372965000,5,0.60120240481,localhost,cpu27
+1452372965000,6,13.0784708249,localhost,cpu24
+1452372965000,7,0.80971659919,localhost,cpu25
+1452372965000,8,0.8,localhost,cpu28
+1452372965000,9,3.42052313883,localhost,cpu29
+1452372965000,10,0.199600798403,localhost,cpu17
+1452372965000,11,0.59880239521,localhost,cpu16
+1452372965000,12,5.41082164329,localhost,cpu15
+1452372965000,13,2.00803212851,localhost,cpu14
+1452372965000,14,1.2,localhost,cpu13
+1452372965000,15,1.20240480962,localhost,cpu12
+1452372965000,16,1.20240480962,localhost,cpu11
+1452372965000,17,32.2645290581,localhost,cpu10
+1452372965000,18,0.0,localhost,cpu19
+1452372965000,19,0.0,localhost,cpu18
+1452372965000,20,0.59880239521,localhost,cpu31
+1452372965000,21,0.602409638554,localhost,cpu30
+1452372965000,22,4.13223140496,localhost,cpu3
+1452372965000,23,46.3073852295,localhost,cpu2
+1452372965000,24,9.2,localhost,cpu1
+1452372965000,25,3.46232179226,localhost,cpu0
+1452372965000,26,2.62096774194,localhost,cpu7
+1452372965000,27,15.0300601202,localhost,cpu6
+1452372965000,28,1.2,localhost,cpu5
+1452372965000,29,0.602409638554,localhost,cpu4
+1452372965000,30,1.0101010101,localhost,cpu9
+1452372965000,31,2.61569416499,localhost,cpu8
+1452372970000,0,0.0,localhost,cpu22
+1452372970000,1,0.0,localhost,cpu23
+1452372970000,2,0.0,localhost,cpu20
+1452372970000,3,0.0,localhost,cpu21
+1452372970000,4,2.19123505976,localhost,cpu26
+1452372970000,5,1.99203187251,localhost,cpu27
+1452372970000,6,12.0481927711,localhost,cpu24
+1452372970000,7,1.19760479042,localhost,cpu25
+1452372970000,8,1.6,localhost,cpu28
+1452372970000,9,1.79640718563,localhost,cpu29
+1452372970000,10,0.0,localhost,cpu17
+1452372970000,11,0.0,localhost,cpu16
+1452372970000,12,26.6932270916,localhost,cpu15
+1452372970000,13,2.19123505976,localhost,cpu14
+1452372970000,14,1.99600798403,localhost,cpu13
+1452372970000,15,2.0202020202,localhost,cpu12
+1452372970000,16,2.59481037924,localhost,cpu11
+1452372970000,17,8.78243512974,localhost,cpu10
+1452372970000,18,1.20724346076,localhost,cpu19
+1452372970000,19,0.0,localhost,cpu18
+1452372970000,20,1.99600798403,localhost,cpu31
+1452372970000,21,1.79640718563,localhost,cpu30
+1452372970000,22,4.84848484848,localhost,cpu3
+1452372970000,23,5.25252525253,localhost,cpu2
+1452372970000,24,15.6186612576,localhost,cpu1
+1452372970000,25,21.2678936605,localhost,cpu0
+1452372970000,26,0.602409638554,localhost,cpu7
+1452372970000,27,22.3552894212,localhost,cpu6
+1452372970000,28,1.0101010101,localhost,cpu5
+1452372970000,29,1.40845070423,localhost,cpu4
+1452372970000,30,2.19560878244,localhost,cpu9
+1452372970000,31,2.99401197605,localhost,cpu8
+1452372975000,0,0.0,localhost,cpu22
+1452372975000,1,0.199203187251,localhost,cpu23
+1452372975000,2,0.0,localhost,cpu20
+1452372975000,3,0.0,localhost,cpu21
+1452372975000,4,0.4,localhost,cpu26
+1452372975000,5,0.400801603206,localhost,cpu27
+1452372975000,6,14.6586345382,localhost,cpu24
+1452372975000,7,0.201207243461,localhost,cpu25
+1452372975000,8,0.6,localhost,cpu28
+1452372975000,9,0.6,localhost,cpu29
+1452372975000,10,0.0,localhost,cpu17
+1452372975000,11,0.199600798403,localhost,cpu16
+1452372975000,12,0.60120240481,localhost,cpu15
+1452372975000,13,0.609756097561,localhost,cpu14
+1452372975000,14,0.602409638554,localhost,cpu13
+1452372975000,15,0.604838709677,localhost,cpu12
+1452372975000,16,0.804828973843,localhost,cpu11
+1452372975000,17,17.6352705411,localhost,cpu10
+1452372975000,18,1.00200400802,localhost,cpu19
+1452372975000,19,0.0,localhost,cpu18
+1452372975000,20,1.40562248996,localhost,cpu31
+1452372975000,21,0.6,localhost,cpu30
+1452372975000,22,0.2,localhost,cpu3
+1452372975000,23,4.65587044534,localhost,cpu2
+1452372975000,24,47.6953907816,localhost,cpu1
+1452372975000,25,37.0901639344,localhost,cpu0
+1452372975000,26,0.200400801603,localhost,cpu7
+1452372975000,27,2.22222222222,localhost,cpu6
+1452372975000,28,0.60120240481,localhost,cpu5
+1452372975000,29,3.20641282565,localhost,cpu4
+1452372975000,30,2.40480961924,localhost,cpu9
+1452372975000,31,10.6639839034,localhost,cpu8
+1452372980000,0,0.2,localhost,cpu22
+1452372980000,1,0.0,localhost,cpu23
+1452372980000,2,0.399201596806,localhost,cpu20
+1452372980000,3,0.199600798403,localhost,cpu21
+1452372980000,4,1.6,localhost,cpu26
+1452372980000,5,1.59362549801,localhost,cpu27
+1452372980000,6,2.6,localhost,cpu24
+1452372980000,7,1.40562248996,localhost,cpu25
+1452372980000,8,1.4,localhost,cpu28
+1452372980000,9,0.82135523614,localhost,cpu29
+1452372980000,10,0.2,localhost,cpu17
+1452372980000,11,0.399201596806,localhost,cpu16
+1452372980000,12,1.20240480962,localhost,cpu15
+1452372980000,13,2.20440881764,localhost,cpu14
+1452372980000,14,2.0,localhost,cpu13
+1452372980000,15,2.00400801603,localhost,cpu12
+1452372980000,16,2.61569416499,localhost,cpu11
+1452372980000,17,7.38522954092,localhost,cpu10
+1452372980000,18,0.2,localhost,cpu19
+1452372980000,19,0.399201596806,localhost,cpu18
+1452372980000,20,1.8,localhost,cpu31
+1452372980000,21,1.39720558882,localhost,cpu30
+1452372980000,22,1.21457489879,localhost,cpu3
+1452372980000,23,44.3319838057,localhost,cpu2
+1452372980000,24,1.0101010101,localhost,cpu1
+1452372980000,25,27.967806841,localhost,cpu0
+1452372980000,26,0.6,localhost,cpu7
+1452372980000,27,1.40280561122,localhost,cpu6
+1452372980000,28,0.804828973843,localhost,cpu5
+1452372980000,29,0.602409638554,localhost,cpu4
+1452372980000,30,3.41365461847,localhost,cpu9
+1452372980000,31,42.5101214575,localhost,cpu8
+1452372985000,0,0.199600798403,localhost,cpu22
+1452372985000,1,0.2,localhost,cpu23
+1452372985000,2,0.0,localhost,cpu20
+1452372985000,3,0.0,localhost,cpu21
+1452372985000,4,0.996015936255,localhost,cpu26
+1452372985000,5,1.00200400802,localhost,cpu27
+1452372985000,6,1.0,localhost,cpu24
+1452372985000,7,0.801603206413,localhost,cpu25
+1452372985000,8,0.798403193613,localhost,cpu28
+1452372985000,9,0.8,localhost,cpu29
+1452372985000,10,0.199600798403,localhost,cpu17
+1452372985000,11,0.0,localhost,cpu16
+1452372985000,12,1.60965794769,localhost,cpu15
+1452372985000,13,1.8,localhost,cpu14
+1452372985000,14,1.4,localhost,cpu13
+1452372985000,15,4.82897384306,localhost,cpu12
+1452372985000,16,2.19560878244,localhost,cpu11
+1452372985000,17,3.00601202405,localhost,cpu10
+1452372985000,18,0.0,localhost,cpu19
+1452372985000,19,0.199600798403,localhost,cpu18
+1452372985000,20,0.998003992016,localhost,cpu31
+1452372985000,21,1.19760479042,localhost,cpu30
+1452372985000,22,1.21703853955,localhost,cpu3
+1452372985000,23,4.50819672131,localhost,cpu2
+1452372985000,24,8.06451612903,localhost,cpu1
+1452372985000,25,91.5662650602,localhost,cpu0
+1452372985000,26,0.402414486922,localhost,cpu7
+1452372985000,27,1.0,localhost,cpu6
+1452372985000,28,0.607287449393,localhost,cpu5
+1452372985000,29,0.804828973843,localhost,cpu4
+1452372985000,30,7.07070707071,localhost,cpu9
+1452372985000,31,17.004048583,localhost,cpu8
+1452372990000,0,0.0,localhost,cpu22
+1452372990000,1,0.4,localhost,cpu23
+1452372990000,2,0.0,localhost,cpu20
+1452372990000,3,0.0,localhost,cpu21
+1452372990000,4,1.6,localhost,cpu26
+1452372990000,5,1.39720558882,localhost,cpu27
+1452372990000,6,1.19760479042,localhost,cpu24
+1452372990000,7,1.40280561122,localhost,cpu25
+1452372990000,8,1.0,localhost,cpu28
+1452372990000,9,1.6,localhost,cpu29
+1452372990000,10,0.199203187251,localhost,cpu17
+1452372990000,11,0.0,localhost,cpu16
+1452372990000,12,1.64609053498,localhost,cpu15
+1452372990000,13,1.60320641283,localhost,cpu14
+1452372990000,14,1.61290322581,localhost,cpu13
+1452372990000,15,1.80722891566,localhost,cpu12
+1452372990000,16,7.92682926829,localhost,cpu11
+1452372990000,17,1.60965794769,localhost,cpu10
+1452372990000,18,0.0,localhost,cpu19
+1452372990000,19,0.0,localhost,cpu18
+1452372990000,20,1.80722891566,localhost,cpu31
+1452372990000,21,1.20240480962,localhost,cpu30
+1452372990000,22,3.59281437126,localhost,cpu3
+1452372990000,23,17.2,localhost,cpu2
+1452372990000,24,83.5341365462,localhost,cpu1
+1452372990000,25,2.81124497992,localhost,cpu0
+1452372990000,26,0.399201596806,localhost,cpu7
+1452372990000,27,0.602409638554,localhost,cpu6
+1452372990000,28,1.19760479042,localhost,cpu5
+1452372990000,29,0.401606425703,localhost,cpu4
+1452372990000,30,2.80561122244,localhost,cpu9
+1452372990000,31,18.6372745491,localhost,cpu8
+1452372995000,0,0.0,localhost,cpu22
+1452372995000,1,0.0,localhost,cpu23
+1452372995000,2,0.0,localhost,cpu20
+1452372995000,3,0.0,localhost,cpu21
+1452372995000,4,1.20240480962,localhost,cpu26
+1452372995000,5,0.8,localhost,cpu27
+1452372995000,6,1.0,localhost,cpu24
+1452372995000,7,1.39720558882,localhost,cpu25
+1452372995000,8,0.801603206413,localhost,cpu28
+1452372995000,9,1.39720558882,localhost,cpu29
+1452372995000,10,0.0,localhost,cpu17
+1452372995000,11,0.199600798403,localhost,cpu16
+1452372995000,12,1.60642570281,localhost,cpu15
+1452372995000,13,1.22199592668,localhost,cpu14
+1452372995000,14,1.61290322581,localhost,cpu13
+1452372995000,15,1.20967741935,localhost,cpu12
+1452372995000,16,7.24346076459,localhost,cpu11
+1452372995000,17,2.20883534137,localhost,cpu10
+1452372995000,18,0.0,localhost,cpu19
+1452372995000,19,0.0,localhost,cpu18
+1452372995000,20,1.39720558882,localhost,cpu31
+1452372995000,21,1.6,localhost,cpu30
+1452372995000,22,0.200803212851,localhost,cpu3
+1452372995000,23,59.2814371257,localhost,cpu2
+1452372995000,24,0.813008130081,localhost,cpu1
+1452372995000,25,5.34979423868,localhost,cpu0
+1452372995000,26,0.2,localhost,cpu7
+1452372995000,27,2.60521042084,localhost,cpu6
+1452372995000,28,1.19760479042,localhost,cpu5
+1452372995000,29,40.5189620758,localhost,cpu4
+1452372995000,30,4.60921843687,localhost,cpu9
+1452372995000,31,14.5748987854,localhost,cpu8
+1452373000000,0,0.0,localhost,cpu22
+1452373000000,1,0.398406374502,localhost,cpu23
+1452373000000,2,0.0,localhost,cpu20
+1452373000000,3,0.0,localhost,cpu21
+1452373000000,4,1.20967741935,localhost,cpu26
+1452373000000,5,1.39720558882,localhost,cpu27
+1452373000000,6,1.20240480962,localhost,cpu24
+1452373000000,7,1.2,localhost,cpu25
+1452373000000,8,1.0,localhost,cpu28
+1452373000000,9,1.2,localhost,cpu29
+1452373000000,10,0.0,localhost,cpu17
+1452373000000,11,0.0,localhost,cpu16
+1452373000000,12,1.81451612903,localhost,cpu15
+1452373000000,13,1.40280561122,localhost,cpu14
+1452373000000,14,1.60320641283,localhost,cpu13
+1452373000000,15,1.40280561122,localhost,cpu12
+1452373000000,16,1.60965794769,localhost,cpu11
+1452373000000,17,1.42276422764,localhost,cpu10
+1452373000000,18,0.0,localhost,cpu19
+1452373000000,19,0.0,localhost,cpu18
+1452373000000,20,1.20240480962,localhost,cpu31
+1452373000000,21,1.40280561122,localhost,cpu30
+1452373000000,22,1.39720558882,localhost,cpu3
+1452373000000,23,1.4,localhost,cpu2
+1452373000000,24,1.4,localhost,cpu1
+1452373000000,25,4.7619047619,localhost,cpu0
+1452373000000,26,1.00200400802,localhost,cpu7
+1452373000000,27,0.199600798403,localhost,cpu6
+1452373000000,28,0.200400801603,localhost,cpu5
+1452373000000,29,98.0,localhost,cpu4
+1452373000000,30,11.2903225806,localhost,cpu9
+1452373000000,31,12.955465587,localhost,cpu8
+1452373005000,0,0.0,localhost,cpu22
+1452373005000,1,0.0,localhost,cpu23
+1452373005000,2,0.0,localhost,cpu20
+1452373005000,3,0.0,localhost,cpu21
+1452373005000,4,0.996015936255,localhost,cpu26
+1452373005000,5,0.8,localhost,cpu27
+1452373005000,6,0.998003992016,localhost,cpu24
+1452373005000,7,0.608519269777,localhost,cpu25
+1452373005000,8,0.400801603206,localhost,cpu28
+1452373005000,9,0.8,localhost,cpu29
+1452373005000,10,0.0,localhost,cpu17
+1452373005000,11,0.0,localhost,cpu16
+1452373005000,12,0.801603206413,localhost,cpu15
+1452373005000,13,0.803212851406,localhost,cpu14
+1452373005000,14,0.803212851406,localhost,cpu13
+1452373005000,15,1.00200400802,localhost,cpu12
+1452373005000,16,0.808080808081,localhost,cpu11
+1452373005000,17,1.00401606426,localhost,cpu10
+1452373005000,18,0.0,localhost,cpu19
+1452373005000,19,0.0,localhost,cpu18
+1452373005000,20,1.40562248996,localhost,cpu31
+1452373005000,21,0.60120240481,localhost,cpu30
+1452373005000,22,1.00200400802,localhost,cpu3
+1452373005000,23,4.0404040404,localhost,cpu2
+1452373005000,24,2.99401197605,localhost,cpu1
+1452373005000,25,26.9776876268,localhost,cpu0
+1452373005000,26,1.20481927711,localhost,cpu7
+1452373005000,27,1.40280561122,localhost,cpu6
+1452373005000,28,0.201207243461,localhost,cpu5
+1452373005000,29,73.8,localhost,cpu4
+1452373005000,30,3.42741935484,localhost,cpu9
+1452373005000,31,15.0406504065,localhost,cpu8
+1452373010000,0,0.998003992016,localhost,cpu22
+1452373010000,1,0.59880239521,localhost,cpu23
+1452373010000,2,0.998003992016,localhost,cpu20
+1452373010000,3,0.803212851406,localhost,cpu21
+1452373010000,4,0.8,localhost,cpu26
+1452373010000,5,0.2,localhost,cpu27
+1452373010000,6,0.399201596806,localhost,cpu24
+1452373010000,7,0.0,localhost,cpu25
+1452373010000,8,0.399201596806,localhost,cpu28
+1452373010000,9,0.199600798403,localhost,cpu29
+1452373010000,10,1.19760479042,localhost,cpu17
+1452373010000,11,0.0,localhost,cpu16
+1452373010000,12,0.6,localhost,cpu15
+1452373010000,13,1.20240480962,localhost,cpu14
+1452373010000,14,1.20724346076,localhost,cpu13
+1452373010000,15,1.6,localhost,cpu12
+1452373010000,16,4.59081836327,localhost,cpu11
+1452373010000,17,7.84708249497,localhost,cpu10
+1452373010000,18,0.398406374502,localhost,cpu19
+1452373010000,19,0.59880239521,localhost,cpu18
+1452373010000,20,0.0,localhost,cpu31
+1452373010000,21,0.6,localhost,cpu30
+1452373010000,22,3.22580645161,localhost,cpu3
+1452373010000,23,4.04858299595,localhost,cpu2
+1452373010000,24,1.82186234818,localhost,cpu1
+1452373010000,25,85.0597609562,localhost,cpu0
+1452373010000,26,1.40280561122,localhost,cpu7
+1452373010000,27,1.79640718563,localhost,cpu6
+1452373010000,28,2.41935483871,localhost,cpu5
+1452373010000,29,1.61943319838,localhost,cpu4
+1452373010000,30,4.03225806452,localhost,cpu9
+1452373010000,31,11.0663983903,localhost,cpu8
+1452373015000,0,0.998003992016,localhost,cpu22
+1452373015000,1,0.400801603206,localhost,cpu23
+1452373015000,2,0.8,localhost,cpu20
+1452373015000,3,0.8,localhost,cpu21
+1452373015000,4,0.0,localhost,cpu26
+1452373015000,5,0.0,localhost,cpu27
+1452373015000,6,0.199600798403,localhost,cpu24
+1452373015000,7,0.0,localhost,cpu25
+1452373015000,8,0.0,localhost,cpu28
+1452373015000,9,0.0,localhost,cpu29
+1452373015000,10,44.1767068273,localhost,cpu17
+1452373015000,11,0.0,localhost,cpu16
+1452373015000,12,0.0,localhost,cpu15
+1452373015000,13,2.63157894737,localhost,cpu14
+1452373015000,14,2.22672064777,localhost,cpu13
+1452373015000,15,0.199600798403,localhost,cpu12
+1452373015000,16,0.0,localhost,cpu11
+1452373015000,17,5.26315789474,localhost,cpu10
+1452373015000,18,0.8,localhost,cpu19
+1452373015000,19,0.798403193613,localhost,cpu18
+1452373015000,20,0.0,localhost,cpu31
+1452373015000,21,0.0,localhost,cpu30
+1452373015000,22,5.30612244898,localhost,cpu3
+1452373015000,23,1.20724346076,localhost,cpu2
+1452373015000,24,5.84677419355,localhost,cpu1
+1452373015000,25,51.503006012,localhost,cpu0
+1452373015000,26,2.41448692153,localhost,cpu7
+1452373015000,27,1.6,localhost,cpu6
+1452373015000,28,1.22199592668,localhost,cpu5
+1452373015000,29,1.00200400802,localhost,cpu4
+1452373015000,30,4.61847389558,localhost,cpu9
+1452373015000,31,12.1212121212,localhost,cpu8
+1452373020000,0,0.199600798403,localhost,cpu22
+1452373020000,1,0.597609561753,localhost,cpu23
+1452373020000,2,0.0,localhost,cpu20
+1452373020000,3,0.0,localhost,cpu21
+1452373020000,4,0.0,localhost,cpu26
+1452373020000,5,3.21285140562,localhost,cpu27
+1452373020000,6,0.0,localhost,cpu24
+1452373020000,7,2.39520958084,localhost,cpu25
+1452373020000,8,0.0,localhost,cpu28
+1452373020000,9,0.0,localhost,cpu29
+1452373020000,10,92.6147704591,localhost,cpu17
+1452373020000,11,0.400801603206,localhost,cpu16
+1452373020000,12,0.61099796334,localhost,cpu15
+1452373020000,13,0.608519269777,localhost,cpu14
+1452373020000,14,0.603621730382,localhost,cpu13
+1452373020000,15,1.00806451613,localhost,cpu12
+1452373020000,16,2.22222222222,localhost,cpu11
+1452373020000,17,0.806451612903,localhost,cpu10
+1452373020000,18,0.4,localhost,cpu19
+1452373020000,19,0.6,localhost,cpu18
+1452373020000,20,0.4,localhost,cpu31
+1452373020000,21,0.0,localhost,cpu30
+1452373020000,22,6.91056910569,localhost,cpu3
+1452373020000,23,1.20481927711,localhost,cpu2
+1452373020000,24,6.0120240481,localhost,cpu1
+1452373020000,25,1.21951219512,localhost,cpu0
+1452373020000,26,1.0,localhost,cpu7
+1452373020000,27,1.20481927711,localhost,cpu6
+1452373020000,28,3.62903225806,localhost,cpu5
+1452373020000,29,2.4,localhost,cpu4
+1452373020000,30,14.4288577154,localhost,cpu9
+1452373020000,31,7.33197556008,localhost,cpu8
+1452373025000,0,0.0,localhost,cpu22
+1452373025000,1,0.798403193613,localhost,cpu23
+1452373025000,2,0.199600798403,localhost,cpu20
+1452373025000,3,1.19760479042,localhost,cpu21
+1452373025000,4,0.0,localhost,cpu26
+1452373025000,5,1.40280561122,localhost,cpu27
+1452373025000,6,0.4,localhost,cpu24
+1452373025000,7,0.4,localhost,cpu25
+1452373025000,8,0.6,localhost,cpu28
+1452373025000,9,0.0,localhost,cpu29
+1452373025000,10,97.1943887776,localhost,cpu17
+1452373025000,11,1.79640718563,localhost,cpu16
+1452373025000,12,1.00401606426,localhost,cpu15
+1452373025000,13,1.6,localhost,cpu14
+1452373025000,14,1.01214574899,localhost,cpu13
+1452373025000,15,1.19760479042,localhost,cpu12
+1452373025000,16,1.0,localhost,cpu11
+1452373025000,17,1.0101010101,localhost,cpu10
+1452373025000,18,0.199600798403,localhost,cpu19
+1452373025000,19,1.19760479042,localhost,cpu18
+1452373025000,20,0.0,localhost,cpu31
+1452373025000,21,0.2,localhost,cpu30
+1452373025000,22,5.2,localhost,cpu3
+1452373025000,23,3.8854805726,localhost,cpu2
+1452373025000,24,1.80722891566,localhost,cpu1
+1452373025000,25,2.21774193548,localhost,cpu0
+1452373025000,26,1.80360721443,localhost,cpu7
+1452373025000,27,3.58565737052,localhost,cpu6
+1452373025000,28,2.6,localhost,cpu5
+1452373025000,29,2.19560878244,localhost,cpu4
+1452373025000,30,6.88259109312,localhost,cpu9
+1452373025000,31,17.8137651822,localhost,cpu8
+1452373030000,0,0.0,localhost,cpu22
+1452373030000,1,0.998003992016,localhost,cpu23
+1452373030000,2,0.8,localhost,cpu20
+1452373030000,3,0.8,localhost,cpu21
+1452373030000,4,0.4,localhost,cpu26
+1452373030000,5,0.59880239521,localhost,cpu27
+1452373030000,6,0.0,localhost,cpu24
+1452373030000,7,0.59880239521,localhost,cpu25
+1452373030000,8,0.400801603206,localhost,cpu28
+1452373030000,9,0.0,localhost,cpu29
+1452373030000,10,98.2071713147,localhost,cpu17
+1452373030000,11,0.0,localhost,cpu16
+1452373030000,12,1.20240480962,localhost,cpu15
+1452373030000,13,2.00803212851,localhost,cpu14
+1452373030000,14,1.20967741935,localhost,cpu13
+1452373030000,15,1.01214574899,localhost,cpu12
+1452373030000,16,2.44399185336,localhost,cpu11
+1452373030000,17,4.64646464646,localhost,cpu10
+1452373030000,18,0.0,localhost,cpu19
+1452373030000,19,0.59880239521,localhost,cpu18
+1452373030000,20,0.0,localhost,cpu31
+1452373030000,21,0.798403193613,localhost,cpu30
+1452373030000,22,2.78884462151,localhost,cpu3
+1452373030000,23,2.42424242424,localhost,cpu2
+1452373030000,24,1.00401606426,localhost,cpu1
+1452373030000,25,2.84552845528,localhost,cpu0
+1452373030000,26,0.803212851406,localhost,cpu7
+1452373030000,27,2.19560878244,localhost,cpu6
+1452373030000,28,1.0,localhost,cpu5
+1452373030000,29,2.80561122244,localhost,cpu4
+1452373030000,30,5.43259557344,localhost,cpu9
+1452373030000,31,18.0527383367,localhost,cpu8
+1452373035000,0,0.4,localhost,cpu22
+1452373035000,1,0.199600798403,localhost,cpu23
+1452373035000,2,0.59880239521,localhost,cpu20
+1452373035000,3,0.59880239521,localhost,cpu21
+1452373035000,4,0.2,localhost,cpu26
+1452373035000,5,0.0,localhost,cpu27
+1452373035000,6,9.2555331992,localhost,cpu24
+1452373035000,7,0.200400801603,localhost,cpu25
+1452373035000,8,0.399201596806,localhost,cpu28
+1452373035000,9,0.0,localhost,cpu29
+1452373035000,10,2.8,localhost,cpu17
+1452373035000,11,91.4,localhost,cpu16
+1452373035000,12,0.804828973843,localhost,cpu15
+1452373035000,13,4.05679513185,localhost,cpu14
+1452373035000,14,1.41987829615,localhost,cpu13
+1452373035000,15,2.40480961924,localhost,cpu12
+1452373035000,16,4.04858299595,localhost,cpu11
+1452373035000,17,2.63157894737,localhost,cpu10
+1452373035000,18,0.6,localhost,cpu19
+1452373035000,19,0.4,localhost,cpu18
+1452373035000,20,0.4,localhost,cpu31
+1452373035000,21,0.402414486922,localhost,cpu30
+1452373035000,22,1.40845070423,localhost,cpu3
+1452373035000,23,1.61616161616,localhost,cpu2
+1452373035000,24,3.0303030303,localhost,cpu1
+1452373035000,25,3.48360655738,localhost,cpu0
+1452373035000,26,1.2,localhost,cpu7
+1452373035000,27,1.20481927711,localhost,cpu6
+1452373035000,28,1.20240480962,localhost,cpu5
+1452373035000,29,0.803212851406,localhost,cpu4
+1452373035000,30,9.23694779116,localhost,cpu9
+1452373035000,31,20.325203252,localhost,cpu8
+1452373040000,0,0.4,localhost,cpu22
+1452373040000,1,1.2,localhost,cpu23
+1452373040000,2,0.998003992016,localhost,cpu20
+1452373040000,3,1.2,localhost,cpu21
+1452373040000,4,0.0,localhost,cpu26
+1452373040000,5,0.0,localhost,cpu27
+1452373040000,6,0.398406374502,localhost,cpu24
+1452373040000,7,0.0,localhost,cpu25
+1452373040000,8,0.4,localhost,cpu28
+1452373040000,9,0.0,localhost,cpu29
+1452373040000,10,1.2,localhost,cpu17
+1452373040000,11,37.7245508982,localhost,cpu16
+1452373040000,12,1.42276422764,localhost,cpu15
+1452373040000,13,0.402414486922,localhost,cpu14
+1452373040000,14,5.4435483871,localhost,cpu13
+1452373040000,15,2.0202020202,localhost,cpu12
+1452373040000,16,0.609756097561,localhost,cpu11
+1452373040000,17,2.80561122244,localhost,cpu10
+1452373040000,18,0.798403193613,localhost,cpu19
+1452373040000,19,1.2,localhost,cpu18
+1452373040000,20,0.0,localhost,cpu31
+1452373040000,21,0.0,localhost,cpu30
+1452373040000,22,44.6893787575,localhost,cpu3
+1452373040000,23,1.79640718563,localhost,cpu2
+1452373040000,24,4.29447852761,localhost,cpu1
+1452373040000,25,13.8276553106,localhost,cpu0
+1452373040000,26,1.00401606426,localhost,cpu7
+1452373040000,27,1.20240480962,localhost,cpu6
+1452373040000,28,1.20481927711,localhost,cpu5
+1452373040000,29,1.4,localhost,cpu4
+1452373040000,30,4.66531440162,localhost,cpu9
+1452373040000,31,25.0505050505,localhost,cpu8
+1452373045000,0,0.0,localhost,cpu22
+1452373045000,1,0.597609561753,localhost,cpu23
+1452373045000,2,0.59880239521,localhost,cpu20
+1452373045000,3,0.0,localhost,cpu21
+1452373045000,4,0.2,localhost,cpu26
+1452373045000,5,1.0,localhost,cpu27
+1452373045000,6,0.199600798403,localhost,cpu24
+1452373045000,7,0.199600798403,localhost,cpu25
+1452373045000,8,1.4,localhost,cpu28
+1452373045000,9,1.39720558882,localhost,cpu29
+1452373045000,10,0.199600798403,localhost,cpu17
+1452373045000,11,0.0,localhost,cpu16
+1452373045000,12,1.60965794769,localhost,cpu15
+1452373045000,13,4.03225806452,localhost,cpu14
+1452373045000,14,3.65111561866,localhost,cpu13
+1452373045000,15,3.25203252033,localhost,cpu12
+1452373045000,16,3.62173038229,localhost,cpu11
+1452373045000,17,1.60642570281,localhost,cpu10
+1452373045000,18,2.2,localhost,cpu19
+1452373045000,19,0.399201596806,localhost,cpu18
+1452373045000,20,1.21212121212,localhost,cpu31
+1452373045000,21,1.0,localhost,cpu30
+1452373045000,22,0.4,localhost,cpu3
+1452373045000,23,1.01214574899,localhost,cpu2
+1452373045000,24,72.8,localhost,cpu1
+1452373045000,25,30.3462321792,localhost,cpu0
+1452373045000,26,2.0,localhost,cpu7
+1452373045000,27,0.998003992016,localhost,cpu6
+1452373045000,28,1.0,localhost,cpu5
+1452373045000,29,1.2,localhost,cpu4
+1452373045000,30,3.0303030303,localhost,cpu9
+1452373045000,31,18.7372708758,localhost,cpu8
+1452373050000,0,0.200400801603,localhost,cpu22
+1452373050000,1,0.200400801603,localhost,cpu23
+1452373050000,2,0.199600798403,localhost,cpu20
+1452373050000,3,0.0,localhost,cpu21
+1452373050000,4,1.4,localhost,cpu26
+1452373050000,5,0.59880239521,localhost,cpu27
+1452373050000,6,0.6,localhost,cpu24
+1452373050000,7,0.2,localhost,cpu25
+1452373050000,8,0.400801603206,localhost,cpu28
+1452373050000,9,1.59680638723,localhost,cpu29
+1452373050000,10,0.0,localhost,cpu17
+1452373050000,11,0.0,localhost,cpu16
+1452373050000,12,2.2,localhost,cpu15
+1452373050000,13,2.19560878244,localhost,cpu14
+1452373050000,14,1.19760479042,localhost,cpu13
+1452373050000,15,1.4,localhost,cpu12
+1452373050000,16,1.99600798403,localhost,cpu11
+1452373050000,17,11.5537848606,localhost,cpu10
+1452373050000,18,0.0,localhost,cpu19
+1452373050000,19,0.0,localhost,cpu18
+1452373050000,20,1.59362549801,localhost,cpu31
+1452373050000,21,1.8,localhost,cpu30
+1452373050000,22,51.5151515152,localhost,cpu3
+1452373050000,23,1.20724346076,localhost,cpu2
+1452373050000,24,42.0731707317,localhost,cpu1
+1452373050000,25,2.02839756592,localhost,cpu0
+1452373050000,26,1.60320641283,localhost,cpu7
+1452373050000,27,2.01207243461,localhost,cpu6
+1452373050000,28,0.80971659919,localhost,cpu5
+1452373050000,29,1.81818181818,localhost,cpu4
+1452373050000,30,4.8,localhost,cpu9
+1452373050000,31,13.9112903226,localhost,cpu8
+1452373055000,0,0.0,localhost,cpu22
+1452373055000,1,0.0,localhost,cpu23
+1452373055000,2,0.0,localhost,cpu20
+1452373055000,3,0.0,localhost,cpu21
+1452373055000,4,2.4,localhost,cpu26
+1452373055000,5,3.20641282565,localhost,cpu27
+1452373055000,6,1.60320641283,localhost,cpu24
+1452373055000,7,0.803212851406,localhost,cpu25
+1452373055000,8,0.996015936255,localhost,cpu28
+1452373055000,9,1.4,localhost,cpu29
+1452373055000,10,0.0,localhost,cpu17
+1452373055000,11,0.0,localhost,cpu16
+1452373055000,12,1.60320641283,localhost,cpu15
+1452373055000,13,1.60320641283,localhost,cpu14
+1452373055000,14,5.07099391481,localhost,cpu13
+1452373055000,15,4.60921843687,localhost,cpu12
+1452373055000,16,4.82897384306,localhost,cpu11
+1452373055000,17,6.57370517928,localhost,cpu10
+1452373055000,18,0.0,localhost,cpu19
+1452373055000,19,0.0,localhost,cpu18
+1452373055000,20,1.4,localhost,cpu31
+1452373055000,21,1.6,localhost,cpu30
+1452373055000,22,22.1327967807,localhost,cpu3
+1452373055000,23,4.87804878049,localhost,cpu2
+1452373055000,24,1.00806451613,localhost,cpu1
+1452373055000,25,63.6546184739,localhost,cpu0
+1452373055000,26,0.0,localhost,cpu7
+1452373055000,27,0.0,localhost,cpu6
+1452373055000,28,1.81818181818,localhost,cpu5
+1452373055000,29,9.07258064516,localhost,cpu4
+1452373055000,30,2.60521042084,localhost,cpu9
+1452373055000,31,16.7002012072,localhost,cpu8
+1452373060000,0,0.402414486922,localhost,cpu22
+1452373060000,1,0.0,localhost,cpu23
+1452373060000,2,0.0,localhost,cpu20
+1452373060000,3,0.0,localhost,cpu21
+1452373060000,4,0.0,localhost,cpu26
+1452373060000,5,1.59362549801,localhost,cpu27
+1452373060000,6,6.37450199203,localhost,cpu24
+1452373060000,7,1.3916500994,localhost,cpu25
+1452373060000,8,0.60120240481,localhost,cpu28
+1452373060000,9,0.798403193613,localhost,cpu29
+1452373060000,10,0.0,localhost,cpu17
+1452373060000,11,0.199600798403,localhost,cpu16
+1452373060000,12,2.20883534137,localhost,cpu15
+1452373060000,13,1.81086519115,localhost,cpu14
+1452373060000,14,2.22222222222,localhost,cpu13
+1452373060000,15,2.01207243461,localhost,cpu12
+1452373060000,16,44.8,localhost,cpu11
+1452373060000,17,56.4257028112,localhost,cpu10
+1452373060000,18,0.0,localhost,cpu19
+1452373060000,19,0.398406374502,localhost,cpu18
+1452373060000,20,1.99203187251,localhost,cpu31
+1452373060000,21,1.99203187251,localhost,cpu30
+1452373060000,22,7.92682926829,localhost,cpu3
+1452373060000,23,4.7619047619,localhost,cpu2
+1452373060000,24,2.81690140845,localhost,cpu1
+1452373060000,25,4.25101214575,localhost,cpu0
+1452373060000,26,4.0,localhost,cpu7
+1452373060000,27,3.4,localhost,cpu6
+1452373060000,28,3.83064516129,localhost,cpu5
+1452373060000,29,2.39520958084,localhost,cpu4
+1452373060000,30,3.39321357285,localhost,cpu9
+1452373060000,31,14.1414141414,localhost,cpu8
+1452373065000,0,0.0,localhost,cpu22
+1452373065000,1,0.0,localhost,cpu23
+1452373065000,2,0.60120240481,localhost,cpu20
+1452373065000,3,0.0,localhost,cpu21
+1452373065000,4,1.6,localhost,cpu26
+1452373065000,5,0.6,localhost,cpu27
+1452373065000,6,1.2,localhost,cpu24
+1452373065000,7,1.20240480962,localhost,cpu25
+1452373065000,8,1.19760479042,localhost,cpu28
+1452373065000,9,1.59680638723,localhost,cpu29
+1452373065000,10,0.0,localhost,cpu17
+1452373065000,11,0.0,localhost,cpu16
+1452373065000,12,1.40280561122,localhost,cpu15
+1452373065000,13,1.40562248996,localhost,cpu14
+1452373065000,14,1.61290322581,localhost,cpu13
+1452373065000,15,1.80360721443,localhost,cpu12
+1452373065000,16,99.001996008,localhost,cpu11
+1452373065000,17,2.0,localhost,cpu10
+1452373065000,18,0.199203187251,localhost,cpu19
+1452373065000,19,0.0,localhost,cpu18
+1452373065000,20,1.00200400802,localhost,cpu31
+1452373065000,21,1.4,localhost,cpu30
+1452373065000,22,6.44490644491,localhost,cpu3
+1452373065000,23,2.84552845528,localhost,cpu2
+1452373065000,24,0.608519269777,localhost,cpu1
+1452373065000,25,3.83838383838,localhost,cpu0
+1452373065000,26,1.40845070423,localhost,cpu7
+1452373065000,27,4.22535211268,localhost,cpu6
+1452373065000,28,3.21931589537,localhost,cpu5
+1452373065000,29,0.604838709677,localhost,cpu4
+1452373065000,30,4.6277665996,localhost,cpu9
+1452373065000,31,10.7070707071,localhost,cpu8
+1452373070000,0,0.400801603206,localhost,cpu22
+1452373070000,1,0.0,localhost,cpu23
+1452373070000,2,0.803212851406,localhost,cpu20
+1452373070000,3,0.6,localhost,cpu21
+1452373070000,4,0.2,localhost,cpu26
+1452373070000,5,0.200400801603,localhost,cpu27
+1452373070000,6,0.2,localhost,cpu24
+1452373070000,7,0.796812749004,localhost,cpu25
+1452373070000,8,0.2,localhost,cpu28
+1452373070000,9,0.0,localhost,cpu29
+1452373070000,10,0.401606425703,localhost,cpu17
+1452373070000,11,0.399201596806,localhost,cpu16
+1452373070000,12,0.606060606061,localhost,cpu15
+1452373070000,13,1.00806451613,localhost,cpu14
+1452373070000,14,1.41129032258,localhost,cpu13
+1452373070000,15,0.804828973843,localhost,cpu12
+1452373070000,16,47.2,localhost,cpu11
+1452373070000,17,5.64516129032,localhost,cpu10
+1452373070000,18,0.2,localhost,cpu19
+1452373070000,19,0.8,localhost,cpu18
+1452373070000,20,0.59880239521,localhost,cpu31
+1452373070000,21,0.402414486922,localhost,cpu30
+1452373070000,22,3.02419354839,localhost,cpu3
+1452373070000,23,57.8732106339,localhost,cpu2
+1452373070000,24,0.806451612903,localhost,cpu1
+1452373070000,25,14.4016227181,localhost,cpu0
+1452373070000,26,3.00601202405,localhost,cpu7
+1452373070000,27,1.79282868526,localhost,cpu6
+1452373070000,28,3.41365461847,localhost,cpu5
+1452373070000,29,2.58964143426,localhost,cpu4
+1452373070000,30,1.21457489879,localhost,cpu9
+1452373070000,31,0.804828973843,localhost,cpu8
+1452373075000,0,0.397614314115,localhost,cpu22
+1452373075000,1,0.0,localhost,cpu23
+1452373075000,2,0.0,localhost,cpu20
+1452373075000,3,0.0,localhost,cpu21
+1452373075000,4,0.59880239521,localhost,cpu26
+1452373075000,5,0.609756097561,localhost,cpu27
+1452373075000,6,1.39442231076,localhost,cpu24
+1452373075000,7,1.19760479042,localhost,cpu25
+1452373075000,8,0.4,localhost,cpu28
+1452373075000,9,1.0,localhost,cpu29
+1452373075000,10,0.60120240481,localhost,cpu17
+1452373075000,11,0.0,localhost,cpu16
+1452373075000,12,3.20641282565,localhost,cpu15
+1452373075000,13,1.20481927711,localhost,cpu14
+1452373075000,14,1.40562248996,localhost,cpu13
+1452373075000,15,1.40280561122,localhost,cpu12
+1452373075000,16,2.41448692153,localhost,cpu11
+1452373075000,17,8.41683366733,localhost,cpu10
+1452373075000,18,0.0,localhost,cpu19
+1452373075000,19,0.0,localhost,cpu18
+1452373075000,20,0.998003992016,localhost,cpu31
+1452373075000,21,0.811359026369,localhost,cpu30
+1452373075000,22,38.6,localhost,cpu3
+1452373075000,23,55.1102204409,localhost,cpu2
+1452373075000,24,5.02008032129,localhost,cpu1
+1452373075000,25,15.1452282158,localhost,cpu0
+1452373075000,26,0.798403193613,localhost,cpu7
+1452373075000,27,0.8,localhost,cpu6
+1452373075000,28,0.59880239521,localhost,cpu5
+1452373075000,29,1.00200400802,localhost,cpu4
+1452373075000,30,2.39520958084,localhost,cpu9
+1452373075000,31,7.56972111554,localhost,cpu8
+1452373080000,0,0.4,localhost,cpu22
+1452373080000,1,0.0,localhost,cpu23
+1452373080000,2,0.59880239521,localhost,cpu20
+1452373080000,3,0.199600798403,localhost,cpu21
+1452373080000,4,1.0,localhost,cpu26
+1452373080000,5,0.808080808081,localhost,cpu27
+1452373080000,6,1.20967741935,localhost,cpu24
+1452373080000,7,1.00200400802,localhost,cpu25
+1452373080000,8,0.200803212851,localhost,cpu28
+1452373080000,9,0.796812749004,localhost,cpu29
+1452373080000,10,0.401606425703,localhost,cpu17
+1452373080000,11,0.199600798403,localhost,cpu16
+1452373080000,12,4.20841683367,localhost,cpu15
+1452373080000,13,35.6713426854,localhost,cpu14
+1452373080000,14,1.80722891566,localhost,cpu13
+1452373080000,15,1.40845070423,localhost,cpu12
+1452373080000,16,3.19361277445,localhost,cpu11
+1452373080000,17,3.21931589537,localhost,cpu10
+1452373080000,18,0.0,localhost,cpu19
+1452373080000,19,0.2,localhost,cpu18
+1452373080000,20,1.79640718563,localhost,cpu31
+1452373080000,21,0.602409638554,localhost,cpu30
+1452373080000,22,67.8,localhost,cpu3
+1452373080000,23,2.6,localhost,cpu2
+1452373080000,24,12.5256673511,localhost,cpu1
+1452373080000,25,6.27530364372,localhost,cpu0
+1452373080000,26,1.0,localhost,cpu7
+1452373080000,27,1.0,localhost,cpu6
+1452373080000,28,1.00200400802,localhost,cpu5
+1452373080000,29,1.40562248996,localhost,cpu4
+1452373080000,30,4.61847389558,localhost,cpu9
+1452373080000,31,4.46247464503,localhost,cpu8
+1452373085000,0,0.0,localhost,cpu22
+1452373085000,1,0.0,localhost,cpu23
+1452373085000,2,0.398406374502,localhost,cpu20
+1452373085000,3,0.59880239521,localhost,cpu21
+1452373085000,4,0.2,localhost,cpu26
+1452373085000,5,1.00200400802,localhost,cpu27
+1452373085000,6,0.6,localhost,cpu24
+1452373085000,7,0.4,localhost,cpu25
+1452373085000,8,3.01204819277,localhost,cpu28
+1452373085000,9,0.400801603206,localhost,cpu29
+1452373085000,10,0.801603206413,localhost,cpu17
+1452373085000,11,0.59880239521,localhost,cpu16
+1452373085000,12,1.2,localhost,cpu15
+1452373085000,13,35.8870967742,localhost,cpu14
+1452373085000,14,3.04259634888,localhost,cpu13
+1452373085000,15,1.22199592668,localhost,cpu12
+1452373085000,16,1.21212121212,localhost,cpu11
+1452373085000,17,2.61044176707,localhost,cpu10
+1452373085000,18,0.998003992016,localhost,cpu19
+1452373085000,19,0.798403193613,localhost,cpu18
+1452373085000,20,0.6,localhost,cpu31
+1452373085000,21,0.200400801603,localhost,cpu30
+1452373085000,22,1.60965794769,localhost,cpu3
+1452373085000,23,45.5089820359,localhost,cpu2
+1452373085000,24,29.3032786885,localhost,cpu1
+1452373085000,25,9.18367346939,localhost,cpu0
+1452373085000,26,1.39720558882,localhost,cpu7
+1452373085000,27,1.60320641283,localhost,cpu6
+1452373085000,28,5.01002004008,localhost,cpu5
+1452373085000,29,1.60320641283,localhost,cpu4
+1452373085000,30,2.00803212851,localhost,cpu9
+1452373085000,31,9.2,localhost,cpu8
+1452373090000,0,0.0,localhost,cpu22
+1452373090000,1,0.0,localhost,cpu23
+1452373090000,2,0.0,localhost,cpu20
+1452373090000,3,0.0,localhost,cpu21
+1452373090000,4,0.8,localhost,cpu26
+1452373090000,5,0.798403193613,localhost,cpu27
+1452373090000,6,1.0,localhost,cpu24
+1452373090000,7,0.4,localhost,cpu25
+1452373090000,8,0.8,localhost,cpu28
+1452373090000,9,0.8,localhost,cpu29
+1452373090000,10,0.0,localhost,cpu17
+1452373090000,11,0.0,localhost,cpu16
+1452373090000,12,1.80360721443,localhost,cpu15
+1452373090000,13,0.801603206413,localhost,cpu14
+1452373090000,14,0.801603206413,localhost,cpu13
+1452373090000,15,1.00200400802,localhost,cpu12
+1452373090000,16,4.60921843687,localhost,cpu11
+1452373090000,17,6.6,localhost,cpu10
+1452373090000,18,0.0,localhost,cpu19
+1452373090000,19,14.4,localhost,cpu18
+1452373090000,20,0.200400801603,localhost,cpu31
+1452373090000,21,0.998003992016,localhost,cpu30
+1452373090000,22,12.9032258065,localhost,cpu3
+1452373090000,23,8.66935483871,localhost,cpu2
+1452373090000,24,24.2424242424,localhost,cpu1
+1452373090000,25,3.90946502058,localhost,cpu0
+1452373090000,26,1.81451612903,localhost,cpu7
+1452373090000,27,1.40280561122,localhost,cpu6
+1452373090000,28,2.85132382892,localhost,cpu5
+1452373090000,29,3.8,localhost,cpu4
+1452373090000,30,0.801603206413,localhost,cpu9
+1452373090000,31,25.5060728745,localhost,cpu8</pre>
+    <pre id="csv_cpu_overall" style="display: none">x,idle,user,system,iowait,others
+1452372900000,94.4048512128,4.85746436609,0.656414103526,0.0625156289072,0.0187546886722
+1452372905000,93.9350316079,3.59892345246,0.300431870814,2.14057707955,0.0250359892345
+1452372910000,94.0261044177,5.20833333333,0.420431726908,0.301204819277,0.0439257028112
+1452372915000,94.4953552599,4.60080341451,0.414260607582,0.420537283455,0.069043434597
+1452372920000,93.8541536148,4.62348076682,0.426011777973,1.03370504949,0.0626487908783
+1452372925000,94.8743655618,4.27345071746,0.444890030704,0.325834952065,0.0814587380162
+1452372930000,94.7530090271,4.40070210632,0.42627883651,0.363590772317,0.0564192577733
+1452372935000,95.1324938921,4.08444527971,0.38839817077,0.332017791142,0.0626448662532
+1452372940000,95.0504354364,4.01603909529,0.463630098365,0.39471211077,0.0751832591943
+1452372945000,94.6394984326,4.53918495298,0.432601880878,0.33855799373,0.0501567398119
+1452372950000,94.9010273115,4.2345276873,0.451014783262,0.350789275871,0.0626409421198
+1452372955000,95.384711858,3.78754624694,0.413870947514,0.369975543989,0.0438954035242
+1452372960000,95.254535183,3.90433745528,0.439394890465,0.3640700521,0.0376624191827
+1452372965000,95.2781087352,3.88787859786,0.413870947514,0.376246315921,0.0438954035242
+1452372970000,95.3984849433,3.8439867276,0.369373317473,0.325549364553,0.0626056470294
+1452372975000,95.3707188559,3.56918830762,0.432818968762,0.583364697027,0.0439091707439
+1452372980000,95.1610881284,4.14316158957,0.41995737746,0.21311269901,0.0626802055911
+1452372985000,95.129442738,4.07446875196,0.432520529054,0.319689086692,0.0438788942519
+1452372990000,95.0331955405,4.0335713391,0.47601152449,0.382061881498,0.0751597143931
+1452372995000,95.1733216323,3.97417413653,0.457594182912,0.357299567479,0.0376104807873
+1452373000000,95.2613764573,3.91124482888,0.41995737746,0.357277171869,0.0501441644729
+1452373005000,95.5508209049,3.67840581527,0.401052763504,0.313322471488,0.0563980448678
+1452373010000,95.5903538992,3.5515189477,0.432195427498,0.382085812715,0.0438459129345
+1452373015000,95.4177897574,3.73597442487,0.42625211559,0.369836394409,0.0501473077164
+1452373020000,95.2073270184,3.85170315539,0.457938648767,0.432846120068,0.0501850573992
+1452373025000,95.0363499624,4.07996991727,0.488844321885,0.344697919278,0.0501378791677
+1452373030000,95.0993294479,4.05464686345,0.451212633954,0.350943159742,0.0438678949677
+1452373035000,94.7712008035,3.92316866487,0.470780239784,0.784633732973,0.0502165589103
+1452373040000,95.0849476522,4.05617202683,0.457651557896,0.357344367124,0.0438843959626
+1452373045000,95.0213192877,4.13844996238,0.43265613243,0.363681966391,0.0438926511161
+1452373050000,95.3216008017,3.84543120185,0.43840420868,0.331934615144,0.0626291726686
+1452373055000,95.0122188107,4.13559746851,0.432357917163,0.338367065606,0.0814587380162
+1452373060000,94.5032905045,4.35600125353,0.470072077719,0.607959887183,0.0626762770291
+1452373065000,95.1230228471,4.05473261361,0.4330906352,0.338940497113,0.0502134069797
+1452373070000,95.2724308734,3.90620101574,0.395009091479,0.357389178005,0.0689698413694
+1452373075000,95.2330243047,3.94637935355,0.425958406414,0.344525181659,0.0501127536958
+1452373080000,94.9473420261,4.21890672016,0.451354062187,0.33851554664,0.0438816449348
+1452373085000,94.9927840873,4.13503168727,0.458053585995,0.39530651942,0.0188241199724
+1452373090000,96.1774658479,2.81363579396,0.557713999248,0.426118561223,0.025065797719</pre>
+    <pre id="csv_network_heatmap" style="display: none">x,y,value,hostname,adapterid
+1452372900000,0,3002.8,localhost,eno3.recv
+1452372900000,1,2554.0,localhost,eno3.send
+1452372905000,0,14839.2,localhost,eno3.recv
+1452372905000,1,4996970.4,localhost,eno3.send
+1452372910000,0,49991.0,localhost,eno3.recv
+1452372910000,1,21577520.4,localhost,eno3.send
+1452372915000,0,50141.4,localhost,eno3.recv
+1452372915000,1,21289485.8,localhost,eno3.send
+1452372920000,0,50829.0,localhost,eno3.recv
+1452372920000,1,21476307.8,localhost,eno3.send
+1452372925000,0,49847.0,localhost,eno3.recv
+1452372925000,1,21432615.0,localhost,eno3.send
+1452372930000,0,54705.8,localhost,eno3.recv
+1452372930000,1,21485169.2,localhost,eno3.send
+1452372935000,0,48799.8,localhost,eno3.recv
+1452372935000,1,20947310.0,localhost,eno3.send
+1452372940000,0,87046.4,localhost,eno3.recv
+1452372940000,1,21774044.2,localhost,eno3.send
+1452372945000,0,57042.0,localhost,eno3.recv
+1452372945000,1,21180212.8,localhost,eno3.send
+1452372950000,0,53496.8,localhost,eno3.recv
+1452372950000,1,22602227.4,localhost,eno3.send
+1452372955000,0,51842.8,localhost,eno3.recv
+1452372955000,1,22391960.2,localhost,eno3.send
+1452372960000,0,50618.6,localhost,eno3.recv
+1452372960000,1,22284267.2,localhost,eno3.send
+1452372965000,0,52697.4,localhost,eno3.recv
+1452372965000,1,22414035.2,localhost,eno3.send
+1452372970000,0,48214.6,localhost,eno3.recv
+1452372970000,1,20375355.4,localhost,eno3.send
+1452372975000,0,56568.6,localhost,eno3.recv
+1452372975000,1,22537257.6,localhost,eno3.send
+1452372980000,0,51483.4,localhost,eno3.recv
+1452372980000,1,22086846.6,localhost,eno3.send
+1452372985000,0,53111.6,localhost,eno3.recv
+1452372985000,1,22877942.4,localhost,eno3.send
+1452372990000,0,50337.0,localhost,eno3.recv
+1452372990000,1,22271303.0,localhost,eno3.send
+1452372995000,0,54744.4,localhost,eno3.recv
+1452372995000,1,22733973.0,localhost,eno3.send
+1452373000000,0,52617.2,localhost,eno3.recv
+1452373000000,1,22838607.0,localhost,eno3.send
+1452373005000,0,53386.8,localhost,eno3.recv
+1452373005000,1,21902331.0,localhost,eno3.send
+1452373010000,0,48865.2,localhost,eno3.recv
+1452373010000,1,20337305.2,localhost,eno3.send
+1452373015000,0,52138.6,localhost,eno3.recv
+1452373015000,1,22836049.6,localhost,eno3.send
+1452373020000,0,53388.8,localhost,eno3.recv
+1452373020000,1,22324689.2,localhost,eno3.send
+1452373025000,0,51408.2,localhost,eno3.recv
+1452373025000,1,22457434.2,localhost,eno3.send
+1452373030000,0,71403.6,localhost,eno3.recv
+1452373030000,1,22536040.2,localhost,eno3.send
+1452373035000,0,71391.2,localhost,eno3.recv
+1452373035000,1,22182227.2,localhost,eno3.send
+1452373040000,0,52323.8,localhost,eno3.recv
+1452373040000,1,22496608.0,localhost,eno3.send
+1452373045000,0,51055.0,localhost,eno3.recv
+1452373045000,1,22304239.0,localhost,eno3.send
+1452373050000,0,50132.8,localhost,eno3.recv
+1452373050000,1,20574017.8,localhost,eno3.send
+1452373055000,0,53477.4,localhost,eno3.recv
+1452373055000,1,22323540.8,localhost,eno3.send
+1452373060000,0,65117.2,localhost,eno3.recv
+1452373060000,1,22273189.4,localhost,eno3.send
+1452373065000,0,92815.4,localhost,eno3.recv
+1452373065000,1,22286758.6,localhost,eno3.send
+1452373070000,0,50697.0,localhost,eno3.recv
+1452373070000,1,22272906.0,localhost,eno3.send
+1452373075000,0,52609.8,localhost,eno3.recv
+1452373075000,1,22640386.2,localhost,eno3.send
+1452373080000,0,52442.6,localhost,eno3.recv
+1452373080000,1,22378419.4,localhost,eno3.send
+1452373085000,0,67444.2,localhost,eno3.recv
+1452373085000,1,22312516.8,localhost,eno3.send
+1452373090000,0,41205.6,localhost,eno3.recv
+1452373090000,1,13627803.2,localhost,eno3.send</pre>
+    <pre id="csv_network_overall" style="display: none">x,recv_bytes,send_bytes,|recv_packets,send_packets,errors
+1452372900000,3002.8,2554.0,19.8,15.2,0.0
+1452372905000,14839.2,4996970.4,188.0,3515.8,0.0
+1452372910000,49991.0,21577520.4,690.2,15115.8,0.0
+1452372915000,50141.4,21289485.8,686.0,14916.4,0.0
+1452372920000,50829.0,21476307.8,695.8,15050.8,0.0
+1452372925000,49847.0,21432615.0,683.4,15012.8,0.0
+1452372930000,54705.8,21485169.2,753.6,15050.6,0.0
+1452372935000,48799.8,20947310.0,666.8,14675.6,0.0
+1452372940000,87046.4,21774044.2,1241.0,15251.8,0.0
+1452372945000,57042.0,21180212.8,789.4,14842.0,0.0
+1452372950000,53496.8,22602227.4,733.2,15833.0,0.0
+1452372955000,51842.8,22391960.2,711.0,15685.6,0.0
+1452372960000,50618.6,22284267.2,695.6,15606.6,0.0
+1452372965000,52697.4,22414035.2,722.0,15700.4,0.0
+1452372970000,48214.6,20375355.4,657.4,14279.2,0.0
+1452372975000,56568.6,22537257.6,774.6,15790.6,0.0
+1452372980000,51483.4,22086846.6,700.8,15476.2,0.0
+1452372985000,53111.6,22877942.4,728.8,16024.8,0.0
+1452372990000,50337.0,22271303.0,691.4,15598.0,0.0
+1452372995000,54744.4,22733973.0,751.8,15925.8,0.0
+1452373000000,52617.2,22838607.0,721.4,15998.0,0.0
+1452373005000,53386.8,21902331.0,731.4,15341.4,0.0
+1452373010000,48865.2,20337305.2,663.8,14249.4,0.0
+1452373015000,52138.6,22836049.6,714.0,15993.6,0.0
+1452373020000,53388.8,22324689.2,732.0,15647.0,0.0
+1452373025000,51408.2,22457434.2,702.0,15731.4,0.0
+1452373030000,71403.6,22536040.2,1006.8,15785.8,0.0
+1452373035000,71391.2,22182227.2,1005.4,15543.4,0.0
+1452373040000,52323.8,22496608.0,714.8,15759.0,0.0
+1452373045000,51055.0,22304239.0,699.2,15621.6,0.0
+1452373050000,50132.8,20574017.8,682.8,14417.2,0.0
+1452373055000,53477.4,22323540.8,732.2,15642.2,0.0
+1452373060000,65117.2,22273189.4,912.4,15602.2,0.0
+1452373065000,92815.4,22286758.6,1329.8,15611.8,0.0
+1452373070000,50697.0,22272906.0,694.2,15600.8,0.0
+1452373075000,52609.8,22640386.2,724.4,15857.2,0.0
+1452373080000,52442.6,22378419.4,713.4,15676.4,0.0
+1452373085000,67444.2,22312516.8,940.2,15630.2,0.0
+1452373090000,41205.6,13627803.2,568.2,9559.2,0.0</pre>
+    <pre id="csv_diskio_heatmap" style="display: none">x,y,value,hostname,diskid
+1452372900000,0,651264.0,localhost,sda
+1452372905000,0,31039488.0,localhost,sda
+1452372910000,0,8702361.6,localhost,sda
+1452372915000,0,23157145.6,localhost,sda
+1452372920000,0,23830528.0,localhost,sda
+1452372925000,0,21439283.2,localhost,sda
+1452372930000,0,21368012.8,localhost,sda
+1452372935000,0,19850854.4,localhost,sda
+1452372940000,0,22746726.4,localhost,sda
+1452372945000,0,21785804.8,localhost,sda
+1452372950000,0,21206630.4,localhost,sda
+1452372955000,0,22807347.2,localhost,sda
+1452372960000,0,22336307.2,localhost,sda
+1452372965000,0,22227353.6,localhost,sda
+1452372970000,0,19204505.6,localhost,sda
+1452372975000,0,27855257.6,localhost,sda
+1452372980000,0,22281420.8,localhost,sda
+1452372985000,0,22251929.6,localhost,sda
+1452372990000,0,22775398.4,localhost,sda
+1452372995000,0,22500147.2,localhost,sda
+1452373000000,0,22687744.0,localhost,sda
+1452373005000,0,22761472.0,localhost,sda
+1452373010000,0,19441254.4,localhost,sda
+1452373015000,0,22820454.4,localhost,sda
+1452373020000,0,22255206.4,localhost,sda
+1452373025000,0,22578790.4,localhost,sda
+1452373030000,0,22755737.6,localhost,sda
+1452373035000,0,26007142.4,localhost,sda
+1452373040000,0,22428876.8,localhost,sda
+1452373045000,0,22392832.0,localhost,sda
+1452373050000,0,20565196.8,localhost,sda
+1452373055000,0,21797273.6,localhost,sda
+1452373060000,0,22994124.8,localhost,sda
+1452373065000,0,22103654.4,localhost,sda
+1452373070000,0,22211788.8,localhost,sda
+1452373075000,0,22440345.6,localhost,sda
+1452373080000,0,22383001.6,localhost,sda
+1452373085000,0,22324838.4,localhost,sda
+1452373090000,0,21589196.8,localhost,sda</pre>
+    <pre id="csv_diskio_overall" style="display: none">x,read_bytes,write_bytes,|read_io,write_io
+1452372900000,0.0,651264.0,0.0,94.0
+1452372905000,0.0,31039488.0,0.0,3773.0
+1452372910000,749568.0,7952793.6,8.8,20.6
+1452372915000,1050214.4,22106931.2,8.4,49.0
+1452372920000,318668.8,23511859.2,2.4,89.0
+1452372925000,0.0,21439283.2,0.0,44.6
+1452372930000,819.2,21367193.6,0.2,44.4
+1452372935000,819.2,19850035.2,0.2,41.0
+1452372940000,0.0,22746726.4,0.0,46.8
+1452372945000,0.0,21785804.8,0.0,45.6
+1452372950000,0.0,21206630.4,0.0,43.6
+1452372955000,819.2,22806528.0,0.2,56.2
+1452372960000,0.0,22336307.2,0.0,46.6
+1452372965000,819.2,22226534.4,0.2,46.4
+1452372970000,819.2,19203686.4,0.2,38.0
+1452372975000,819.2,27854438.4,0.2,60.8
+1452372980000,0.0,22281420.8,0.0,47.6
+1452372985000,819.2,22251110.4,0.2,45.4
+1452372990000,819.2,22774579.2,0.2,57.0
+1452372995000,819.2,22499328.0,0.2,46.4
+1452373000000,0.0,22687744.0,0.0,45.0
+1452373005000,0.0,22761472.0,0.0,46.8
+1452373010000,819.2,19440435.2,0.2,41.8
+1452373015000,819.2,22819635.2,0.2,47.6
+1452373020000,819.2,22254387.2,0.2,45.8
+1452373025000,819.2,22577971.2,0.2,52.8
+1452373030000,0.0,22755737.6,0.0,45.0
+1452373035000,819.2,26006323.2,0.2,55.8
+1452373040000,0.0,22428876.8,0.0,46.8
+1452373045000,0.0,22392832.0,0.0,47.0
+1452373050000,0.0,20565196.8,0.0,43.6
+1452373055000,819.2,21796454.4,0.2,45.2
+1452373060000,2457.6,22991667.2,0.6,54.8
+1452373065000,0.0,22103654.4,0.0,46.2
+1452373070000,819.2,22210969.6,0.2,46.4
+1452373075000,0.0,22440345.6,0.0,45.8
+1452373080000,0.0,22383001.6,0.0,47.4
+1452373085000,0.0,22324838.4,0.0,46.0
+1452373090000,819.2,21588377.6,0.2,45.8</pre>
+    <pre id="csv_memory_heatmap" style="display: none">x,y,value,hostname
+1452372895000,0,6279188000,localhost
+1452372900000,0,6670952000,localhost
+1452372905000,0,6732584000,localhost
+1452372910000,0,6837532000,localhost
+1452372915000,0,6943816000,localhost
+1452372920000,0,7049976000,localhost
+1452372925000,0,7154568000,localhost
+1452372930000,0,7260436000,localhost
+1452372935000,0,7364408000,localhost
+1452372940000,0,7468672000,localhost
+1452372945000,0,7574988000,localhost
+1452372950000,0,7684800000,localhost
+1452372955000,0,7794652000,localhost
+1452372960000,0,7904152000,localhost
+1452372965000,0,8012820000,localhost
+1452372970000,0,8111672000,localhost
+1452372975000,0,8222588000,localhost
+1452372980000,0,8325576000,localhost
+1452372985000,0,8435568000,localhost
+1452372990000,0,8544304000,localhost
+1452372995000,0,8655128000,localhost
+1452373000000,0,8765912000,localhost
+1452373005000,0,8872720000,localhost
+1452373010000,0,8974660000,localhost
+1452373015000,0,9085524000,localhost
+1452373020000,0,9193608000,localhost
+1452373025000,0,9302264000,localhost
+1452373030000,0,9412972000,localhost
+1452373035000,0,9524532000,localhost
+1452373040000,0,9634708000,localhost
+1452373045000,0,9743424000,localhost
+1452373050000,0,9846024000,localhost
+1452373055000,0,9955652000,localhost
+1452373060000,0,10063452000,localhost
+1452373065000,0,10172220000,localhost
+1452373070000,0,10281416000,localhost
+1452373075000,0,10390912000,localhost
+1452373080000,0,10499544000,localhost
+1452373085000,0,10611048000,localhost
+1452373090000,0,10524240000,localhost</pre>
+    <pre id="csv_memory_overall" style="display: none">x,free,buffer_cache,used
+1452372895000,26496336,4062248,2216940
+1452372900000,26104572,4174356,2496596
+1452372905000,26042940,4231164,2501420
+1452372910000,25937992,4339356,2498176
+1452372915000,25831708,4448212,2495604
+1452372920000,25725548,4555076,2494900
+1452372925000,25620956,4659088,2495480
+1452372930000,25515088,4763760,2496676
+1452372935000,25411116,4865288,2499120
+1452372940000,25306852,4971440,2497232
+1452372945000,25200536,5075280,2499708
+1452372950000,25090724,5184468,2500332
+1452372955000,24980872,5294428,2500224
+1452372960000,24871372,5402484,2501668
+1452372965000,24762704,5512076,2500744
+1452372970000,24663852,5611104,2500568
+1452372975000,24552936,5720940,2501648
+1452372980000,24449948,5828572,2497004
+1452372985000,24339956,5939528,2496040
+1452372990000,24231220,6048264,2496040
+1452372995000,24120396,6159080,2496048
+1452373000000,24009612,6270824,2495088
+1452373005000,23902804,6377212,2495508
+1452373010000,23800864,6476508,2498152
+1452373015000,23690000,6587680,2497844
+1452373020000,23581916,6696472,2497136
+1452373025000,23473260,6805744,2496520
+1452373030000,23362552,6915264,2497708
+1452373035000,23250992,7023728,2500804
+1452373040000,23140816,7133236,2501472
+1452373045000,23032100,7242404,2501020
+1452373050000,22929500,7342560,2503464
+1452373055000,22819872,7450828,2504824
+1452373060000,22712072,7558608,2504844
+1452373065000,22603304,7668004,2504216
+1452373070000,22494108,7776976,2504440
+1452373075000,22384612,7887036,2503876
+1452373080000,22275980,7995700,2503844
+1452373085000,22164476,8105016,2506032
+1452373090000,22251284,8029120,2495120</pre>
+    <pre id="csv_procload_heatmap" style="display: none">x,y,value,hostname
+1452372895000,0,870,localhost
+1452372900000,0,874,localhost
+1452372905000,0,881,localhost
+1452372910000,0,881,localhost
+1452372915000,0,882,localhost
+1452372920000,0,882,localhost
+1452372925000,0,881,localhost
+1452372930000,0,880,localhost
+1452372935000,0,880,localhost
+1452372940000,0,880,localhost
+1452372945000,0,881,localhost
+1452372950000,0,881,localhost
+1452372955000,0,880,localhost
+1452372960000,0,880,localhost
+1452372965000,0,879,localhost
+1452372970000,0,879,localhost
+1452372975000,0,880,localhost
+1452372980000,0,880,localhost
+1452372985000,0,879,localhost
+1452372990000,0,879,localhost
+1452372995000,0,879,localhost
+1452373000000,0,879,localhost
+1452373005000,0,879,localhost
+1452373010000,0,879,localhost
+1452373015000,0,879,localhost
+1452373020000,0,879,localhost
+1452373025000,0,879,localhost
+1452373030000,0,879,localhost
+1452373035000,0,880,localhost
+1452373040000,0,880,localhost
+1452373045000,0,879,localhost
+1452373050000,0,879,localhost
+1452373055000,0,879,localhost
+1452373060000,0,879,localhost
+1452373065000,0,879,localhost
+1452373070000,0,876,localhost
+1452373075000,0,879,localhost
+1452373080000,0,879,localhost
+1452373085000,0,879,localhost
+1452373090000,0,872,localhost</pre>
+    <pre id="csv_procload_overall" style="display: none">x,load5,load10,load15,|running,procs
+1452372895000,0.89,0.5,0.55,4,870
+1452372900000,0.9,0.51,0.55,2,874
+1452372905000,1.15,0.57,0.57,3,881
+1452372910000,1.14,0.58,0.57,3,881
+1452372915000,1.13,0.58,0.57,5,882
+1452372920000,1.2,0.61,0.58,6,882
+1452372925000,1.18,0.61,0.58,3,881
+1452372930000,1.25,0.64,0.59,3,880
+1452372935000,1.23,0.64,0.59,4,880
+1452372940000,1.21,0.65,0.6,4,880
+1452372945000,1.11,0.64,0.59,4,881
+1452372950000,1.1,0.64,0.59,3,881
+1452372955000,1.09,0.65,0.6,3,880
+1452372960000,1.17,0.67,0.6,5,880
+1452372965000,1.15,0.68,0.6,4,879
+1452372970000,1.14,0.68,0.61,5,879
+1452372975000,1.13,0.69,0.61,3,880
+1452372980000,1.12,0.69,0.61,4,880
+1452372985000,1.19,0.72,0.62,4,879
+1452372990000,1.18,0.72,0.62,4,879
+1452372995000,1.08,0.71,0.62,4,879
+1452373000000,1.07,0.71,0.62,4,879
+1452373005000,1.07,0.72,0.62,3,879
+1452373010000,1.06,0.72,0.62,4,879
+1452373015000,1.14,0.74,0.63,4,879
+1452373020000,1.05,0.73,0.63,4,879
+1452373025000,1.04,0.74,0.63,5,879
+1452373030000,1.04,0.74,0.63,4,879
+1452373035000,1.28,0.79,0.65,4,880
+1452373040000,1.17,0.78,0.64,3,880
+1452373045000,1.16,0.79,0.65,4,879
+1452373050000,1.15,0.79,0.65,5,879
+1452373055000,1.06,0.78,0.65,4,879
+1452373060000,1.05,0.78,0.65,3,879
+1452373065000,1.05,0.78,0.65,3,879
+1452373070000,1.04,0.79,0.65,6,876
+1452373075000,1.04,0.79,0.65,4,879
+1452373080000,0.96,0.78,0.65,5,879
+1452373085000,0.96,0.78,0.65,4,879
+1452373090000,0.96,0.78,0.65,3,872</pre>
+    <pre id="csv_events" style="display: none">x,event</pre>
+
+</body>
+</html>
+

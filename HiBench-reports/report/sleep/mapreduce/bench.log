@@ -1,0 +1,100 @@
+Java HotSpot(TM) 64-Bit Server VM warning: You have loaded library /usr/local/hadoop/lib/native/libhadoop.so.1.0.0 which might have disabled stack guard. The VM will try to fix the stack guard now.
+It's highly recommended that you fix the library with 'execstack -c <libfile>', or link it with '-z noexecstack'.
+16/01/09 16:40:35 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+16/01/09 16:40:36 INFO Configuration.deprecation: session.id is deprecated. Instead, use dfs.metrics.session-id
+16/01/09 16:40:36 INFO jvm.JvmMetrics: Initializing JVM Metrics with processName=JobTracker, sessionId=
+16/01/09 16:40:36 INFO mapreduce.JobSubmitter: number of splits:1
+16/01/09 16:40:36 INFO Configuration.deprecation: user.name is deprecated. Instead, use mapreduce.job.user.name
+16/01/09 16:40:36 INFO Configuration.deprecation: mapred.jar is deprecated. Instead, use mapreduce.job.jar
+16/01/09 16:40:36 INFO Configuration.deprecation: mapred.map.tasks.speculative.execution is deprecated. Instead, use mapreduce.map.speculative
+16/01/09 16:40:36 INFO Configuration.deprecation: mapred.reduce.tasks is deprecated. Instead, use mapreduce.job.reduces
+16/01/09 16:40:36 INFO Configuration.deprecation: mapreduce.partitioner.class is deprecated. Instead, use mapreduce.job.partitioner.class
+16/01/09 16:40:36 INFO Configuration.deprecation: mapred.reduce.tasks.speculative.execution is deprecated. Instead, use mapreduce.reduce.speculative
+16/01/09 16:40:36 INFO Configuration.deprecation: mapred.mapoutput.value.class is deprecated. Instead, use mapreduce.map.output.value.class
+16/01/09 16:40:36 INFO Configuration.deprecation: mapreduce.map.class is deprecated. Instead, use mapreduce.job.map.class
+16/01/09 16:40:36 INFO Configuration.deprecation: mapred.job.name is deprecated. Instead, use mapreduce.job.name
+16/01/09 16:40:36 INFO Configuration.deprecation: mapreduce.reduce.class is deprecated. Instead, use mapreduce.job.reduce.class
+16/01/09 16:40:36 INFO Configuration.deprecation: mapreduce.inputformat.class is deprecated. Instead, use mapreduce.job.inputformat.class
+16/01/09 16:40:36 INFO Configuration.deprecation: mapred.input.dir is deprecated. Instead, use mapreduce.input.fileinputformat.inputdir
+16/01/09 16:40:36 INFO Configuration.deprecation: mapreduce.outputformat.class is deprecated. Instead, use mapreduce.job.outputformat.class
+16/01/09 16:40:36 INFO Configuration.deprecation: mapred.map.tasks is deprecated. Instead, use mapreduce.job.maps
+16/01/09 16:40:36 INFO Configuration.deprecation: mapred.mapoutput.key.class is deprecated. Instead, use mapreduce.map.output.key.class
+16/01/09 16:40:36 INFO Configuration.deprecation: mapred.working.dir is deprecated. Instead, use mapreduce.job.working.dir
+16/01/09 16:40:36 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_local1678882543_0001
+16/01/09 16:40:36 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/staging/root1678882543/.staging/job_local1678882543_0001/job.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.retry.interval;  Ignoring.
+16/01/09 16:40:36 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/staging/root1678882543/.staging/job_local1678882543_0001/job.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.attempts;  Ignoring.
+16/01/09 16:40:37 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/local/localRunner/root/job_local1678882543_0001/job_local1678882543_0001.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.retry.interval;  Ignoring.
+16/01/09 16:40:37 WARN conf.Configuration: file:/app/hadoop/tmp/mapred/local/localRunner/root/job_local1678882543_0001/job_local1678882543_0001.xml:an attempt to override final parameter: mapreduce.job.end-notification.max.attempts;  Ignoring.
+16/01/09 16:40:37 INFO mapreduce.Job: The url to track the job: http://localhost:8080/
+16/01/09 16:40:37 INFO mapreduce.Job: Running job: job_local1678882543_0001
+16/01/09 16:40:37 INFO mapred.LocalJobRunner: OutputCommitter set in config null
+16/01/09 16:40:37 INFO mapred.LocalJobRunner: OutputCommitter is org.apache.hadoop.mapreduce.lib.output.NullOutputFormat$2
+16/01/09 16:40:37 INFO mapred.LocalJobRunner: Waiting for map tasks
+16/01/09 16:40:37 INFO mapred.LocalJobRunner: Starting task: attempt_local1678882543_0001_m_000000_0
+16/01/09 16:40:37 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 16:40:37 INFO mapred.MapTask: Processing split: org.apache.hadoop.mapreduce.SleepJob$EmptySplit@2f1fa5c3
+16/01/09 16:40:37 INFO mapred.MapTask: Map output collector class = org.apache.hadoop.mapred.MapTask$MapOutputBuffer
+16/01/09 16:40:37 INFO mapred.MapTask: (EQUATOR) 0 kvi 26214396(104857584)
+16/01/09 16:40:37 INFO mapred.MapTask: mapreduce.task.io.sort.mb: 100
+16/01/09 16:40:37 INFO mapred.MapTask: soft limit at 83886080
+16/01/09 16:40:37 INFO mapred.MapTask: bufstart = 0; bufvoid = 104857600
+16/01/09 16:40:37 INFO mapred.MapTask: kvstart = 26214396; length = 6553600
+16/01/09 16:40:37 INFO mapred.LocalJobRunner:
+16/01/09 16:40:37 INFO mapred.MapTask: Starting flush of map output
+16/01/09 16:40:37 INFO mapred.MapTask: Spilling map output
+16/01/09 16:40:37 INFO mapred.MapTask: bufstart = 0; bufend = 4; bufvoid = 104857600
+16/01/09 16:40:37 INFO mapred.MapTask: kvstart = 26214396(104857584); kvend = 26214396(104857584); length = 1/6553600
+16/01/09 16:40:37 INFO mapred.MapTask: Finished spill 0
+16/01/09 16:40:37 INFO mapred.Task: Task:attempt_local1678882543_0001_m_000000_0 is done. And is in the process of committing
+16/01/09 16:40:37 INFO mapred.LocalJobRunner: Sleeping... (90) ms left
+16/01/09 16:40:37 INFO mapred.Task: Task 'attempt_local1678882543_0001_m_000000_0' done.
+16/01/09 16:40:37 INFO mapred.LocalJobRunner: Finishing task: attempt_local1678882543_0001_m_000000_0
+16/01/09 16:40:37 INFO mapred.LocalJobRunner: Map task executor complete.
+16/01/09 16:40:37 INFO mapred.Task:  Using ResourceCalculatorProcessTree : [ ]
+16/01/09 16:40:37 INFO mapred.Merger: Merging 1 sorted segments
+16/01/09 16:40:37 INFO mapred.Merger: Down to the last merge-pass, with 1 segments left of total size: 2 bytes
+16/01/09 16:40:37 INFO mapred.LocalJobRunner:
+16/01/09 16:40:37 INFO Configuration.deprecation: mapred.skip.on is deprecated. Instead, use mapreduce.job.skiprecords
+16/01/09 16:40:37 INFO mapred.Task: Task:attempt_local1678882543_0001_r_000000_0 is done. And is in the process of committing
+16/01/09 16:40:37 INFO mapred.LocalJobRunner: Sleeping... (100) ms left > reduce
+16/01/09 16:40:37 INFO mapred.Task: Task 'attempt_local1678882543_0001_r_000000_0' done.
+16/01/09 16:40:38 INFO mapreduce.Job: Job job_local1678882543_0001 running in uber mode : false
+16/01/09 16:40:38 INFO mapreduce.Job:  map 100% reduce 100%
+16/01/09 16:40:38 INFO mapreduce.Job: Job job_local1678882543_0001 completed successfully
+16/01/09 16:40:38 INFO mapreduce.Job: Counters: 32
+	File System Counters
+		FILE: Number of bytes read=2869900
+		FILE: Number of bytes written=3267058
+		FILE: Number of read operations=0
+		FILE: Number of large read operations=0
+		FILE: Number of write operations=0
+		HDFS: Number of bytes read=0
+		HDFS: Number of bytes written=0
+		HDFS: Number of read operations=0
+		HDFS: Number of large read operations=0
+		HDFS: Number of write operations=0
+	Map-Reduce Framework
+		Map input records=1
+		Map output records=1
+		Map output bytes=4
+		Map output materialized bytes=12
+		Input split bytes=48
+		Combine input records=0
+		Combine output records=0
+		Reduce input groups=1
+		Reduce shuffle bytes=0
+		Reduce input records=1
+		Reduce output records=0
+		Spilled Records=2
+		Shuffled Maps =0
+		Failed Shuffles=0
+		Merged Map outputs=0
+		GC time elapsed (ms)=21
+		CPU time spent (ms)=0
+		Physical memory (bytes) snapshot=0
+		Virtual memory (bytes) snapshot=0
+		Total committed heap usage (bytes)=1013972992
+	File Input Format Counters
+		Bytes Read=0
+	File Output Format Counters
+		Bytes Written=0
