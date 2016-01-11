@@ -1,19 +1,19 @@
 ----- TestDFSIO ----- : write
-           Date & time: Fri Jan 08 16:18:44 EST 2016
-       Number of files: 64
-Total MBytes processed: 640
-     Throughput mb/sec: 53.45806882726362
-Average IO rate mb/sec: 75.53089141845703
- IO rate std deviation: 23.757193978919396
-    Test exec time sec: 20.435
+           Date & time: Mon Jan 11 18:09:55 EST 2016
+       Number of files: 40
+Total MBytes processed: 5120
+     Throughput mb/sec: 73.41554344708919
+Average IO rate mb/sec: 89.55158233642578
+ IO rate std deviation: 36.45287303635825
+    Test exec time sec: 78.548
 
 -- Extended Metrics --   : write
 Result file name         : /home/hduser/HiBench/report/dfsioe/mapreduce/conf/../throughput_write.csv
-Sampling overhead        : 0.20046777%
-Reference Start Time     : 1452287903921
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
-Average of Aggregated Throughput : 29.09090909090909 mb/sec
-              Standard Deviation : 21.63261587037022 mb/sec
-   Time spots Counted in Average : 1111111111111111111111 
+Sampling overhead        : 0.23515916%
+Reference Start Time     : 1452553716456
+0,0,1,0,0,0,0,1,0,0,1,0,1,0,0,0,0,0,1,1,0,0,1,1,0,0,0,1,1,0,0,1,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,1,1,0,1,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0
+Average of Aggregated Throughput : 64.0 mb/sec
+              Standard Deviation : 46.214219567852176 mb/sec
+   Time spots Counted in Average : 11111111111111111111111111111111111111111111111111111111111111111111111111111111 
 
--- Result Analyse -- : 2s
+-- Result Analyse -- : 6s
